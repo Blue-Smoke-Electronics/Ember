@@ -1,0 +1,9 @@
+
+*.log
+testing/Powersupply_automatic_tests/Powersupply_automatic_tests/obj/Debug/Powersupply_automatic_tests.csproj.AssemblyReference.cache
+encosure/inventor/rev1/OldVersions/
+encosure/inventor/rev1/
+encosure/inventor/rev4/OldVersions/
+testing/Powersupply_automatic_tests/Powersupply_automatic_tests/bin/
+testing/Powersupply_automatic_tests/Powersupply_automatic_tests/obj/
+testing/Powersupply_automatic_tests/Powersupply_automatic_tests/Properties/
