@@ -1,0 +1,28 @@
+* C:\Users\simen\Documents\powersupply\pcb\ltspice\booster.asc
+XU1 N001 N008 N007 0 N006 N001 N005 N002 LTC3872
+R3 N007 0 10k
+R4 N003 N007 300k
+V2 N004 0 PULSE(0 4.5 1u 1n 1n 1s 1)
+D1 N002 N003 MBRS340
+C5 N003 0 10µ
+R10 N003 0 1000
+M1 N002 N006 0 0 BSC100N06LS3
+C6 N001 0 10µ
+C7 N008 P001 2.2n
+R11 P001 0 10k
+L1 N002 N001 4.7µ
+C1 N005 0 1n
+R2 N001 N005 4700k
+R1 N004 N001 0.6
+R5 N003 P002 10
+M2 P002 N009 0 0 BSC100N06LS3
+V1 N009 0 PULSE(0 4.5 10m 1n 1n 1s 1)
+.model D D
+.lib C:\Users\simen\Documents\LTspiceXVII\lib\cmp\standard.dio
+.model NMOS NMOS
+.model PMOS PMOS
+.lib C:\Users\simen\Documents\LTspiceXVII\lib\cmp\standard.mos
+.tran 20
+.lib LTC3872.sub
+.backanno
+.end
