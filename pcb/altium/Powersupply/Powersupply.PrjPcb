@@ -103,7 +103,7 @@ GenerateClassCluster=0
 DocumentUniqueId=LECRYUIP
 
 [Document4]
-DocumentPath=PCBWAYS.OutJob
+DocumentPath=jlcpcb.OutJob
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
@@ -443,34 +443,102 @@ GenerateClassCluster=0
 DocumentUniqueId=WORVNZMH
 
 [GeneratedDocument1]
-DocumentPath=Project Outputs for Powersupply\Design Rule Check - PCB1.html
+DocumentPath=Production files\2022-02-23\12-08\2022-02-23-RoundHoles.TXT
 DItemRevisionGUID=
 
 [GeneratedDocument2]
-DocumentPath=Project Outputs for powersupply_rev2\Design Rule Check - PCB1.html
+DocumentPath=Production files\2022-02-23\12-08\2022-02-23-SlotHoles.TXT
 DItemRevisionGUID=
 
 [GeneratedDocument3]
-DocumentPath=Project Outputs for Powersupply\BOM\partsbox_bom-Powersupply.csv
+DocumentPath=Production files\2022-02-23\12-08\2022-02-23.DRR
 DItemRevisionGUID=
 
 [GeneratedDocument4]
-DocumentPath=Project Outputs for powersupply_rev2\NC Drill\PCB1.DRR
+DocumentPath=Production files\2022-02-23\12-08\2022-02-23.EXTREP
 DItemRevisionGUID=
 
 [GeneratedDocument5]
-DocumentPath=Project Outputs for powersupply_rev2\Gerber\PCB1.EXTREP
+DocumentPath=Production files\2022-02-23\12-08\2022-02-23.G1
 DItemRevisionGUID=
 
 [GeneratedDocument6]
-DocumentPath=Project Outputs for powersupply_rev2\NC Drill\PCB1.LDP
+DocumentPath=Production files\2022-02-23\12-08\2022-02-23.G2
 DItemRevisionGUID=
 
 [GeneratedDocument7]
-DocumentPath=Project Outputs for powersupply_rev2\Gerber\PCB1.REP
+DocumentPath=Production files\2022-02-23\12-08\2022-02-23.GBL
 DItemRevisionGUID=
 
 [GeneratedDocument8]
+DocumentPath=Production files\2022-02-23\12-08\2022-02-23.GBO
+DItemRevisionGUID=
+
+[GeneratedDocument9]
+DocumentPath=Production files\2022-02-23\12-08\2022-02-23.GBP
+DItemRevisionGUID=
+
+[GeneratedDocument10]
+DocumentPath=Production files\2022-02-23\12-08\2022-02-23.GBS
+DItemRevisionGUID=
+
+[GeneratedDocument11]
+DocumentPath=Production files\2022-02-23\12-08\2022-02-23.GM1
+DItemRevisionGUID=
+
+[GeneratedDocument12]
+DocumentPath=Production files\2022-02-23\12-08\2022-02-23.GTL
+DItemRevisionGUID=
+
+[GeneratedDocument13]
+DocumentPath=Production files\2022-02-23\12-08\2022-02-23.GTO
+DItemRevisionGUID=
+
+[GeneratedDocument14]
+DocumentPath=Production files\2022-02-23\12-08\2022-02-23.GTP
+DItemRevisionGUID=
+
+[GeneratedDocument15]
+DocumentPath=Production files\2022-02-23\12-08\2022-02-23.GTS
+DItemRevisionGUID=
+
+[GeneratedDocument16]
+DocumentPath=Production files\2022-02-23\12-08\2022-02-23.LDP
+DItemRevisionGUID=
+
+[GeneratedDocument17]
+DocumentPath=Production files\2022-02-23\12-08\2022-02-23.REP
+DItemRevisionGUID=
+
+[GeneratedDocument18]
+DocumentPath=Project Outputs for Powersupply\Design Rule Check - PCB1.html
+DItemRevisionGUID=
+
+[GeneratedDocument19]
+DocumentPath=Project Outputs for powersupply_rev2\Design Rule Check - PCB1.html
+DItemRevisionGUID=
+
+[GeneratedDocument20]
+DocumentPath=Project Outputs for Powersupply\BOM\partsbox_bom-Powersupply.csv
+DItemRevisionGUID=
+
+[GeneratedDocument21]
+DocumentPath=Project Outputs for powersupply_rev2\NC Drill\PCB1.DRR
+DItemRevisionGUID=
+
+[GeneratedDocument22]
+DocumentPath=Project Outputs for powersupply_rev2\Gerber\PCB1.EXTREP
+DItemRevisionGUID=
+
+[GeneratedDocument23]
+DocumentPath=Project Outputs for powersupply_rev2\NC Drill\PCB1.LDP
+DItemRevisionGUID=
+
+[GeneratedDocument24]
+DocumentPath=Project Outputs for powersupply_rev2\Gerber\PCB1.REP
+DItemRevisionGUID=
+
+[GeneratedDocument25]
 DocumentPath=Project Outputs for powersupply_rev2\Gerber\PCB1.RUL
 DItemRevisionGUID=
 
