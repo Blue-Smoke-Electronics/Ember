@@ -36,3 +36,6 @@ powersupply_firmware/powersupply_firmware.cydsn/powersupply_firmware.rpt
 powersupply_firmware/powersupply_firmware.cydsn/powersupply_firmware_timing.html
 powersupply_firmware/powersupply_firmware.cydsn/Export/
 pcb/altium/Powersupply/__Previews/
+pcb/altium/Powersupply/Production files/2022-02-23/Status Report.Txt
+*.apr
+*.APR_LIB
