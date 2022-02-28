@@ -86,18 +86,20 @@ void battery_liftime_update_loop(){
 
 
 float battery_get_quisent_power(){
-    //mW
-    return 150*battery_get_voltage()/1000.0f; 
+    //unit is mW
+    return 150*battery_get_voltage()/1000.0f; // guestimated values. Todo: mesure values
 }
+// power draw from powersupply when it is on, but not power si drawn from output terminals
 float battery_get_psu_quisent_power(){
-    //mW
-    return 10*psu_get_voltage()/1000.0f; 
+    //unit is mW
+    return 10*psu_get_voltage()/1000.0f; // 
 }
 float battery_get_charging_power(){
-    //mW
-    return 5*450;    
+    //unit is mW
+    return 5*450;   // gestimate // todo: get acurate value 
 }
 
+// if the usb is connected, the device is charging // todo: does this work with dumb chargers? 
 int usb_status; 
 int battery_charger_connected(){ 
     if (last_usb_check_time - Timer_now_ReadCounter()  > 500){
@@ -108,6 +110,7 @@ int battery_charger_connected(){
     return usb_status; 
 }
 
+// checks if current in is larger than current out
 int battery_isCharging(){
     return battery_get_total_power_draw() <= 0; 
 }
@@ -122,10 +125,11 @@ float battery_get_total_power_draw(){
     if(battery_charger_connected()){
         totalpower -= battery_get_charging_power();
     }
-    
-    //printf("total power draw %d \r\n",totalpower);
-    return totalpower;
+
+    return totalpower; // unit is mW // negativ if device is charging
 }
+
+
 float battery_get_max_capasity(){
     // in mJ
     return 3.7*4000*60*60; 
