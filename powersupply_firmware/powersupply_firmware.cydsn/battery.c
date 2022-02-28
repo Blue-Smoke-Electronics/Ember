@@ -19,26 +19,28 @@
 #include "eeprom.h"
 #include <stdio.h>
 
-float battery_capasity_left; 
-uint32 last_update_time ; 
-uint32 last_eeprom_save_time; 
-uint32 last_usb_check_time; 
+float battery_capasity_left; //holds the current estimate of battery level
+uint32 last_update_time ; // used to do periodic updates 
+uint32 last_eeprom_save_time;  // Holds current battery level estimate when the device is off
+uint32 last_usb_check_time; // used to periodicly check if the usb is plugged in, this is used for determining if the device is charging
 
 void battery_init(){
     // load battery capaisty from eprom 
     eeprom_init();
     battery_capasity_left = eeprom_read_battery_capasity();
-    analog_init();
+    analog_init(); // for duing voltmeter and curentmetter mesurments 
     
 }
 
 void battery_liftime_update_loop(){
+    // update estimate every 500ms
     int delta_t =last_update_time - Timer_now_ReadCounter(); 
     if ( delta_t < 500){
         return;    
     }
     last_update_time = Timer_now_ReadCounter();
-    //printf("delta_t %d \r\n",delta_t);
+    
+    // update battery estimate baced on powed draw and time 
     battery_capasity_left -=delta_t/1000.0f *  battery_get_total_power_draw();
     
     // handele owerflow and underflow errors
@@ -49,6 +51,8 @@ void battery_liftime_update_loop(){
         battery_capasity_left = 0;
     }
     
+    // if battery voltage is at a voltage coresponding to no load graph we know that the capasity left is atlast this value. 
+    // This is used to correct for large underestimates of battery lifetime 
     // reset when battery is full
     if (battery_get_voltage() > 4095){ // adc caped at 4096
         battery_capasity_left = battery_get_max_capasity();
@@ -77,8 +81,6 @@ void battery_liftime_update_loop(){
         last_eeprom_save_time = Timer_now_ReadCounter();
         eeprom_write_battery_capasity(battery_capasity_left);
     }
-    
-    //printf("capacity: %d\r\n",battery_capasity_left);
      
 }
 
