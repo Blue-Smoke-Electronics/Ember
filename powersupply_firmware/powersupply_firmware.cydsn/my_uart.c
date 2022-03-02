@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include "psu.h"
 #include "eeprom.h"
+#include "battery.h"
 
 
 // ascii 
@@ -206,6 +207,56 @@ void desifre_comand(int length){
         psu_stop();
         GUI_Draw_on_off(false);
         usbuart_print("\r\nTurning off Powersupply \n\r");
+        return;
+    }
+    
+    c = "IGET";
+    isEqual = true;
+    for (uint i = 0 ; i < strlen(c);i++){
+        if (toupper(comand[i]) != toupper(c[i])){
+            isEqual = false; 
+        }
+    }
+    
+    if (isEqual){
+        
+        float current = analog_get_current();
+        char  s [20]; 
+        sprintf(s,"%f\n\r",current);
+        
+        usbuart_print(s);
+        return;
+    }
+    
+    c = "VGET";
+    isEqual = true;
+    for (uint i = 0 ; i < strlen(c);i++){
+        if (toupper(comand[i]) != toupper(c[i])){
+            isEqual = false; 
+        }
+    }
+    
+    if (isEqual){
+        float volt = analog_get_voltage();
+        char  s [20]; 
+        sprintf(s,"%f\n\r",volt/1000);
+        usbuart_print(s);
+        return;
+    }
+    
+        c = "BATGET";
+    isEqual = true;
+    for (uint i = 0 ; i < strlen(c);i++){
+        if (toupper(comand[i]) != toupper(c[i])){
+            isEqual = false; 
+        }
+    }
+    
+    if (isEqual){
+        float cap = battery_get_procentage();
+        char  s [20]; 
+        sprintf(s,"%f\n\r",cap);
+        usbuart_print(s);
         return;
     }
     

@@ -39,3 +39,4 @@ pcb/altium/Powersupply/__Previews/
 pcb/altium/Powersupply/Production files/2022-02-23/Status Report.Txt
 *.apr
 *.APR_LIB
+testing/Powersupply_automatic_tests/.vs/
