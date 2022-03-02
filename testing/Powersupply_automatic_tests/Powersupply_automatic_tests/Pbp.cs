@@ -14,7 +14,7 @@ namespace Powersupply_automatic_tests
         SerialPort port;
         public Pbp()
         {
-            port = new SerialPort("COM3", 9600, Parity.None, 8, StopBits.One);
+            port = new SerialPort("COM19", 9600, Parity.None, 8, StopBits.One);
 
         }
         ~Pbp()
@@ -66,10 +66,12 @@ namespace Powersupply_automatic_tests
         {
             if (port.IsOpen)
             { 
-                port.WriteLine(""); // writes a newline in case of a uncompleated comand beeing in the pbp read buffer
-                port.WriteLine("Vget");
-                string response = port.ReadLine();
-                return float.Parse(response);
+                port.Write("VGET\n");
+
+                string echo = port.ReadLine();
+                string chargereturn1 = port.ReadLine();
+                string data = port.ReadLine();
+                return float.Parse(data);
             }
             else
             {
@@ -80,8 +82,10 @@ namespace Powersupply_automatic_tests
         {
             if (port.IsOpen)
             {
-                port.WriteLine(""); // writes a newline in case of a uncompleated comand beeing in the pbp read buffer
+                
                 port.WriteLine("Iget");
+                string echo = port.ReadLine();
+                string chargereturn1 = port.ReadLine();
                 string response = port.ReadLine();
                 
                 return float.Parse(response);
@@ -90,6 +94,14 @@ namespace Powersupply_automatic_tests
             {
                 return 0.0f;
             }
+        }
+        public void EnableOutput()
+        {
+
+        }
+        public void DisableOutput()
+        {
+
         }
 
     }

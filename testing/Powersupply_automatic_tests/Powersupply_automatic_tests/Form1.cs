@@ -9,50 +9,30 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
 
+
 namespace Powersupply_automatic_tests
 {
     public partial class Form1 : Form
     {
 
-        SerialPort portBlueSmoke;
-        SerialPort portKoradPSU;
-        SerialPort portKoradLoad;
+        Pbp pbp;
+        KonradPsu konradPsu;
+        KonradLoad konradLoad;
         public Form1()
         {
             InitializeComponent();
 
-            portBlueSmoke = new SerialPort("COM3", 9600, Parity.None, 8, StopBits.One);
-            portKoradPSU = new SerialPort("COM15", 9600, Parity.None, 8, StopBits.One);
-            portKoradLoad = new SerialPort("COM17", 9600, Parity.None, 8, StopBits.One);
+            pbp = new Pbp();
+            konradPsu = new KonradPsu();
+            KonradLoad = new KonradLoad();
+            
         }
 
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-
-            try
-            {
-                portBlueSmoke.Close();
-                portBlueSmoke.Open();
-                isConnectedBlueSmoek.Checked = true;
-            }
-            catch
-            {
-                isConnectedBlueSmoek.Checked = false;
-            }
-
-            try
-            {
-                portKoradPSU.Close();
-                portKoradPSU.Open();
-                isConnectedKonradPSU.Checked = true;
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                isConnectedKonradPSU.Checked = false;
-            }
+            isConnectedBlueSmoek.Checked = pbp.ConnectToSerial();
+            isConnectedKoradLoad.Checked = konradPsu.ConnectToSerial();
 
             try
             {
@@ -65,27 +45,28 @@ namespace Powersupply_automatic_tests
                 Console.WriteLine(ex.Message);
                 isConnectedKoradLoad.Checked = false;
             }
+            timer1.Start();
 
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            portBlueSmoke.Close();
-            portKoradPSU.Close();
+           
             portKoradLoad.Close();
         }
 
         private void buttonVoltageTest_Click(object sender, EventArgs e)
         {
             portKoradLoad.WriteLine(":FUNC RES\n:RES 1000OHM\n:INP ON");
-            portBlueSmoke.WriteLine("ISET 0.1\n");
+            pbp.Iset(0.1f);
             System.Threading.Thread.Sleep(1000);
 
             for (float v =0.0f; v < 12.01f; v+= 0.5f)
             {
-                Console.WriteLine("VSET " + v.ToString() + "\n");
-                portBlueSmoke.WriteLine("VSET "+v.ToString() +"\n");
+             
+                pbp.Vset(v);
                 System.Threading.Thread.Sleep(1000);
+
                 portKoradLoad.WriteLine(":MEAS:VOLT?\n");
                 string voltMeasStr = portKoradLoad.ReadLine();
                 float voltMeas = float.Parse(voltMeasStr.Split('V')[0]);
@@ -99,16 +80,15 @@ namespace Powersupply_automatic_tests
             }
 
 
-
-            portBlueSmoke.WriteLine("VSET 0\n");
+            pbp.Vset(0);
             portKoradLoad.WriteLine(":INP OFF\n");
         }
 
         private void buttonCurrentTest_Click(object sender, EventArgs e)
         {
-            
-            portBlueSmoke.WriteLine("VSET 3.3\n");
-            portBlueSmoke.WriteLine("ISET 0\n");
+
+            pbp.Vset(3.3f); 
+            pbp.Iset(0.0f);
             portKoradLoad.WriteLine(":RES 0OHM\n:INP ON");
             System.Threading.Thread.Sleep(1000);
 
@@ -116,7 +96,7 @@ namespace Powersupply_automatic_tests
             for (float i = 0.0f; i < 1.01f; i += 0.1f)
             {
                 Console.WriteLine("ISET " + i.ToString() + "\n");
-                portBlueSmoke.WriteLine("iSET " + i.ToString() + "\n");
+                pbp.Iset(i);
                 System.Threading.Thread.Sleep(1000);
                 portKoradLoad.WriteLine(":MEAS:CURR?\n");
                 string ampMeasStr = portKoradLoad.ReadLine();
@@ -130,9 +110,44 @@ namespace Powersupply_automatic_tests
 
             }
 
-
-            portBlueSmoke.WriteLine("VSET 0\n");
+            pbp.Vset(0);
             portKoradLoad.WriteLine(":INP OFF\n");
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            voltBessTextbox.Text = pbp.Vget().ToString();
+            currentMessTextbox.Text = pbp.Iget().ToString();
         }
     }
 }

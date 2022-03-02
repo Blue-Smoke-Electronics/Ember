@@ -222,7 +222,7 @@ void desifre_comand(int length){
         
         float current = analog_get_current();
         char  s [20]; 
-        sprintf(s,"%f\n\r",current);
+        sprintf(s,"\r\n%f\r\n",current);
         
         usbuart_print(s);
         return;
@@ -239,7 +239,7 @@ void desifre_comand(int length){
     if (isEqual){
         float volt = analog_get_voltage();
         char  s [20]; 
-        sprintf(s,"%f\n\r",volt/1000);
+        sprintf(s,"\r\n%f\r\n",volt/1000);
         usbuart_print(s);
         return;
     }
@@ -255,7 +255,7 @@ void desifre_comand(int length){
     if (isEqual){
         float cap = battery_get_procentage();
         char  s [20]; 
-        sprintf(s,"%f\n\r",cap);
+        sprintf(s,"\r\n%f\r\n",cap);
         usbuart_print(s);
         return;
     }
@@ -263,7 +263,7 @@ void desifre_comand(int length){
     
     usbuart_print("\r\ninvalid comand: "); 
     usbuart_print_dynamic(comand,length); 
-    usbuart_print("\r\n");
+    usbuart_print("\r\n\r\n");
     
 }
 
