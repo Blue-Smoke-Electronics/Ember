@@ -11,11 +11,12 @@ namespace Powersupply_automatic_tests
     {
         SerialPort port;
 
-        KonradPsu()
+        public KonradPsu()
         {
             port = new SerialPort("COM15", 9600, Parity.None, 8, StopBits.One);
         }
-        ~KonradPsu(){
+        ~KonradPsu()
+        {
             port.Close();
         }
 
@@ -91,3 +92,4 @@ namespace Powersupply_automatic_tests
         }
 
     }
+}

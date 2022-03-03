@@ -53,7 +53,7 @@ namespace Powersupply_automatic_tests
         {
             if (port.IsOpen)
             {
-                port.WriteLine("ISET " + V.ToString());
+                port.WriteLine("VSET " + V.ToString());
             }
             else
             {
@@ -65,9 +65,10 @@ namespace Powersupply_automatic_tests
         public float Vget()
         {
             if (port.IsOpen)
-            { 
+            {
+                System.Threading.Thread.Sleep(100);
+                port.DiscardInBuffer();
                 port.Write("VGET\n");
-
                 string echo = port.ReadLine();
                 string chargereturn1 = port.ReadLine();
                 string data = port.ReadLine();
@@ -82,7 +83,8 @@ namespace Powersupply_automatic_tests
         {
             if (port.IsOpen)
             {
-                
+                System.Threading.Thread.Sleep(100);
+                port.DiscardInBuffer();
                 port.WriteLine("Iget");
                 string echo = port.ReadLine();
                 string chargereturn1 = port.ReadLine();

@@ -50,8 +50,8 @@ namespace Powersupply_automatic_tests
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.loadCurrentTextbox = new System.Windows.Forms.TextBox();
+            this.loadVoltageTextbox = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
@@ -245,19 +245,19 @@ namespace Powersupply_automatic_tests
             this.label10.TabIndex = 19;
             this.label10.Text = "Volt";
             // 
-            // textBox5
+            // loadCurrentTextbox
             // 
-            this.textBox5.Location = new System.Drawing.Point(21, 375);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 20);
-            this.textBox5.TabIndex = 18;
+            this.loadCurrentTextbox.Location = new System.Drawing.Point(21, 375);
+            this.loadCurrentTextbox.Name = "loadCurrentTextbox";
+            this.loadCurrentTextbox.Size = new System.Drawing.Size(100, 20);
+            this.loadCurrentTextbox.TabIndex = 18;
             // 
-            // textBox6
+            // loadVoltageTextbox
             // 
-            this.textBox6.Location = new System.Drawing.Point(21, 349);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(100, 20);
-            this.textBox6.TabIndex = 17;
+            this.loadVoltageTextbox.Location = new System.Drawing.Point(21, 349);
+            this.loadVoltageTextbox.Name = "loadVoltageTextbox";
+            this.loadVoltageTextbox.Size = new System.Drawing.Size(100, 20);
+            this.loadVoltageTextbox.TabIndex = 17;
             // 
             // timer1
             // 
@@ -272,8 +272,8 @@ namespace Powersupply_automatic_tests
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label10);
-            this.Controls.Add(this.textBox5);
-            this.Controls.Add(this.textBox6);
+            this.Controls.Add(this.loadCurrentTextbox);
+            this.Controls.Add(this.loadVoltageTextbox);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label7);
@@ -321,8 +321,8 @@ namespace Powersupply_automatic_tests
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox loadCurrentTextbox;
+        private System.Windows.Forms.TextBox loadVoltageTextbox;
         private System.Windows.Forms.Timer timer1;
     }
 }

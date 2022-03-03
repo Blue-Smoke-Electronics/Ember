@@ -24,7 +24,7 @@ namespace Powersupply_automatic_tests
 
             pbp = new Pbp();
             konradPsu = new KonradPsu();
-            KonradLoad = new KonradLoad();
+            konradLoad = new KonradLoad();
             
         }
 
@@ -32,33 +32,22 @@ namespace Powersupply_automatic_tests
         private void button1_Click(object sender, EventArgs e)
         {
             isConnectedBlueSmoek.Checked = pbp.ConnectToSerial();
-            isConnectedKoradLoad.Checked = konradPsu.ConnectToSerial();
-
-            try
-            {
-                portKoradLoad.Close();
-                portKoradLoad.Open();
-                isConnectedKoradLoad.Checked = true;
-            }
-            catch ( Exception ex )
-            {
-                Console.WriteLine(ex.Message);
-                isConnectedKoradLoad.Checked = false;
-            }
+            isConnectedKoradLoad.Checked = konradLoad.ConnectToSerial();
+            isConnectedKonradPSU.Checked = konradPsu.ConnectToSerial();
             timer1.Start();
 
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-           
-            portKoradLoad.Close();
+
         }
 
         private void buttonVoltageTest_Click(object sender, EventArgs e)
         {
-            portKoradLoad.WriteLine(":FUNC RES\n:RES 1000OHM\n:INP ON");
-            pbp.Iset(0.1f);
+            konradLoad.SetCR(1000);
+            konradLoad.EnableOutput();
+            pbp.Iset(100);
             System.Threading.Thread.Sleep(1000);
 
             for (float v =0.0f; v < 12.01f; v+= 0.5f)
@@ -67,9 +56,7 @@ namespace Powersupply_automatic_tests
                 pbp.Vset(v);
                 System.Threading.Thread.Sleep(1000);
 
-                portKoradLoad.WriteLine(":MEAS:VOLT?\n");
-                string voltMeasStr = portKoradLoad.ReadLine();
-                float voltMeas = float.Parse(voltMeasStr.Split('V')[0]);
+                float voltMeas = konradLoad.Vget();
 
                 Console.WriteLine("diff: " + (Math.Abs(v - voltMeas)).ToString());
                 if (Math.Abs(v - voltMeas) > 0.1)
@@ -81,7 +68,7 @@ namespace Powersupply_automatic_tests
 
 
             pbp.Vset(0);
-            portKoradLoad.WriteLine(":INP OFF\n");
+            konradLoad.DisableOutput();
         }
 
         private void buttonCurrentTest_Click(object sender, EventArgs e)
@@ -89,29 +76,29 @@ namespace Powersupply_automatic_tests
 
             pbp.Vset(3.3f); 
             pbp.Iset(0.0f);
-            portKoradLoad.WriteLine(":RES 0OHM\n:INP ON");
+            konradLoad.SetCR(0);
+            konradLoad.EnableOutput();
+            pbp.EnableOutput();
             System.Threading.Thread.Sleep(1000);
 
 
-            for (float i = 0.0f; i < 1.01f; i += 0.1f)
+            for (float i = 0.0f; i < 500f; i += 50f)
             {
                 Console.WriteLine("ISET " + i.ToString() + "\n");
                 pbp.Iset(i);
-                System.Threading.Thread.Sleep(1000);
-                portKoradLoad.WriteLine(":MEAS:CURR?\n");
-                string ampMeasStr = portKoradLoad.ReadLine();
-                float ampMeas = float.Parse(ampMeasStr.Split('A')[0]);
+                System.Threading.Thread.Sleep(2000);
+                float ampMeas = konradLoad.Iget();
 
                 Console.WriteLine("diff: " + (Math.Abs(i - ampMeas)).ToString());
-                if (Math.Abs(i - ampMeas) > 0.02)
+                if (Math.Abs(i - ampMeas) > 25)
                 {
-                    MessageBox.Show("ERROR to hight at " + i.ToString() + "A");
+                    MessageBox.Show("ERROR to hight at " + i.ToString() + "mA");
                 }
 
             }
 
             pbp.Vset(0);
-            portKoradLoad.WriteLine(":INP OFF\n");
+            konradLoad.DisableOutput();
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -148,6 +135,8 @@ namespace Powersupply_automatic_tests
         {
             voltBessTextbox.Text = pbp.Vget().ToString();
             currentMessTextbox.Text = pbp.Iget().ToString();
+            loadVoltageTextbox.Text =konradLoad.Vget().ToString();
+            loadCurrentTextbox.Text = konradLoad.Iget().ToString();
         }
     }
 }
