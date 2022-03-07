@@ -19,6 +19,14 @@ namespace Powersupply_automatic_tests
             port.Close();
         }
 
+        public Boolean IsConnected
+        {
+            get { return port.IsOpen; }
+        }
+        public float maxResistance
+        {
+            get { return 7500; }
+        }
         public Boolean ConnectToSerial()
         {
             try

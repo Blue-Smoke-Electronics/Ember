@@ -40,3 +40,5 @@ pcb/altium/Powersupply/Production files/2022-02-23/Status Report.Txt
 *.apr
 *.APR_LIB
 testing/Powersupply_automatic_tests/.vs/
+testing/Powersupply_automatic_tests/packages/
+testing/Powersupply_automatic_tests/Powersupply_automatic_tests/packages.config

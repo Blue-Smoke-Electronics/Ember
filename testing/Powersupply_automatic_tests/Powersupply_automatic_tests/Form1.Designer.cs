@@ -37,7 +37,7 @@ namespace Powersupply_automatic_tests
             this.label1 = new System.Windows.Forms.Label();
             this.buttonVoltageTest = new System.Windows.Forms.Button();
             this.buttonCurrentTest = new System.Windows.Forms.Button();
-            this.voltBessTextbox = new System.Windows.Forms.TextBox();
+            this.voltMessTextbox = new System.Windows.Forms.TextBox();
             this.currentMessTextbox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -53,6 +53,7 @@ namespace Powersupply_automatic_tests
             this.loadCurrentTextbox = new System.Windows.Forms.TextBox();
             this.loadVoltageTextbox = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.randomButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonSerial
@@ -130,12 +131,12 @@ namespace Powersupply_automatic_tests
             this.buttonCurrentTest.UseVisualStyleBackColor = true;
             this.buttonCurrentTest.Click += new System.EventHandler(this.buttonCurrentTest_Click);
             // 
-            // voltBessTextbox
+            // voltMessTextbox
             // 
-            this.voltBessTextbox.Location = new System.Drawing.Point(21, 201);
-            this.voltBessTextbox.Name = "voltBessTextbox";
-            this.voltBessTextbox.Size = new System.Drawing.Size(100, 20);
-            this.voltBessTextbox.TabIndex = 7;
+            this.voltMessTextbox.Location = new System.Drawing.Point(21, 201);
+            this.voltMessTextbox.Name = "voltMessTextbox";
+            this.voltMessTextbox.Size = new System.Drawing.Size(100, 20);
+            this.voltMessTextbox.TabIndex = 7;
             // 
             // currentMessTextbox
             // 
@@ -264,11 +265,22 @@ namespace Powersupply_automatic_tests
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // randomButton
+            // 
+            this.randomButton.Location = new System.Drawing.Point(301, 98);
+            this.randomButton.Name = "randomButton";
+            this.randomButton.Size = new System.Drawing.Size(139, 23);
+            this.randomButton.TabIndex = 22;
+            this.randomButton.Text = "Test random";
+            this.randomButton.UseVisualStyleBackColor = true;
+            this.randomButton.Click += new System.EventHandler(this.randomButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.randomButton);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label10);
@@ -283,7 +295,7 @@ namespace Powersupply_automatic_tests
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.currentMessTextbox);
-            this.Controls.Add(this.voltBessTextbox);
+            this.Controls.Add(this.voltMessTextbox);
             this.Controls.Add(this.buttonCurrentTest);
             this.Controls.Add(this.buttonVoltageTest);
             this.Controls.Add(this.label1);
@@ -294,6 +306,7 @@ namespace Powersupply_automatic_tests
             this.Name = "Form1";
             this.Text = "Powersupply Tester";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -308,7 +321,7 @@ namespace Powersupply_automatic_tests
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonVoltageTest;
         private System.Windows.Forms.Button buttonCurrentTest;
-        private System.Windows.Forms.TextBox voltBessTextbox;
+        private System.Windows.Forms.TextBox voltMessTextbox;
         private System.Windows.Forms.TextBox currentMessTextbox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
@@ -324,6 +337,7 @@ namespace Powersupply_automatic_tests
         private System.Windows.Forms.TextBox loadCurrentTextbox;
         private System.Windows.Forms.TextBox loadVoltageTextbox;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button randomButton;
     }
 }
 

@@ -19,7 +19,10 @@ namespace Powersupply_automatic_tests
         {
             port.Close();
         }
-
+        public Boolean IsConnected
+        {
+            get { return port.IsOpen; }
+        }
         public Boolean ConnectToSerial()
         {
             try

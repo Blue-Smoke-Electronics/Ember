@@ -15,13 +15,16 @@ namespace Powersupply_automatic_tests
         public Pbp()
         {
             port = new SerialPort("COM19", 9600, Parity.None, 8, StopBits.One);
-
+            port.WriteTimeout = 1000; 
         }
         ~Pbp()
         {
             port.Close();   
         }
-
+        public Boolean IsConnected
+        {
+            get { return port.IsOpen; }
+        }
         public Boolean ConnectToSerial()
         {
             try
@@ -40,7 +43,24 @@ namespace Powersupply_automatic_tests
         {
             if (port.IsOpen)
             {
-                port.WriteLine("ISET " + mA.ToString());
+                bool succsess = false;
+                while (!succsess)
+                {
+                    try
+                    {
+                        
+                        port.WriteLine("ISET " + mA.ToString());
+                        succsess = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        succsess = false;
+                        port.Close();
+                        port.Open ();
+                    }
+                }
+                
+                
             }
             else
             {
@@ -66,8 +86,9 @@ namespace Powersupply_automatic_tests
         {
             if (port.IsOpen)
             {
-                System.Threading.Thread.Sleep(100);
+                System.Threading.Thread.Sleep(200);
                 port.DiscardInBuffer();
+                System.Threading.Thread.Sleep(200);
                 port.Write("VGET\n");
                 string echo = port.ReadLine();
                 string chargereturn1 = port.ReadLine();
@@ -99,11 +120,25 @@ namespace Powersupply_automatic_tests
         }
         public void EnableOutput()
         {
-
+            if (port.IsOpen)
+            {
+                port.WriteLine("ON");
+            }
+            else
+            {
+                Console.WriteLine("pbp: com port is not open");
+            }
         }
         public void DisableOutput()
         {
-
+            if (port.IsOpen)
+            {
+                port.WriteLine("OFF");
+            }
+            else
+            {
+                Console.WriteLine("pbp: com port is not open");
+            }
         }
 
     }

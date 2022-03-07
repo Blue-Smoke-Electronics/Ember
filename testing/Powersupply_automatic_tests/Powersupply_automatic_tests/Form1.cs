@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
+using ScottPlot; // downloawd with nuGet
+
 
 
 namespace Powersupply_automatic_tests
@@ -18,6 +20,11 @@ namespace Powersupply_automatic_tests
         Pbp pbp;
         KonradPsu konradPsu;
         KonradLoad konradLoad;
+        Tester tester;
+
+        List <double> xData;
+        List<double> yData;
+
         public Form1()
         {
             InitializeComponent();
@@ -25,7 +32,11 @@ namespace Powersupply_automatic_tests
             pbp = new Pbp();
             konradPsu = new KonradPsu();
             konradLoad = new KonradLoad();
-            
+
+            tester = new Tester(pbp,konradLoad,konradPsu);
+            xData = new List<double>();
+            yData = new List<double>();
+
         }
 
 
@@ -34,7 +45,7 @@ namespace Powersupply_automatic_tests
             isConnectedBlueSmoek.Checked = pbp.ConnectToSerial();
             isConnectedKoradLoad.Checked = konradLoad.ConnectToSerial();
             isConnectedKonradPSU.Checked = konradPsu.ConnectToSerial();
-            timer1.Start();
+            //timer1.Start();
 
         }
 
@@ -74,6 +85,15 @@ namespace Powersupply_automatic_tests
         private void buttonCurrentTest_Click(object sender, EventArgs e)
         {
 
+            if(pbp.IsConnected && konradLoad.IsConnected)
+            {
+                tester.ConstantVoltageShortedLoadVarCurrentTest(3.3f);
+            }
+            else
+            {
+                MessageBox.Show("connect to pbp and load first");
+            }
+            /*
             pbp.Vset(3.3f); 
             pbp.Iset(0.0f);
             konradLoad.SetCR(0);
@@ -98,7 +118,7 @@ namespace Powersupply_automatic_tests
             }
 
             pbp.Vset(0);
-            konradLoad.DisableOutput();
+            konradLoad.DisableOutput();*/
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -131,12 +151,51 @@ namespace Powersupply_automatic_tests
 
         }
 
+        int i=0;
+
+
         private void timer1_Tick(object sender, EventArgs e)
         {
-            voltBessTextbox.Text = pbp.Vget().ToString();
-            currentMessTextbox.Text = pbp.Iget().ToString();
+            i++; 
+            float pbpVolt = pbp.Vget();
+            float pbpCurrent = pbp.Iget();
+            voltMessTextbox.Text = pbpVolt.ToString();
+            currentMessTextbox.Text = pbpCurrent.ToString();
             loadVoltageTextbox.Text =konradLoad.Vget().ToString();
             loadCurrentTextbox.Text = konradLoad.Iget().ToString();
+
+
+        }
+
+        private void chart1_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            
+
+            
+
+            
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void randomButton_Click(object sender, EventArgs e)
+        {
+            if (pbp.IsConnected && konradLoad.IsConnected)
+            {
+                tester.Random(200);
+            }
+            else
+            {
+                MessageBox.Show("connect to pbp and load first");
+            }
         }
     }
 }
