@@ -197,5 +197,10 @@ namespace Powersupply_automatic_tests
                 MessageBox.Show("connect to pbp and load first");
             }
         }
+
+        private void button1_Click_2(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

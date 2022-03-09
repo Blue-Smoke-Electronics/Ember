@@ -282,9 +282,13 @@ void usbuart_print(const char * str ){
     /* Service USB CDC when device is configured. */
     if (0u != USBUART_GetConfiguration())
     {
+        int timeout = Timer_now_ReadCounter();
         while (0u == USBUART_CDCIsReady())
         {
-            
+            // make sure device do not freece if usb connection stops mid print 
+            if( timeout - Timer_now_ReadCounter() >=1000){
+                return; 
+            }
         }
         USBUART_PutString(str);
     }     
@@ -305,9 +309,12 @@ void usbuart_print_dynamic(uint8 * str, int length ){
     /* Service USB CDC when device is configured. */
     if (0u != USBUART_GetConfiguration())
     {
+        int timeout = Timer_now_ReadCounter();
         while (0u == USBUART_CDCIsReady())
         {
-            
+            if( timeout - Timer_now_ReadCounter() >=1000){
+                return; 
+            }
         }
         USBUART_PutData(str,length);
     }     

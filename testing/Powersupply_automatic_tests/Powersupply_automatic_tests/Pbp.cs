@@ -14,8 +14,8 @@ namespace Powersupply_automatic_tests
         SerialPort port;
         public Pbp()
         {
-            port = new SerialPort("COM19", 9600, Parity.None, 8, StopBits.One);
-            port.WriteTimeout = 1000; 
+            port = new SerialPort("COM19", 256000, Parity.None, 8, StopBits.One);
+            //port.WriteTimeout = 1000; 
         }
         ~Pbp()
         {
@@ -43,24 +43,11 @@ namespace Powersupply_automatic_tests
         {
             if (port.IsOpen)
             {
-                bool succsess = false;
-                while (!succsess)
-                {
-                    try
-                    {
-                        
-                        port.WriteLine("ISET " + mA.ToString());
-                        succsess = true;
-                    }
-                    catch (Exception ex)
-                    {
-                        succsess = false;
-                        port.Close();
-                        port.Open ();
-                    }
-                }
-                
-                
+   
+                port.WriteLine("ISET " + mA.ToString());
+                System.Threading.Thread.Sleep(100);
+                port.DiscardInBuffer(); // remove reply form inputbuffer
+ 
             }
             else
             {
@@ -74,6 +61,8 @@ namespace Powersupply_automatic_tests
             if (port.IsOpen)
             {
                 port.WriteLine("VSET " + V.ToString());
+                System.Threading.Thread.Sleep(100);
+                port.DiscardInBuffer(); // remove reply form inputbuffer
             }
             else
             {
@@ -123,6 +112,8 @@ namespace Powersupply_automatic_tests
             if (port.IsOpen)
             {
                 port.WriteLine("ON");
+                System.Threading.Thread.Sleep(100);
+                port.DiscardInBuffer(); // remove reply form inputbuffer
             }
             else
             {
@@ -134,6 +125,8 @@ namespace Powersupply_automatic_tests
             if (port.IsOpen)
             {
                 port.WriteLine("OFF");
+                System.Threading.Thread.Sleep(100);
+                port.DiscardInBuffer(); // remove reply form inputbuffer
             }
             else
             {
