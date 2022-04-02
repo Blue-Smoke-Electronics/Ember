@@ -136,7 +136,7 @@ float battery_get_max_capasity(){
 }
 
 float battery_get_voltage(){
-    return analog_get_battery_voltage();   
+    return analog_get_battery_voltage1();   
 }
 
 

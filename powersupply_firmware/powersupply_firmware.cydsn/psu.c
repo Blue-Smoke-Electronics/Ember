@@ -13,7 +13,7 @@
 /* [] END OF FILE */
 
 #include "psu.h"
-#include "booster.h"
+#include "buck.h"
 #include "linReg.h"
 #include "analog.h"
 
@@ -27,7 +27,7 @@ float volt_reg=0;
 
 void psu_init(){
     LinReg_init();
-    Booster_init();
+    Buck_init();
     analog_init();
     psu_stop(); 
 }
@@ -39,7 +39,7 @@ void psu_regulator_loop(){
         return;
     }
     
-    Booster_set_voltage(analog_get_voltage()+2500);
+    Buck_set_voltage(analog_get_voltage()+2500);
     if(analog_get_current() < current_limit){
         volt_reg += (volt_limit- analog_get_voltage())*0.2;
         if(volt_reg > 500){
@@ -85,7 +85,7 @@ void psu_set_voltage(int mV){
     volt_limit = mV; 
     
     if(output_state == psu_status_ON){
-        Booster_set_voltage(volt_limit+2000);
+        Buck_set_voltage(volt_limit+2000);
         linReg_voltage_limit_set(volt_limit+165);
     }
     
@@ -93,7 +93,7 @@ void psu_set_voltage(int mV){
 void psu_set_current(int mA){
     current_limit = mA;
     if(output_state == psu_status_ON){
-        Booster_set_current_limit(current_limit+100);
+        Buck_set_current_limit(current_limit+100);
         linReg_current_limit_set(current_limit);
     }
      

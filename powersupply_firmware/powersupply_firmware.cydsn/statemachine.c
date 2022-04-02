@@ -22,7 +22,7 @@
 #include "knobs.h"
 #include "led.h"
 #include "linReg.h"
-#include "booster.h"
+#include "buck.h"
 #include "analog.h"
 #include "psu.h"
 #include "eeprom.h"

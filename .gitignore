@@ -42,3 +42,12 @@ pcb/altium/Powersupply/Production files/2022-02-23/Status Report.Txt
 testing/Powersupply_automatic_tests/.vs/
 testing/Powersupply_automatic_tests/packages/
 testing/Powersupply_automatic_tests/Powersupply_automatic_tests/packages.config
+pcb/ltspice/lt3693sim.raw
+pcb/ltspice/lt3693sim.op.raw
+pcb/ltspice/lt3693sim.asc
+pcb/ltspice/booster.raw
+pcb/ltspice/booster.op.raw
+powersupply_firmware/Pico/build/
+powersupply_firmware/Pico/.vscode/c_cpp_properties.json
+powersupply_firmware/Pico/.vscode/.cortex-debug.registers.state.json
+powersupply_firmware/Pico/.vscode/.cortex-debug.peripherals.state.json
