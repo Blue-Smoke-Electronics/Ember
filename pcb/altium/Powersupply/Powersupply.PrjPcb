@@ -442,6 +442,23 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=WORVNZMH
 
+[Document24]
+DocumentPath=Booster.SchDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=OFGGODLD
+
 [GeneratedDocument1]
 DocumentPath=Production files\2022-02-23\12-08\2022-02-23-RoundHoles.TXT
 DItemRevisionGUID=
