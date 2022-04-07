@@ -15,7 +15,7 @@ LifeCycleDefinitionGUID=
 RevisionNamingSchemeGUID=
 
 [OutputGroup1]
-Name=PCBWAYS.OutJob
+Name=
 Description=
 TargetOutputMedium=Folder Structure
 VariantName=[No Variations]
@@ -132,7 +132,7 @@ OutputEnabled7_OutputMedium2=0
 OutputDefault7=0
 
 [PublishSettings]
-OutputFilePath2=C:\Users\simen\Documents\powersupply\pcb\Powersupply\Production files\2021-11-15\
+OutputFilePath2=C:\Users\simen\Documents\BluesmokeGithub\pcb\altium\Powersupply\Production files\2022-04-07\
 ReleaseManaged2=0
 OutputBasePath2=Production files\
 OutputPathMedia2==CurrentDate
@@ -147,7 +147,7 @@ OutputFileNameSpecial2=
 OpenOutput2=1
 
 [GeneratedFilesSettings]
-RelativeOutputPath2=C:\Users\simen\Documents\powersupply\pcb\Powersupply\Production files\2021-11-15\
+RelativeOutputPath2=C:\Users\simen\Documents\BluesmokeGithub\pcb\altium\Powersupply\Production files\2022-04-07\
 OpenOutputs2=1
 AddToProject2=1
 TimestampFolder2=0
