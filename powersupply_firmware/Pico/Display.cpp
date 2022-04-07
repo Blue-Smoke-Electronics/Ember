@@ -56,9 +56,10 @@ Display::Display(){
 
   spi_init(SPI_PORT,65000000); // 62.5Mhz
   gpio_set_function(PIN_MISO,GPIO_FUNC_SPI);
- // gpio_set_function(PIN_CS,GPIO_FUNC_SPI);
+  //gpio_set_function(PIN_CS,GPIO_FUNC_SPI);
   gpio_set_function(PIN_SCK,GPIO_FUNC_SPI);
   gpio_set_function(PIN_MOSI,GPIO_FUNC_SPI);
+  //gpio_set_function(PIN_CS,GPIO_FUNC_SPI);
 
    // Chip select is active-low, so we'll initialise it to a driven-high state
   gpio_init(PIN_CS);
@@ -142,7 +143,7 @@ WriteData(0x51);
 WriteData(0x2C);
 WriteData(0x82);
 WriteComm(0x11);
-WriteComm(0x21);
+//WriteComm(0x21); // invert display, use with isp display 
 sleep_ms(120);
 
 WriteComm(0x29);
@@ -218,6 +219,7 @@ void Display::Display_fill_square(uint16_t x,uint16_t y,uint16_t width, uint16_t
     
     spi_write_blocking(SPI_PORT,data,width*heigth*3); 
     gpio_put(PIN_CS, 1);
+    ///gpio_put(PIN_CS, 1);
     // for (int x =0; x < width; x++){
     //     for(int y =0; y < heigth;y++){
     //         uint8_t b1 = (color.red<<3) | (color.green >> 5);

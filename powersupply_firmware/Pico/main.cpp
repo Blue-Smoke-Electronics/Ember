@@ -5,6 +5,7 @@
 #include "test.pio.h"
 #include "hardware/pwm.h"
 #include "Display.h"
+#include "hardware/adc.h"
 
 
 
@@ -37,11 +38,20 @@ int main() {
     pwm_set_enabled(slice_num,true);
     // Loop forever
     Display display = Display();
+
+    adc_init();
+    adc_set_temp_sensor_enabled(true);
+    adc_select_input(4);
+
     while (true) {
         
         pwm_set_chan_level(slice_num,pwm_gpio_to_channel(led_pin),100);
         // Blink LED
         printf("Blinking!\r\n");
+        uint16_t raw_temp_data = adc_read();
+        float voltage = raw_temp_data * 3.3f/(1<<12);
+        float temp = 27-(voltage-0.706)/0.001721;
+        printf("temp: %f\r\n", temp);
         //gpio_put(led_pin, true);
         sleep_ms(1000);
         pwm_set_chan_level(slice_num,pwm_gpio_to_channel(led_pin),800);
