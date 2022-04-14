@@ -22,7 +22,8 @@
 
     "files.associations": {
         "test.pio.h":"c",
-        "clocks.h":"c"
+        "clocks.h":"c",
+        "logo.h":"txt"
     },
-    "C_Cpp.errorSquiggles": "Disabled"
+    "C_Cpp.errorSquiggles": "Enabled"
 }

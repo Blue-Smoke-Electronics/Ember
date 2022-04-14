@@ -17,6 +17,7 @@ pico_sdk_init()
 add_executable(${PROJECT_NAME} 
     main.cpp
     Display.cpp
+    Flash.cpp
 )
 
 # Create C header file with the name <pio program>.pio.h
@@ -34,6 +35,8 @@ target_link_libraries(${PROJECT_NAME}
     hardware_pwm
     hardware_spi
     hardware_adc
+    hardware_flash
+    hardware_dma
 )
 
 # Enable usb output, disable uart output

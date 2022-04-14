@@ -16,7 +16,9 @@
 #include "pico/stdlib.h"
 #include "hardware/spi.h"
 #include "color.h"
-#include "logo.h"
+//#include "logo.h"
+#include "Flash.h"
+#include "hardware/dma.h"
 
 #define PIN_MISO 16
 #define PIN_CS 17  
@@ -151,7 +153,8 @@ WriteComm(0x29);
 Display_fill_screen(COLORRGB_WHITE);
 //Display_draw_smily(COLORRGB_RED);
 
-draw_image(100,0,280,320,logo);
+//Flash f; 
+//draw_image(0,0,480,320,f.logo_address);
 
     
 }
@@ -188,7 +191,7 @@ void Display::Display_draw_pixel(uint16_t x,uint16_t y,color_rgb color){
     
 
 }
-const uint8_t data[320*480*3] = {}; 
+//const uint8_t data[320*480*3] = {}; 
 void Display::Display_fill_square(uint16_t x,uint16_t y,uint16_t width, uint16_t heigth, color_rgb color){
     if (x+width >= 480 && y+heigth >= 320 && x < 0 && y <0){
         printf("Display, draw_square: invalid x or y, minx= %d miny= %d maxx= %d maxy= %d\r\n",x,y,x+width,y+heigth);
@@ -217,7 +220,28 @@ void Display::Display_fill_square(uint16_t x,uint16_t y,uint16_t width, uint16_t
         gpio_put(PIN_CS, 0);
     gpio_put(PIN_DC,1);
     
-    spi_write_blocking(SPI_PORT,data,width*heigth*3); 
+    int dma_chan = dma_claim_unused_channel(true);
+    dma_channel_config chn_cnf = dma_channel_get_default_config(dma_chan);
+    channel_config_set_transfer_data_size(&chn_cnf,DMA_SIZE_8);
+    channel_config_set_dreq(&chn_cnf,DREQ_SPI0_TX);
+
+    Flash f; 
+    while (1){
+        uint32_t start = time_us_32();
+        dma_channel_configure(dma_chan,&chn_cnf,&spi_get_hw(SPI_PORT)->dr,f.logo_address,f.logo_size,true);
+        //spi_write_blocking(SPI_PORT,f.logo_address,width*heigth*3); 
+        uint32_t stop = time_us_32();
+        printf("display update time: %d\r\n",stop-start );
+        sleep_ms(1000);
+        channel_config_set_read_increment(&chn_cnf,false);
+        uint8_t bit = 0xAA; 
+        dma_channel_configure(dma_chan,&chn_cnf,&spi_get_hw(SPI_PORT)->dr,&bit,f.logo_size,true);
+        channel_config_set_read_increment(&chn_cnf,true);
+        //spi_write_blocking(SPI_PORT,f.logo_address-f.logo_size,width*heigth*3); 
+        sleep_ms(1000);
+    }
+
+    //spi_write_blocking(SPI_PORT,data,width*heigth*3); 
     gpio_put(PIN_CS, 1);
     ///gpio_put(PIN_CS, 1);
     // for (int x =0; x < width; x++){
@@ -281,7 +305,7 @@ void Display::draw_image(uint16_t x,uint16_t y,uint16_t width, uint16_t heigth, 
 }
 
 void Display::Display_fill_screen(color_rgb color){
-    Display_fill_square(0,0,479,319,color);
+    Display_fill_square(0,0,480,320,color);
 }
 
 void Display::Display_draw_smily(color_rgb color){

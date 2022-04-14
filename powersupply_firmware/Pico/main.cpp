@@ -6,6 +6,11 @@
 #include "hardware/pwm.h"
 #include "Display.h"
 #include "hardware/adc.h"
+#include "Flash.h"
+//#include "logo.h"
+
+
+
 
 
 
@@ -36,12 +41,35 @@ int main() {
     pwm_set_wrap(slice_num,1000);
 
     pwm_set_enabled(slice_num,true);
-    // Loop forever
+
+   
+/*   Flash flash; 
+
+    
+    
+    flash.start_data_stream(flash.logo_address);
+    for (int i=0; i< flash.logo_size;i++){
+        uint8_t r =getchar();
+        printf("%d\n",i);
+        flash.stream_byte(r);
+
+    }
+    flash.stop_data_stream();
+
+    for (int i=0; i< flash.logo_size/3;i++){
+        printf("flash[i]: %d \r\n",flash.logo_address[i]);
+    }
+  
+*/  
+  
+
     Display display = Display();
 
     adc_init();
     adc_set_temp_sensor_enabled(true);
     adc_select_input(4);
+
+
 
     while (true) {
         

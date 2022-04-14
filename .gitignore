@@ -52,3 +52,8 @@ powersupply_firmware/Pico/.vscode/c_cpp_properties.json
 powersupply_firmware/Pico/.vscode/.cortex-debug.registers.state.json
 powersupply_firmware/Pico/.vscode/.cortex-debug.peripherals.state.json
 pcb/altium/Powersupply/Production files/2022-04-07/
+powersupply_firmware/Image_to_flash_transfer/image_to_flash_transfer/.vs/
+*.config
+powersupply_firmware/Image_to_flash_transfer/image_to_flash_transfer/image_to_flash_transfer/bin/
+powersupply_firmware/Image_to_flash_transfer/image_to_flash_transfer/image_to_flash_transfer/obj/
+powersupply_firmware/Image_to_flash_transfer/image_to_flash_transfer/image_to_flash_transfer/Properties/
