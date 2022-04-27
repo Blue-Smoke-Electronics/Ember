@@ -15,9 +15,12 @@ pico_sdk_init()
 
 # Tell CMake where to find the executable source file
 add_executable(${PROJECT_NAME} 
-    main.cpp
-    Display.cpp
-    Flash.cpp
+    src/main.cpp
+    src/Display.cpp
+    src/Flash.cpp
+    src/Sprite.cpp
+    src/GUI.cpp
+    src/Onoff.cpp
 )
 
 # Create C header file with the name <pio program>.pio.h
@@ -28,6 +31,21 @@ pico_generate_pio_header(${PROJECT_NAME}
 # Create map/bin/hex/uf2 files
 pico_add_extra_outputs(${PROJECT_NAME})
 
+FILE(GLOB FreeRtos_src freertos/FreeRTOS-Kernel/*.c)
+
+add_library(FreeRTOS STATIC
+    ${FreeRtos_src}
+    freertos/FreeRTOS-Kernel/portable/GCC/ARM_CM0/port.c
+    freertos/FreeRTOS-Kernel/portable/MemMang/heap_4.c
+)
+
+target_include_directories(FreeRTOS PUBLIC 
+    freertos/FreeRTOS-Kernel/include
+    include/
+    freertos/FreeRTOS-Kernel/portable/GCC/ARM_CM0
+
+)
+
 # Link to pico_stdlib (gpio, time, etc. functions)
 target_link_libraries(${PROJECT_NAME} 
     pico_stdlib
@@ -37,8 +55,9 @@ target_link_libraries(${PROJECT_NAME}
     hardware_adc
     hardware_flash
     hardware_dma
+    FreeRTOS
 )
 
 # Enable usb output, disable uart output
-pico_enable_stdio_usb(${PROJECT_NAME} 0)
-pico_enable_stdio_uart(${PROJECT_NAME} 1)
+pico_enable_stdio_usb(${PROJECT_NAME} 1)
+ pico_enable_stdio_uart(${PROJECT_NAME} 1)
