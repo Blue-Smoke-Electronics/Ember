@@ -12,6 +12,7 @@
 #include "Pcb.h"
 #include "Onoff.h"
 #include "Hartbeat.h"
+#include "ComandlineInterface.h"
 
 
 int main() {
@@ -23,6 +24,7 @@ int main() {
     
     // enables hartbeat, runs in seperate thread 
     Hartbeat hartbeat = Hartbeat(); 
+    ComandLineInterface cli = ComandLineInterface();
 
     const uint led_pin = Pcb::debbug_led_pin;
 
@@ -104,8 +106,9 @@ int main() {
         
 
         hartbeat.Update(); 
-        // Blink LED
-        printf("Blinking!\r\n");
+        cli.Update();
+        
+        
 
         adc_select_input(Pcb::temprature_adc_channal);
         uint16_t raw_temp_data = adc_read();
@@ -126,7 +129,7 @@ int main() {
         float booster_voltage =   (float)booster_voltage_raw * 3.3f/(1<<12) *11; // reading to high values ???  
 
         
-        printf("temp: %f , booster voltage: %f output current: %f output voltage: %f \r\n", temp,booster_voltage ,output_current,output_voltage); 
+        //printf("temp: %f , booster voltage: %f output current: %f output voltage: %f \r\n", temp,booster_voltage ,output_current,output_voltage); 
 
         if (booster_voltage < booster_target_voltage && booster_pwm_value < 900 ){
             //booster_pwm_value ++; 

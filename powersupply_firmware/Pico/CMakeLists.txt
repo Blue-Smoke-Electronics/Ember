@@ -24,6 +24,7 @@ add_executable(${PROJECT_NAME}
     src/Onoff.cpp
     src/Hartbeat.cpp
     src/Font.cpp
+    src/ComandLineInterface.cpp
 )
 
 # Create C header file with the name <pio program>.pio.h
