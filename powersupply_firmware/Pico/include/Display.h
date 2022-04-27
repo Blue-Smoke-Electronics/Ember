@@ -19,24 +19,16 @@
 #include "color.h"
 #include "Sprite.h"
 #include "hardware/dma.h"
+#include "Font.h"
+
+#include <string.h>
 
 #define DISPLAY_COMAND 0
 #define DISPLAY_DATA 1
 
-/*class Color{
-  private:
-  
-  public: 
-    int red;
-    int green; 
-    int blue;
-};*/
 
 class Display{
   private: 
-
-
-
     void Send_packet(uint8_t command, uint8_t * data);
     void WriteComm(uint8_t data);
     void WriteData(uint8_t data);
@@ -46,13 +38,15 @@ class Display{
 
   public:     
   
-    const int width = 480; 
-    const int height = 320;
-    
+    int width; 
+    int height;
     
     Display();
-    void Draw_pixel(int x,int y,uint8_t red, uint8_t green, uint8_t blue);
-    void Draw_sprite(int x, int y, Sprite sprite);
+    Display(int width, int height);
+    void Draw_pixel(int xpos,int ypos,uint8_t red, uint8_t green, uint8_t blue);
+    void Draw_sprite(int xpos, int ypos, Sprite sprite);
+    void Draw_char(int xpos, int ypos, Font font, char c); 
+    void Draw_string(int xpos, int ypos, Font font, char * s);
     void Clear_square(int x,int y,int width, int heigth);
     void Clear_all();
     

@@ -1,8 +1,17 @@
 #include "Flash.h"
 #include <stdio.h>
 #include "pico/stdlib.h"
+#include "Pcb.h"
+
+
 
 #include "hardware/sync.h"
+
+uint8_t * Flash::end_of_program_memory = (uint8_t *)XIP_BASE+Pcb::flash_size_bytes/2 -Pcb::flash_size_bytes/2% FLASH_SECTOR_SIZE; 
+
+Sprite Flash::logo = Sprite(320,480,end_of_program_memory); 
+Font Flash::smalFont =  Font( Flash::logo.flash_address+Flash::logo.size+FLASH_SECTOR_SIZE-Flash::logo.size%FLASH_SECTOR_SIZE); 
+
 
 
 void Flash::start_data_stream(const uint8_t * address){

@@ -23,6 +23,7 @@ add_executable(${PROJECT_NAME}
     src/GUI.cpp
     src/Onoff.cpp
     src/Hartbeat.cpp
+    src/Font.cpp
 )
 
 # Create C header file with the name <pio program>.pio.h
@@ -31,20 +32,12 @@ add_executable(${PROJECT_NAME}
 #)
 
 # Create map/bin/hex/uf2 files
-pico_add_extra_outputs(${PROJECT_NAME})
+#pico_add_extra_outputs(${PROJECT_NAME})
 
-FILE(GLOB FreeRtos_src freertos/FreeRTOS-Kernel/*.c)
 
-add_library(FreeRTOS STATIC
-    ${FreeRtos_src}
-    freertos/FreeRTOS-Kernel/portable/GCC/ARM_CM0/port.c
-    freertos/FreeRTOS-Kernel/portable/MemMang/heap_4.c
-)
+target_include_directories(${PROJECT_NAME} PUBLIC 
 
-target_include_directories(FreeRTOS PUBLIC 
-    freertos/FreeRTOS-Kernel/include
     include/
-    freertos/FreeRTOS-Kernel/portable/GCC/ARM_CM0
 
 )
 
@@ -57,7 +50,7 @@ target_link_libraries(${PROJECT_NAME}
     hardware_adc
     hardware_flash
     hardware_dma
-    FreeRTOS
+    #FreeRTOS
 )
 
 # Enable usb output, disable uart output

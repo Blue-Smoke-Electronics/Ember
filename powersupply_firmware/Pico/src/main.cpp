@@ -5,9 +5,7 @@
 #include "hardware/adc.h"
 #include "hardware/pwm.h"
 
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
+
 
 #include "Display.h"
 #include "Flash.h"
@@ -51,15 +49,15 @@ int main() {
   
   
 
-    Display display = Display();
+    //Display display = Display();
 
-    Sprite logo = Sprite();
-    logo.flash_address = (uint8_t*)flash.logo_address;
-    logo.height = flash.logo_height;
-    logo.width = flash.logo_width;
-    logo.size = flash.logo_size; 
+    //Sprite logo = Sprite();
+    //logo.flash_address = (uint8_t*)flash.logo_address;
+    //logo.height = flash.logo_height;
+    //logo.width = flash.logo_width;
+    //logo.size = flash.logo_size; 
 
-    display.Draw_sprite(0,0,logo);
+    //display.Draw_sprite(0,0,logo);
 
     adc_init();
     adc_set_temp_sensor_enabled(true);
@@ -96,7 +94,7 @@ int main() {
     pwm_set_chan_level(current_limit_pwm_slice_num,pwm_gpio_to_channel(Pcb::current_limit_pwm_pin),(current_limit*2.5f)*(10000/3.3f));
 
     
-
+    
     
 
    // vTaskStartScheduler();

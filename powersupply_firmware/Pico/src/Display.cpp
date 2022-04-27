@@ -44,9 +44,13 @@ void Display::WriteData(uint8_t data){
 
     gpio_put(PIN_CS, 1);
 }
-
 Display::Display(){
+    
+}
+Display::Display(int width, int height){
 
+    this->width = width;
+    this->height = height;
  // #define READ_BIT 0x80
 
   spi_init(SPI_PORT,65000000); // 62.5Mhz

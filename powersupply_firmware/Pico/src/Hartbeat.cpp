@@ -1,21 +1,7 @@
 #include "hartbeat.h"
 #include "pico/stdlib.h"
 #include "Pcb.h"
-#include "FreeRTOS.h"
-#include "task.h"
 
-/*
-void Hartbeat::Hartbeat_task(void* param){
-        gpio_init(Pcb::debbug_led_pin);
-        gpio_set_dir(Pcb::debbug_led_pin, GPIO_OUT);
-
-        while (true){
-        gpio_put(Pcb::debbug_led_pin, true);
-        vTaskDelay(1000);
-        gpio_put(Pcb::debbug_led_pin, false);
-        vTaskDelay(1000);
-    }  
-}*/
 
 Hartbeat::Hartbeat(){
 //    TaskHandle_t hartbeat_Task = NULL; 

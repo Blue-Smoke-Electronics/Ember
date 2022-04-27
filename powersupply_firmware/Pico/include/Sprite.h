@@ -10,10 +10,14 @@ class Sprite{
 
 
     public: 
+        
         int width; 
         int height; 
         int size; 
         uint8_t * flash_address;
+
+        Sprite();
+        Sprite(int width, int height,uint8_t * flash_address); 
 
 };
 
