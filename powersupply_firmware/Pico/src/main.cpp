@@ -6,51 +6,31 @@
 #include "hardware/pwm.h"
 
 #include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
 
-#include "test.pio.h"
 #include "Display.h"
 #include "Flash.h"
 #include "Pcb.h"
 #include "Onoff.h"
-
-
-
-
-
+#include "Hartbeat.h"
 
 
 int main() {
     // keap device powered on, need to be the frist thin that happens 
     Onoff onoff = Onoff(); 
-
-
+    
+    // Initialize chosen serial port
+    stdio_init_all();    
+    
+    // enables hartbeat, runs in seperate thread 
+    Hartbeat hartbeat = Hartbeat(); 
 
     const uint led_pin = Pcb::debbug_led_pin;
 
-    // Initialize LED pin
-    gpio_init(led_pin);
-    gpio_set_dir(led_pin, GPIO_OUT);
-    gpio_put(led_pin,true);
-
-
-    // Initialize chosen serial port
-    stdio_init_all();
 
 
 
-    float pio_freq = 2000; 
-
-    PIO pio = pio0;
-    uint sm = pio_claim_unused_sm(pio,true);
-    uint offset = pio_add_program(pio,&test_program);
-
-    float div = (float)clock_get_hz(clk_sys)/pio_freq;
-
-    //test_program_init(pio, sm, offset, led_pin,div);
-    //pio_sm_set_enabled(pio,sm,true);
-
-
-   
    Flash flash; 
 
     /*
@@ -115,12 +95,17 @@ int main() {
     pwm_set_chan_level(voltage_limit_pwm_slice_num,pwm_gpio_to_channel(Pcb::voltage_limit_pwm_pin),(linreg_output_voltage/4.7037)*(10000/3.3f));
     pwm_set_chan_level(current_limit_pwm_slice_num,pwm_gpio_to_channel(Pcb::current_limit_pwm_pin),(current_limit*2.5f)*(10000/3.3f));
 
+    
+
+    
+
+   // vTaskStartScheduler();
 
 
     while (true) {
         
 
-        
+        hartbeat.Update(); 
         // Blink LED
         printf("Blinking!\r\n");
 

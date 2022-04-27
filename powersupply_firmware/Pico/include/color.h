@@ -16,6 +16,7 @@
 
 /* [] END OF FILE */
 #include <stdbool.h>
+#include "pico/stdlib.h"
 
 #define COLORRGB_BLACK (color_rgb){0 ,0 ,0}
 #define COLORRGB_WHITE (color_rgb){255 ,255 ,255}
