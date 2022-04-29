@@ -37,22 +37,25 @@ namespace image_to_flash_transfer
             {
                 for (int x = 0; x < img.Width; x++)
                 {
-                    data[i] = img.GetPixel(x, y).R;
+                    data[i] = img.GetPixel(x, y).B;
                     data[i+1] = img.GetPixel(x, y).G;
-                    data[i+2] = img.GetPixel(x, y).B;
+                    data[i+2] = img.GetPixel(x, y).R;
                     i += 3; 
                 }
             }
-            i = 0; 
+            i = 0;
+
+            port.Write("FLASHLOADLOGO\n");
+            string line = port.ReadLine();
             while (i < img.Width * img.Height * 3)
             {
                 port.Write(data, i, 1);
-                string line = port.ReadLine();
+                line = port.ReadLine();
                 try
                 {
                     int resived_cout = Int32.Parse(line); 
-                    Console.WriteLine("sendt: " +i.ToString() +" resived: " + resived_cout.ToString());
-                    if (resived_cout == i + 1)
+                    Console.WriteLine("sendt: " +i.ToString() +" resived: " + resived_cout.ToString() + " of: " + (img.Width * img.Height * 3).ToString());
+                    if (resived_cout == i )
                     {
                         i++;
                     }
@@ -63,31 +66,57 @@ namespace image_to_flash_transfer
                 }
 
             }
-            /*
-            byte[] data = new byte[3];
-            for (int x = 0; x < img.Width; x++)
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Bitmap img = new Bitmap("../../../../bootscreen.png");
+
+
+            SerialPort port = new SerialPort("COM15", 115200, Parity.None, 8, StopBits.One);
+            port.RtsEnable = true;
+            port.DtrEnable = true;
+
+            port.Close();
+            port.Open();
+
+
+            byte[] data = new byte[img.Width * img.Height * 3];
+            int i = 0;
+            for (int y = 0; y < img.Height; y++)
             {
-                for (int y = 0; y < img.Height; y++)
+                for (int x = 0; x < img.Width; x++)
                 {
-                    data[0] = img.GetPixel(x, y).R;
-                    port.Write(data, 0, 1);
-                    port.ReadLine();
-                    data[1] = img.GetPixel(x, y).G;
-                    port.Write(data, 0, 1);
-                    port.ReadLine();
-                    data[2] = img.GetPixel(x, y).B;
-                    port.Write(data, 0, 1);
-                    int resived_cout = Int32.Parse(port.ReadLine());
-
-                    if ((x + 1) * (y + 1) * 3 != resived_cout)
-                    {
-                        throw new Exception("SEND ERROR -> resived counter do not match send couter - resived: "
-                            + resived_cout.ToString() + " expected: " + (x + 1) * (y + 1) * 3);
-                    }
-                    Console.WriteLine(x.ToString() + " " + y.ToString());
+                    data[i] = img.GetPixel(x, y).B;
+                    data[i + 1] = img.GetPixel(x, y).G;
+                    data[i + 2] = img.GetPixel(x, y).R;
+                    i += 3;
                 }
-            }*/
+            }
+            i = 0;
 
+            port.Write("FLASHLOADBOOTSCREEN\n");
+            string line = port.ReadLine();
+            while (i < img.Width * img.Height * 3)
+            {
+                port.Write(data, i, 1);
+                line = port.ReadLine();
+                try
+                {
+                    int resived_cout = Int32.Parse(line);
+                    Console.WriteLine("sendt: " + i.ToString() + " resived: " + resived_cout.ToString() + " of: " + (img.Width * img.Height * 3).ToString());
+                    if (resived_cout == i)
+                    {
+                        i++;
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+
+            }
         }
     }
 }

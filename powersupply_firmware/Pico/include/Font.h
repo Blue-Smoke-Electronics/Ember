@@ -8,12 +8,15 @@ class Font{
     private:
         int char_cnt; 
         char start_char; 
-        uint8_t * flash_address; 
+        
+         
     public:
         
         int char_widht; 
         int char_height; 
         int char_size; 
+        int size;
+        uint8_t * flash_address; 
         
         Font();
         Font(uint8_t * flash_address); 

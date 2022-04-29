@@ -13,6 +13,7 @@
 #include "Onoff.h"
 #include "Hartbeat.h"
 #include "ComandlineInterface.h"
+#include "GUI.h"
 
 
 int main() {
@@ -24,42 +25,16 @@ int main() {
     
     // enables hartbeat, runs in seperate thread 
     Hartbeat hartbeat = Hartbeat(); 
+    
     ComandLineInterface cli = ComandLineInterface();
 
-    const uint led_pin = Pcb::debbug_led_pin;
-
+    GUI gui = GUI(); 
 
 
 
    Flash flash; 
 
-    /*
-    
-    flash.start_data_stream(flash.logo_address);
-    for (int i=0; i< flash.logo_size;i++){
-        uint8_t r =getchar();
-        printf("%d\n",i);
-        flash.stream_byte(r);
 
-    }
-    flash.stop_data_stream();
-
-    for (int i=0; i< flash.logo_size/3;i++){
-        printf("flash[i]: %d \r\n",flash.logo_address[i]);
-    }
-  */
-  
-  
-
-    //Display display = Display();
-
-    //Sprite logo = Sprite();
-    //logo.flash_address = (uint8_t*)flash.logo_address;
-    //logo.height = flash.logo_height;
-    //logo.width = flash.logo_width;
-    //logo.size = flash.logo_size; 
-
-    //display.Draw_sprite(0,0,logo);
 
     adc_init();
     adc_set_temp_sensor_enabled(true);
@@ -107,6 +82,8 @@ int main() {
 
         hartbeat.Update(); 
         cli.Update();
+        gui.Update();
+        Display::Update();
         
         
 

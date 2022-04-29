@@ -1,6 +1,9 @@
 #ifndef PCB_H
 #define PCB_H
 
+#include "pico/stdlib.h"
+#include "hardware/spi.h"
+
 class Pcb{
     private:
 
@@ -41,6 +44,8 @@ class Pcb{
         static const int temprature_adc_channal = 4;
 
         static const int  flash_size_bytes = (16*1024*1024);  
+
+        
 };
 
 #endif

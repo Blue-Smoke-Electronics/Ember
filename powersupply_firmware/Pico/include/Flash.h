@@ -6,26 +6,30 @@
 #include "Sprite.h"
 #include "Font.h"
 
-
 class Flash{
     private:
         static uint8_t * end_of_program_memory; 
         
-        const int  flash_size = PICO_FLASH_SIZE_BYTES;
-        uint8_t * write_address; 
-        int cnt_since_program;
-        int cnt_since_erase;
-        uint8_t write_buffer [FLASH_PAGE_SIZE] ; 
+        static const int  flash_size = PICO_FLASH_SIZE_BYTES;
+        static uint8_t * write_address; 
+        static int cnt_since_program;
+        static int cnt_since_erase;
+        static uint8_t write_buffer [FLASH_PAGE_SIZE] ;         
+        
+        static void start_data_stream(const uint8_t * address);
+        static void stop_data_stream();
+        static void stream_byte(uint8_t data);
         
     public:
-        void start_data_stream(const uint8_t * address);
-        void stop_data_stream();
-        void stream_byte(uint8_t data);
+        
 
+        static Sprite bootscreen; 
         static Sprite logo; 
         static Font smalFont; 
         static Font bigFont; 
         
+        static void Load(Sprite sprite);
+        static void Load(Font font);
 
     
 

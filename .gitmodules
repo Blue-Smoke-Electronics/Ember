@@ -1,3 +1,0 @@
-[submodule "powersupply_firmware/Pico/freertos/FreeRTOS-Kernel"]
-	path = powersupply_firmware/Pico/freertos/FreeRTOS-Kernel
-	url = https://github.com/FreeRTOS/FreeRTOS-Kernel

@@ -15,71 +15,63 @@
 #include "Display.h"
 #include "pico/stdlib.h"
 #include "hardware/spi.h"
-#include "color.h"
-//#include "logo.h"
 #include "Flash.h"
 #include "hardware/dma.h"
+#include "Pcb.h"
 
-#define PIN_MISO 4
-#define PIN_CS 5  
-#define PIN_SCK  2
-#define PIN_MOSI 3
-#define PIN_DC   6// todo: make pio module that suport 9bit spi
-#define PIN_RESET 7
-#define SPI_PORT spi0
-#define DISPLAY_COMAND  0
-#define DISPLAY_DATA  1
+
+int Display::dma_channal; 
+dma_channel_config Display::dma_channal_config; 
+
+const int Display::height = 320; 
+const int Display::width = 480; 
+
+std::queue<SpiData> Display::spiQuie = std::queue<SpiData>();
 
 void Display::WriteComm(uint8_t data){
-    gpio_put(PIN_CS, 0);
-    gpio_put(PIN_DC,0);
-    spi_write_blocking(SPI_PORT,&data,1); 
 
-    gpio_put(PIN_CS, 1);
+    
+    Push_to_spiQueue(SpiData(true,data));
+
+
 }
 void Display::WriteData(uint8_t data){
-    gpio_put(PIN_CS, 0);
-    gpio_put(PIN_DC,1);
-    spi_write_blocking(SPI_PORT,&data,1); 
+    Push_to_spiQueue(SpiData(false,data));
 
-    gpio_put(PIN_CS, 1);
 }
-Display::Display(){
-    
-}
-Display::Display(int width, int height){
 
-    this->width = width;
-    this->height = height;
+void Display::Init(){
  // #define READ_BIT 0x80
 
-  spi_init(SPI_PORT,65000000); // 62.5Mhz
-  gpio_set_function(PIN_MISO,GPIO_FUNC_SPI);
-  //gpio_set_function(PIN_CS,GPIO_FUNC_SPI);
-  gpio_set_function(PIN_SCK,GPIO_FUNC_SPI);
-  gpio_set_function(PIN_MOSI,GPIO_FUNC_SPI);
-  //gpio_set_function(PIN_CS,GPIO_FUNC_SPI);
+
+  spi_init(spi0,65000000); // 62.5Mhz
+  gpio_set_function(Pcb::display_MISO_pin,GPIO_FUNC_SPI);
+  gpio_set_function(Pcb::display_SCL_pin,GPIO_FUNC_SPI);
+  gpio_set_function(Pcb::display_MOSI_pin,GPIO_FUNC_SPI);
 
    // Chip select is active-low, so we'll initialise it to a driven-high state
-  gpio_init(PIN_CS);
-  gpio_init(PIN_DC);
-  gpio_init(PIN_RESET);
-  gpio_set_dir(PIN_CS, GPIO_OUT);
-  gpio_set_dir(PIN_DC, GPIO_OUT);
-  gpio_set_dir(PIN_RESET, GPIO_OUT);
-  gpio_put(PIN_CS, 1);
+  gpio_init(Pcb::display_NCS_pin);
+  gpio_init(Pcb::display_DC_pin);
+  gpio_init(Pcb::dispaly_RST_pin);
+  gpio_set_dir(Pcb::display_NCS_pin, GPIO_OUT);
+  gpio_set_dir(Pcb::display_DC_pin, GPIO_OUT);
+  gpio_set_dir(Pcb::dispaly_RST_pin, GPIO_OUT);
+  gpio_put(Pcb::display_NCS_pin, 1);
 
 
 //*********Hardware reset*********//
-    gpio_put(PIN_RESET, 1);
+    gpio_put(Pcb::dispaly_RST_pin, 1);
 sleep_ms(15);
-    gpio_put(PIN_RESET, 0);
+    gpio_put(Pcb::dispaly_RST_pin, 0);
 sleep_ms(120);
-    gpio_put(PIN_RESET, 1);
+    gpio_put(Pcb::dispaly_RST_pin, 1);
 sleep_ms(120);
+
+
+
 WriteComm(0x01);
 sleep_ms(5);
-//********Start Initial Sequence*******//
+
 WriteComm(0xE0); //P-Gamma
 WriteData(0x00);
 WriteData(0x13);
@@ -142,24 +134,22 @@ WriteData(0x51);
 WriteData(0x2C);
 WriteData(0x82);
 WriteComm(0x11);
-//WriteComm(0x21); // invert display, use with isp display 
+WriteComm(0x21); // invert display, use with isp display 
 sleep_ms(120);
 
 WriteComm(0x29);
-//WriteComm(0x22);
+
 
 
 // setup dma 
-this->dma_channal = dma_claim_unused_channel(true);
-this->dma_channal_config = dma_channel_get_default_config(this->dma_channal);
-channel_config_set_transfer_data_size(&this->dma_channal_config,DMA_SIZE_8); // spi uses 8 bit for each transferr 
-channel_config_set_dreq(&this->dma_channal_config,DREQ_SPI0_TX); // wait on spi to compleat send befor moving data
+dma_channal = dma_claim_unused_channel(true);
+dma_channal_config = dma_channel_get_default_config(dma_channal);
+channel_config_set_transfer_data_size(&dma_channal_config,DMA_SIZE_8); // spi uses 8 bit for each transferr 
+channel_config_set_dreq(&dma_channal_config,DREQ_SPI0_TX); // wait on spi to compleat send befor moving data
 
 
 
 }
-
-
 
 
 
@@ -191,9 +181,9 @@ void Display::Draw_pixel(int x,int y,uint8_t red, uint8_t green, uint8_t blue){
     
 
 }
-//const uint8_t data[320*480*3] = {}; 
+
 void Display::Clear_square(int x,int y,int width, int heigth){
-    if (x+width >= this->width && y+heigth >= this->height && x < 0 && y <0){
+    if (x+width >= width && y+heigth >= height && x < 0 && y <0){
         printf("Display, draw_square: invalid x or y, minx= %d miny= %d maxx= %d maxy= %d\r\n",x,y,x+width,y+heigth);
         return;
     }
@@ -216,30 +206,15 @@ void Display::Clear_square(int x,int y,int width, int heigth){
     
     // draw pixels
     WriteComm(0x2c);
-
-    
-
-    // wait on dma to be ready
-    while(dma_channel_is_busy(this->dma_channal)){
-        
-    }
-
-    // use dma to send data to spi 
-    gpio_put(PIN_CS, 0);
-    gpio_put(PIN_DC,1);
-
-    uint8_t data = 0xFF; 
-    channel_config_set_read_increment(&this->dma_channal_config,false); // do copy data from the same address evrey time
-    dma_channel_configure(this->dma_channal,&this->dma_channal_config,&spi_get_hw(SPI_PORT)->dr,&data,width*heigth*3,true); // sent 0xff to all pixels in square 
-    channel_config_set_read_increment(&this->dma_channal_config,true); // back to normal operation
-
-    gpio_put(PIN_CS, 1);
+        printf("queqe_size cc= %d\r\n", spiQuie.size());
+    Push_to_spiQueue(SpiData(0xFF,width*heigth*3));
+        printf("queqe_sizebb = %d\r\n", spiQuie.size());
 
     WriteComm(0x0); // nop, signals that transmition is done. 
-    
+    gpio_put(Pcb::display_NCS_pin, 1);
 }
 void Display::Draw_sprite(int x, int y, Sprite sprite){
-    if (x+sprite.width >= this->width && y+sprite.height >= this->height && x < 0 && y <0){
+    if (x+sprite.width >= width && y+sprite.height >= height && x < 0 && y <0){
         printf("Display, draw_square: invalid x or y, minx= %d miny= %d maxx= %d maxy= %d\r\n",x,y,x+sprite.width,y+sprite.height);
         return;
     }
@@ -263,25 +238,87 @@ void Display::Draw_sprite(int x, int y, Sprite sprite){
     // draw pixels
     WriteComm(0x2c);
 
-    // wait on dma to be ready
-    while(dma_channel_is_busy(this->dma_channal)){
-
-    }
-
-    // use dma to send data to spi 
-    gpio_put(PIN_CS, 0);
-    gpio_put(PIN_DC,1);
-
-    dma_channel_configure(this->dma_channal,&this->dma_channal_config,&spi_get_hw(SPI_PORT)->dr,sprite.flash_address,sprite.size,true); // sent 0xff to all pixels in square 
-    // todo find a way to send nop with dma 
-    while(dma_channel_is_busy(this->dma_channal)){
-
-    }
+    Push_to_spiQueue(SpiData(sprite.flash_address,sprite.size));
 
     WriteComm(0x0); // nop, signals that transmition is done. 
-    gpio_put(PIN_CS, 1);
+    gpio_put(Pcb::display_NCS_pin, 1);
 }
 
 void Display::Clear_all(){
-    this->Clear_square(0,0,480,320);
+    Clear_square(0,0,480,320);
+}
+
+
+void Display::Update(){
+    if(dma_channel_is_busy(dma_channal)  ){
+        //printf("dma is busy\r\n");
+        return; 
+    }
+    
+    if( spiQuie.empty() ){
+        return; 
+    }
+    
+
+    SpiData data = spiQuie.front();
+    spiQuie.pop();
+  
+    gpio_put(Pcb::display_NCS_pin,0);
+
+    if(data.isComand){
+        gpio_put(Pcb::display_DC_pin,0);
+    }
+    else{
+        gpio_put(Pcb::display_DC_pin,1);
+    }
+
+    if(data.staticInput){
+        channel_config_set_read_increment(&dma_channal_config,false); // do copy data from the same address evrey time
+    }
+    else{
+        channel_config_set_read_increment(&dma_channal_config,true);
+    }
+
+
+    if(data.useAddress){
+        dma_channel_configure(dma_channal,&dma_channal_config,&spi_get_hw(spi0)->dr,data.data_ptr,data.size,true);
+        //spi_write_blocking(spi0,data.data_ptr,data.size); 
+ 
+    }
+    else{
+        dma_channel_configure(dma_channal,&dma_channal_config,&spi_get_hw(spi0)->dr,&data.data,data.size,true);
+        //spi_write_blocking(spi0,&data.data,data.size); 
+    }
+    
+
+} 
+
+
+void Display::Push_to_spiQueue(SpiData spiData){
+    if(spiQuie.size() < 200){
+        spiQuie.push(spiData);
+    }
+    
+}
+
+
+SpiData::SpiData(bool isComand, uint8_t data){
+    this->isComand = isComand; 
+    this->data = data;  
+    this->useAddress = false; 
+    this->size = 1; 
+}
+SpiData::SpiData(uint8_t * data,int size){
+    this->isComand = false; 
+    this->data_ptr = data; 
+    this->useAddress = true; 
+    this->size = size; 
+    this->staticInput = false; 
+}
+SpiData::SpiData(uint8_t  data,int size){
+    this->isComand = false; 
+    this->data = data;  
+    this->useAddress = false; 
+    this->size = size; 
+    this->staticInput = true;
 }
