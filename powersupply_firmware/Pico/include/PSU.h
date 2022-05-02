@@ -5,11 +5,14 @@ class PSU{
     private:
 
     public: 
-    PSU();
-    void Update();
+    static void Init();
+    static void Update();
 
-    float getVoltage();
-    float getCurrent();
+    static float getVoltage();
+    static float getCurrent();
+    static float getPower();
+    static void SetVoltage(float voltage_V);
+    static void SetCurrent(float current_mA); 
 };
 
 

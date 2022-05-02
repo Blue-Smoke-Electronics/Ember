@@ -6,6 +6,8 @@
 #include <sstream>
 #include <iomanip>
 
+#include "PSU.h"
+
 
 GUI::GUI(){
     Display::Init();
@@ -18,7 +20,6 @@ GUI::GUI(){
 
 
 }
-int i =0;
 void GUI::Update(){
     if(time_us_32() - update_timer > update_freq_us )
     {
@@ -46,9 +47,8 @@ void GUI::Update(){
             if (newState){
                 newState = false; 
                 Display::Clear_all();
-            }
 
-            
+            }
             streamObj << std::fixed;
             streamObj << std::setprecision(2);
             streamObj << "V Set: " << 15.0f;
@@ -56,8 +56,8 @@ void GUI::Update(){
 
             streamObj.str("");
             streamObj.clear();
-            streamObj << 3.3f << "V";
-            Display::Draw_string(250,60,Flash::bigFont,streamObj.str());
+            streamObj<< std::setw(5) << PSU::getVoltage()<< "V";
+            Display::Draw_string(240,60,Flash::bigFont,streamObj.str());
 
 
             streamObj.str("");
@@ -68,15 +68,14 @@ void GUI::Update(){
 
             streamObj.str("");
             streamObj.clear();
-            streamObj << i<< " mA";
-            i++;
-            Display::Draw_string(250,210,Flash::bigFont,streamObj.str());
+            streamObj << std::setw(4)<<PSU::getCurrent()<< "mA";
+            Display::Draw_string(240,210,Flash::bigFont,streamObj.str());
 
                        
              streamObj.str("");
             streamObj.clear();
             streamObj << std::setprecision(1);
-            streamObj <<"Power: "<< 5.2f << "W";
+            streamObj <<"Power: "<< PSU::getPower() << "W";
             Display::Draw_string(200,125,Flash::smalFont,streamObj.str());
 
             //state = State::booting;
