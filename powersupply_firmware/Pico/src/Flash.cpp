@@ -11,7 +11,11 @@ uint8_t * Flash::end_of_program_memory = (uint8_t *)XIP_BASE+Pcb::flash_size_byt
 Sprite Flash::bootscreen = Sprite(480,320,end_of_program_memory); 
 Sprite Flash::logo = Sprite(30,24,Flash::bootscreen.flash_address+Flash::bootscreen.size+FLASH_SECTOR_SIZE-Flash::bootscreen.size%FLASH_SECTOR_SIZE); 
 
-Font Flash::smalFont =  Font( Flash::logo.flash_address+Flash::logo.size+FLASH_SECTOR_SIZE-Flash::logo.size%FLASH_SECTOR_SIZE); 
+Font Flash::bigFont =  Font(32,50, Flash::logo.flash_address+Flash::logo.size+FLASH_SECTOR_SIZE-Flash::logo.size%FLASH_SECTOR_SIZE);
+ Font Flash::smalFont =  Font(16,25, Flash::bigFont.flash_address+Flash::bigFont.size+FLASH_SECTOR_SIZE-Flash::bigFont.size%FLASH_SECTOR_SIZE); 
+
+
+
 
 uint8_t *Flash:: write_address; 
 int Flash::cnt_since_program;

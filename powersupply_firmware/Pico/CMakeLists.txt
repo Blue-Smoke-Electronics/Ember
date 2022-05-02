@@ -28,6 +28,10 @@ add_executable(${PROJECT_NAME}
     src/Hartbeat.cpp
     src/Font.cpp
     src/ComandLineInterface.cpp
+    src/PSU.cpp
+    src/LinReg.cpp
+    src/Booster.cpp
+    src/Analog.cpp
 )
 
 # Create C header file with the name <pio program>.pio.h

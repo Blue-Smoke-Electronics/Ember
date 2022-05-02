@@ -10,7 +10,7 @@ class ComandLineInterface{
         std::string rx_data; 
         int rx_data_ptr; 
 
-        void desifre_command(std::string *command);
+        void desifre_command(std::string command);
 
     public: 
         ComandLineInterface();

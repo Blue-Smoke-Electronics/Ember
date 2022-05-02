@@ -6,8 +6,8 @@
 
 class Font{
     private:
-        int char_cnt; 
-        char start_char; 
+        const int char_cnt = 126-32; 
+        const char start_char  =32; 
         
          
     public:
@@ -19,8 +19,8 @@ class Font{
         uint8_t * flash_address; 
         
         Font();
-        Font(uint8_t * flash_address); 
-        uint8_t * Get_char(char c); 
+        Font(int width, int height, uint8_t * flash_address); 
+        uint8_t * Get_char_address(char c); 
 
 
 };

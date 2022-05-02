@@ -20,7 +20,7 @@
 #include "hardware/dma.h"
 #include "Font.h"
 
-#include <string.h>
+#include <string>
 #include <queue>
 
 #define DISPLAY_COMAND 0
@@ -50,7 +50,7 @@ class Display{
   private:    
 
 
-
+    static uint8_t static_byte; 
     static int dma_channal; 
     static dma_channel_config dma_channal_config;  
 
@@ -71,7 +71,7 @@ class Display{
     static void Draw_pixel(int xpos,int ypos,uint8_t red, uint8_t green, uint8_t blue);
     static void Draw_sprite(int xpos, int ypos, Sprite sprite);
     static void Draw_char(int xpos, int ypos, Font font, char c); 
-    static void Draw_string(int xpos, int ypos, Font font, char * s);
+    static void Draw_string(int xpos, int ypos, Font font, std::string s);
     static void Clear_square(int x,int y,int width, int heigth);
     static void Clear_all();
     

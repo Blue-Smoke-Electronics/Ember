@@ -27,7 +27,7 @@ void ComandLineInterface::Update(){
 
         if (new_char == 13 ||new_char == '\n' ){ // ENTER
             printf("\r\n");
-            desifre_command(&rx_data); 
+            desifre_command(rx_data); 
             rx_data.clear(); 
 
         }
@@ -46,13 +46,13 @@ void ComandLineInterface::Update(){
     }
 }
 
-void ComandLineInterface::desifre_command(std::string * command){
+void ComandLineInterface::desifre_command(std::string command){
 
     std::string compare = "VSET";
-    if (command->rfind(compare.c_str(), 0) == 0)
+    if (command.rfind(compare.c_str(), 0) == 0)
     {
        
-        std::string value_str = command->substr(compare.length());
+        std::string value_str = command.substr(compare.length());
         float voltValue =0; 
         try
         {
@@ -74,10 +74,10 @@ void ComandLineInterface::desifre_command(std::string * command){
     }
     
     compare = "ISET";
-    if (command->rfind(compare.c_str(), 0) == 0)
+    if (command.rfind(compare.c_str(), 0) == 0)
     {
        
-        std::string value_str = command->substr(compare.length());
+        std::string value_str = command.substr(compare.length());
         float curretnValue =0; 
         try
         {
@@ -99,7 +99,7 @@ void ComandLineInterface::desifre_command(std::string * command){
     }
         
     compare = "ON";
-    if (command->rfind(compare.c_str(), 0) == 0)
+    if (command.rfind(compare.c_str(), 0) == 0)
     {
         printf("turning on Powersupply \n\r");
         //psu_start();
@@ -108,7 +108,7 @@ void ComandLineInterface::desifre_command(std::string * command){
     }
 
     compare = "OFF";
-    if (command->rfind(compare.c_str(), 0) == 0)
+    if (command.rfind(compare.c_str(), 0) == 0)
     {
         printf("turning off Powersupply \n\r");
         //psu_stop();
@@ -117,7 +117,7 @@ void ComandLineInterface::desifre_command(std::string * command){
     }
 
     compare = "IGET";
-    if (command->rfind(compare.c_str(), 0) == 0)
+    if (command.rfind(compare.c_str(), 0) == 0)
     {
         float current = 1337;//analog_get_current();
         char  s [20]; 
@@ -127,7 +127,7 @@ void ComandLineInterface::desifre_command(std::string * command){
     }
 
         compare = "VGET";
-    if (command->rfind(compare.c_str(), 0) == 0)
+    if (command.rfind(compare.c_str(), 0) == 0)
     {
         float current = 1337;//analog_get_voltage();
         char  s [20]; 
@@ -137,7 +137,7 @@ void ComandLineInterface::desifre_command(std::string * command){
     }
 
     compare = "BATGET";
-    if (command->rfind(compare.c_str(), 0) == 0)
+    if (command.rfind(compare.c_str(), 0) == 0)
     {
         float current = 1337;//battery_get_procentage();
         char  s [20]; 
@@ -147,18 +147,32 @@ void ComandLineInterface::desifre_command(std::string * command){
     }
     
     compare = "FLASHLOADBOOTSCREEN";
-    if (command->rfind(compare.c_str(), 0) == 0)
+    if (command.rfind(compare.c_str(), 0) == 0)
     {
         Flash::Load(Flash::bootscreen);
         return;
     }
 
         compare = "FLASHLOADLOGO";
-    if (command->rfind(compare.c_str(), 0) == 0)
+    if (command.rfind(compare.c_str(), 0) == 0)
     {
         Flash::Load(Flash::logo);
         return;
     }
 
-    printf("invalid comand: %s \r\n", command->c_str()); 
+    compare = "FLASHLOADSMALLFONT";
+    if (command.rfind(compare.c_str(), 0) == 0)
+    {
+        Flash::Load(Flash::smalFont);
+        return;
+    }
+
+    compare = "FLASHLOADBIGFONT";
+    if (command.rfind(compare.c_str(), 0) == 0)
+    {
+        Flash::Load(Flash::bigFont);
+        return;
+    }
+
+    printf("invalid comand: %s \r\n", command.c_str()); 
 }

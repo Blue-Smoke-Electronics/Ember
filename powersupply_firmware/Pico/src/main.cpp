@@ -14,6 +14,7 @@
 #include "Hartbeat.h"
 #include "ComandlineInterface.h"
 #include "GUI.h"
+#include "PSU.h"
 
 
 int main() {

@@ -20,6 +20,8 @@
 #include "Pcb.h"
 
 
+
+
 int Display::dma_channal; 
 dma_channel_config Display::dma_channal_config; 
 
@@ -27,13 +29,10 @@ const int Display::height = 320;
 const int Display::width = 480; 
 
 std::queue<SpiData> Display::spiQuie = std::queue<SpiData>();
+uint8_t Display::static_byte; 
 
 void Display::WriteComm(uint8_t data){
-
-    
     Push_to_spiQueue(SpiData(true,data));
-
-
 }
 void Display::WriteData(uint8_t data){
     Push_to_spiQueue(SpiData(false,data));
@@ -206,12 +205,10 @@ void Display::Clear_square(int x,int y,int width, int heigth){
     
     // draw pixels
     WriteComm(0x2c);
-        printf("queqe_size cc= %d\r\n", spiQuie.size());
     Push_to_spiQueue(SpiData(0xFF,width*heigth*3));
-        printf("queqe_sizebb = %d\r\n", spiQuie.size());
 
     WriteComm(0x0); // nop, signals that transmition is done. 
-    gpio_put(Pcb::display_NCS_pin, 1);
+   
 }
 void Display::Draw_sprite(int x, int y, Sprite sprite){
     if (x+sprite.width >= width && y+sprite.height >= height && x < 0 && y <0){
@@ -241,7 +238,19 @@ void Display::Draw_sprite(int x, int y, Sprite sprite){
     Push_to_spiQueue(SpiData(sprite.flash_address,sprite.size));
 
     WriteComm(0x0); // nop, signals that transmition is done. 
-    gpio_put(Pcb::display_NCS_pin, 1);
+}
+
+void Display::Draw_char(int xpos, int ypos, Font font, char c){
+    
+    Sprite char_img = Sprite(font.char_widht,font.char_height,font.Get_char_address(c));
+    Draw_sprite(xpos,ypos,char_img);
+}
+void Display::Draw_string(int xpos, int ypos, Font font, std::string s){
+    int pos = xpos; 
+    for (int i = 0; i < s.length() ; i++){
+        Draw_char(pos,ypos,font,s[i]);
+        pos += font.char_widht; 
+    }
 }
 
 void Display::Clear_all(){
@@ -259,9 +268,10 @@ void Display::Update(){
         return; 
     }
     
-
+    
     SpiData data = spiQuie.front();
     spiQuie.pop();
+    
   
     gpio_put(Pcb::display_NCS_pin,0);
 
@@ -279,14 +289,15 @@ void Display::Update(){
         channel_config_set_read_increment(&dma_channal_config,true);
     }
 
-
+    
     if(data.useAddress){
         dma_channel_configure(dma_channal,&dma_channal_config,&spi_get_hw(spi0)->dr,data.data_ptr,data.size,true);
         //spi_write_blocking(spi0,data.data_ptr,data.size); 
  
     }
     else{
-        dma_channel_configure(dma_channal,&dma_channal_config,&spi_get_hw(spi0)->dr,&data.data,data.size,true);
+        Display::static_byte = data.data;  
+        dma_channel_configure(dma_channal,&dma_channal_config,&spi_get_hw(spi0)->dr,&Display::static_byte,data.size,true);
         //spi_write_blocking(spi0,&data.data,data.size); 
     }
     
@@ -295,8 +306,11 @@ void Display::Update(){
 
 
 void Display::Push_to_spiQueue(SpiData spiData){
-    if(spiQuie.size() < 200){
+    if(spiQuie.size() < 1000){
         spiQuie.push(spiData);
+    }
+    else{
+        printf("display quieu overflow\r\n");
     }
     
 }
@@ -305,11 +319,14 @@ void Display::Push_to_spiQueue(SpiData spiData){
 SpiData::SpiData(bool isComand, uint8_t data){
     this->isComand = isComand; 
     this->data = data;  
+    this->data_ptr = &this->data;
     this->useAddress = false; 
     this->size = 1; 
+    this->staticInput = false;  
 }
 SpiData::SpiData(uint8_t * data,int size){
     this->isComand = false; 
+    this->data = 0xFF; 
     this->data_ptr = data; 
     this->useAddress = true; 
     this->size = size; 
@@ -318,6 +335,7 @@ SpiData::SpiData(uint8_t * data,int size){
 SpiData::SpiData(uint8_t  data,int size){
     this->isComand = false; 
     this->data = data;  
+    this->data_ptr = &this->data;
     this->useAddress = false; 
     this->size = size; 
     this->staticInput = true;
