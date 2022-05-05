@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "Flash.h"
+#include "PSU.h"
 
 
 
@@ -67,9 +68,7 @@ void ComandLineInterface::desifre_command(std::string command){
             voltValue = 15.0f;    
         }
         printf("setting max Volt to %f \n\r",voltValue);
-        //psu_set_voltage(voltValue*1000);
-        //GUI_Draw_voltage_limit(voltValue*1000,false,0);
-        //eeprom_write_max_voltage_value(voltValue*1000);
+        PSU::SetVoltage(voltValue);
         return;
     }
     
@@ -92,9 +91,7 @@ void ComandLineInterface::desifre_command(std::string command){
             curretnValue = 500.0f;    
         }
         printf("setting current limit to %f \n\r",curretnValue);
-        //psu_set_current(curretnValue);
-        //GUI_Draw_current_limit(curretnValue,false,0);
-        //eeprom_write_max_current_value(curretnValue);
+        PSU::SetCurrent(curretnValue);
         return;
     }
         
@@ -102,8 +99,7 @@ void ComandLineInterface::desifre_command(std::string command){
     if (command.rfind(compare.c_str(), 0) == 0)
     {
         printf("turning on Powersupply \n\r");
-        //psu_start();
-        //GUI_Draw_on_off(true);
+        PSU::Enable();
         return;
     }
 
@@ -111,15 +107,14 @@ void ComandLineInterface::desifre_command(std::string command){
     if (command.rfind(compare.c_str(), 0) == 0)
     {
         printf("turning off Powersupply \n\r");
-        //psu_stop();
-        //GUI_Draw_on_off(false);
+        PSU::Disable();
         return;
     }
 
     compare = "IGET";
     if (command.rfind(compare.c_str(), 0) == 0)
     {
-        float current = 1337;//analog_get_current();
+        float current = PSU::getCurrent();
         char  s [20]; 
         sprintf(s,"%f\r\n",current);
         printf(s);
@@ -129,7 +124,7 @@ void ComandLineInterface::desifre_command(std::string command){
         compare = "VGET";
     if (command.rfind(compare.c_str(), 0) == 0)
     {
-        float current = 1337;//analog_get_voltage();
+        float current = PSU::getVoltage();
         char  s [20]; 
         sprintf(s,"%f\r\n",current);
         printf(s);

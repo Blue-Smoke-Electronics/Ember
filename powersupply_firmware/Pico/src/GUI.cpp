@@ -51,7 +51,7 @@ void GUI::Update(){
             }
             streamObj << std::fixed;
             streamObj << std::setprecision(2);
-            streamObj << "V Set: " << 15.0f;
+            streamObj << "V Set: " << PSU::getTargetVoltage();
             Display::Draw_string(200,15,Flash::smalFont,streamObj.str());
 
             streamObj.str("");
@@ -63,7 +63,7 @@ void GUI::Update(){
             streamObj.str("");
             streamObj.clear();
             streamObj << std::setprecision(0);
-            streamObj <<"I Set: "<< 500.0f << " mA";
+            streamObj <<"I Set: "<< PSU::getTargetCurrent() << " mA";
             Display::Draw_string(200,180,Flash::smalFont,streamObj.str());
 
             streamObj.str("");

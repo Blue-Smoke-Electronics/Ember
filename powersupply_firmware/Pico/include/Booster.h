@@ -9,7 +9,7 @@ class Booster{
         static float targetVoltage; 
         static float GetVoltage();
         static uint32_t update_timer; 
-        static int pwm_value; 
+        static float pwm_value; 
         static uint pwm_slice_num;
         
         

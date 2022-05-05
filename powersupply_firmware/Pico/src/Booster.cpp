@@ -4,10 +4,11 @@
 #include "pico/stdlib.h"
 #include "hardware/pwm.h"
 #include "Pcb.h"
+#include "stdio.h"
 
 float Booster::targetVoltage;
 uint32_t Booster::update_timer; 
-int Booster::pwm_value; 
+float Booster::pwm_value; 
 uint Booster::pwm_slice_num;
 
  void Booster::Init(){
@@ -31,21 +32,28 @@ float Booster::GetVoltage(){
      return Analog::GetBoosterVoltage(); 
  }
 
+int i=0; 
 void Booster::Update(){
     if(time_us_32() - update_timer > update_freq_us ){
            update_timer = time_us_32() ;
 
         if (GetVoltage() < targetVoltage && pwm_value < 900 ){
-            pwm_value ++; 
+            pwm_value  +=.1; 
         }
         if (GetVoltage() > targetVoltage && pwm_value > 0){
-            pwm_value --; 
+            pwm_value -=.1; 
         }
         if (GetVoltage() > targetVoltage +1){ // somtihg is wrong, turn of booster 
             pwm_value = 0; 
         }
-        pwm_set_chan_level(pwm_slice_num,pwm_gpio_to_channel(Pcb::booster_pwm_pin),pwm_value);
 
+        pwm_set_chan_level(pwm_slice_num,pwm_gpio_to_channel(Pcb::booster_pwm_pin),pwm_value);
+        i++; 
+        if(i > 1000){
+            printf("pwmval: %f booset voltage:  %f   \r\n",pwm_value,GetVoltage());
+            i=0; 
+        }
+        
     }
 }
  

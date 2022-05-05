@@ -2,9 +2,18 @@
 #include "Analog.h"
 #include "Pcb.h"
 #include "hardware/pwm.h"
+#include "stdio.h"
 
 uint LinReg::voltage_limit_pwm_slice_num;
 uint LinReg::current_limit_pwm_slice_num;
+
+uint32_t LinReg::update_timer; 
+
+float LinReg::targetVoltage =0; 
+float LinReg::targetCurrent =0; 
+
+float LinReg::voltageCorrection =0; 
+float LinReg::currentCorrection = 0; 
 
 void LinReg::Init(){
     // enable voltage pwm
@@ -19,7 +28,39 @@ void LinReg::Init(){
     pwm_set_wrap(current_limit_pwm_slice_num,10000); // 13.3kHz
     pwm_set_enabled(current_limit_pwm_slice_num,true);
 
+    // compansate for constant current draw
+    currentCorrection = -5; 
+
 }
+void LinReg::Update(){
+    if(time_us_32() - update_timer > update_freq_us ){
+        update_timer = time_us_32() ;
+
+        voltageCorrection += (targetVoltage - GetVoltage())*0.1f;  
+        if(voltageCorrection > 0.5f){
+            voltageCorrection = 0.5f;
+        }
+            if(voltageCorrection < -0.5f){
+            voltageCorrection = -0.5f;
+        }
+
+        currentCorrection += (targetCurrent - GetCurrent())*0.1f;  
+        if(currentCorrection > 50.0f){
+            currentCorrection = 50.0f;
+        }
+            if(currentCorrection < -50.0f){
+            currentCorrection = -50.0f;
+        }
+
+        
+
+       
+
+        pwm_set_chan_level(voltage_limit_pwm_slice_num,pwm_gpio_to_channel(Pcb::voltage_limit_pwm_pin),((targetVoltage+voltageCorrection)/4.7037)*(10000/3.3f));
+        pwm_set_chan_level(current_limit_pwm_slice_num,pwm_gpio_to_channel(Pcb::current_limit_pwm_pin),((targetCurrent+ currentCorrection)*2.5f)*(10/3.3f)); 
+    }
+}
+
 
 float LinReg::GetVoltage(){
     return Analog::GetOutputVoltage();
@@ -30,12 +71,12 @@ float LinReg::GetCurrent(){
 }
 
 void LinReg::SetVoltage(float voltage_V){
-    pwm_set_chan_level(voltage_limit_pwm_slice_num,pwm_gpio_to_channel(Pcb::voltage_limit_pwm_pin),(voltage_V/4.7037)*(10000/3.3f));
+    targetVoltage = voltage_V; 
 }
 
 
 void LinReg::SetCurrent(float current_mA){
-   pwm_set_chan_level(current_limit_pwm_slice_num,pwm_gpio_to_channel(Pcb::current_limit_pwm_pin),(current_mA*2.5f)*(10/3.3f)); 
+   targetCurrent = current_mA; 
 }
 
 

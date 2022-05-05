@@ -21,8 +21,13 @@ float Analog::GetTemp(){
 }
 float Analog::GetOutputCurrent(){ // output in mA
     adc_select_input(Pcb::output_current_sens_adc_channal);
-    uint16_t raw_output_current = adc_read();
-    float output_current = raw_output_current * 3.3f/(1<<12)/2.5f;
+    uint16_t raw_output_current =0; 
+    const int oversample = 1;
+    for (int i =0; i < oversample;i++){
+        raw_output_current += adc_read();
+    }
+    
+    float output_current = (raw_output_current/oversample) * 3.3f/(1<<12)/2.5f;
     return output_current*1000; 
     
 }
