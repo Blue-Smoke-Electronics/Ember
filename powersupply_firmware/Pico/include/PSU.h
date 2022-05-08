@@ -12,6 +12,8 @@ class PSU{
     static bool enabled; 
 
     public: 
+    static const float maxVoltage; 
+    static const float maxCurrent; 
     static void Init();
     static void Update();
 
@@ -22,9 +24,12 @@ class PSU{
     static float getTargetCurrent(); 
     static void SetVoltage(float voltage_V);
     static void SetCurrent(float current_mA); 
+    static void ChangeVoltage(float voltage_v);
+    static void ChangeCurrent(float current_mA);
 
     static void Enable();
     static void Disable(); 
+    static bool IsEnabled(); 
 };
 
 

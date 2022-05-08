@@ -4,7 +4,7 @@
 
 class Booster{
     private:
-        static const uint32_t update_freq_us = 1000*1; // 1kHz
+        static const uint32_t update_freq_us = 500; 
         
         static float targetVoltage; 
         static float GetVoltage();

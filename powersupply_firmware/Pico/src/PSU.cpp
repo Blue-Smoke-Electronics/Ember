@@ -1,20 +1,29 @@
 #include "PSU.h"
 #include "LinReg.h"
 #include "Booster.h"
+#include "Pcb.h"
 
 uint32_t PSU::update_timer =0; 
 float PSU::targetVoltage =0; 
 float PSU::targetCurrent =0; 
 bool PSU::enabled = false;
 
+const float PSU::maxVoltage = 15.0f; 
+const float PSU::maxCurrent = 500.0f; 
+
 void PSU::Init(){
     LinReg::Init(); 
     Booster::Init(); 
 
+    gpio_init(Pcb::ouput_on_off_led_pin);
+    gpio_set_dir(Pcb::ouput_on_off_led_pin,GPIO_OUT);
+
+
     enabled = false; 
     //todo: load from flash
-    SetVoltage(2.8f);
-    SetCurrent(110.0f);
+    SetVoltage(0.0f);
+    SetCurrent(0.0f);
+    
 
 
 
@@ -37,6 +46,8 @@ void PSU::Update(){
             LinReg::SetCurrent(0); 
             Booster::SetVoltage(0);
         }
+
+        gpio_put(Pcb::ouput_on_off_led_pin,enabled); 
         
     }
 }
@@ -71,3 +82,25 @@ void PSU::Enable(){
  void PSU::Disable(){
     enabled = false; 
  }
+
+ bool PSU::IsEnabled(){
+     return enabled; 
+ }
+void PSU::ChangeVoltage(float voltage_v){
+    targetVoltage += voltage_v; 
+    if (targetVoltage > maxVoltage){
+        targetVoltage =maxVoltage; 
+    }
+    if(targetVoltage < 0){
+        targetVoltage =0; 
+    }
+}
+void PSU::ChangeCurrent(float current_mA){
+    targetCurrent += current_mA; 
+        if (targetCurrent > maxCurrent){
+        targetCurrent =maxCurrent; 
+    }
+    if(targetCurrent < 0){
+        targetCurrent =0; 
+    }
+}

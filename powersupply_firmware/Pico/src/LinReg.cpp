@@ -32,6 +32,7 @@ void LinReg::Init(){
     currentCorrection = -5; 
 
 }
+int i =0; 
 void LinReg::Update(){
     if(time_us_32() - update_timer > update_freq_us ){
         update_timer = time_us_32() ;
@@ -51,9 +52,6 @@ void LinReg::Update(){
             if(currentCorrection < -50.0f){
             currentCorrection = -50.0f;
         }
-
-        
-
        
 
         pwm_set_chan_level(voltage_limit_pwm_slice_num,pwm_gpio_to_channel(Pcb::voltage_limit_pwm_pin),((targetVoltage+voltageCorrection)/4.7037)*(10000/3.3f));

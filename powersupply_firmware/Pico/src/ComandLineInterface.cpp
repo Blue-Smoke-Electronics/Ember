@@ -5,9 +5,12 @@
 #include "Flash.h"
 #include "PSU.h"
 
+int ComandLineInterface::update_timer; 
+std::string ComandLineInterface::rx_data; 
+int ComandLineInterface::rx_data_ptr; 
 
 
-ComandLineInterface::ComandLineInterface(){ 
+void ComandLineInterface::Init(){ 
     rx_data_ptr =0; 
 
 }
@@ -64,8 +67,8 @@ void ComandLineInterface::desifre_command(std::string command){
             printf("invalid input: got %s , expected a number\r\n",value_str.c_str() ); 
             return; 
         }
-        if (voltValue > 15){
-            voltValue = 15.0f;    
+        if (voltValue > PSU::maxVoltage){
+            voltValue = PSU::maxVoltage;    
         }
         printf("setting max Volt to %f \n\r",voltValue);
         PSU::SetVoltage(voltValue);
@@ -87,8 +90,8 @@ void ComandLineInterface::desifre_command(std::string command){
             printf("invalid input: got %s , expected a number\r\n",value_str.c_str() ); 
             return; 
         }
-        if (curretnValue > 500){
-            curretnValue = 500.0f;    
+        if (curretnValue > PSU::maxCurrent){
+            curretnValue = PSU::maxCurrent;    
         }
         printf("setting current limit to %f \n\r",curretnValue);
         PSU::SetCurrent(curretnValue);

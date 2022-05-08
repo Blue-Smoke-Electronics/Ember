@@ -16,24 +16,27 @@
 #include "GUI.h"
 #include "PSU.h"
 #include "Analog.h"
+#include "Knobs.h"
 
 
 int main() {
     // keap device powered on, need to be the frist thin that happens 
-    Onoff onoff = Onoff(); 
+    Onoff::Init(); 
     
     stdio_init_all();    
 
     Hartbeat hartbeat = Hartbeat(); 
     Analog::Init(); 
     PSU::Init(); 
-    ComandLineInterface cli = ComandLineInterface();
-    GUI gui = GUI(); 
+    ComandLineInterface::Init();
+    GUI::Init();
+    Knobs::Init();
 
 
 
-    PSU::SetVoltage(3.0f);
+    PSU::SetVoltage(5.0f);
     PSU::SetCurrent(150.0f);
+    PSU::Enable();
 
 
     while (true) {
@@ -42,9 +45,10 @@ int main() {
         hartbeat.Update(); 
     
         PSU::Update(); 
-        cli.Update();
-        gui.Update();
+        ComandLineInterface::Update();
+        GUI::Update();
         Display::Update();
+        Knobs::Update(); 
         
 
 

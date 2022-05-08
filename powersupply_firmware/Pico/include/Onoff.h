@@ -5,12 +5,11 @@
 
 class Onoff{
     private: 
-        void turn_off_device();
-        static void IRS(uint gpio, uint32_t event);
-        static uint32_t debounce_timestamp; 
+        
 
     public: 
-        Onoff(); 
+        static void Init(); 
+        static void Turn_off_device();
 
 };
 

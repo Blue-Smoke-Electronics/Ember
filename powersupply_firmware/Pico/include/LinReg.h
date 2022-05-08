@@ -14,7 +14,7 @@ class LinReg{
     static float voltageCorrection; 
     static float currentCorrection; 
 
-    static const uint32_t update_freq_us = 1000*10; 
+    static const uint32_t update_freq_us = 1000*1; 
     static uint32_t update_timer; 
 
     public: 

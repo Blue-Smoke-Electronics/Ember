@@ -5,16 +5,16 @@
 
 class ComandLineInterface{
     private:
-        const int update_freq_us = 1000*10; 
-        int update_timer; 
-        std::string rx_data; 
-        int rx_data_ptr; 
+        static const int update_freq_us = 1000*10; 
+        static int update_timer; 
+        static std::string rx_data; 
+        static int rx_data_ptr; 
 
-        void desifre_command(std::string command);
+        static void desifre_command(std::string command);
 
     public: 
-        ComandLineInterface();
-        void Update();
+        static void Init();
+        static void Update();
 
 };
 

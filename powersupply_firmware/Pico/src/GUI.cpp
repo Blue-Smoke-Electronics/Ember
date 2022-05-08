@@ -8,8 +8,23 @@
 
 #include "PSU.h"
 
+Font GUI::big_font; 
+Font GUI::Smal_font;
+Sprite GUI::logo; 
 
-GUI::GUI(){
+GUI::State GUI::state; 
+uint32_t GUI::boot_start_time; 
+
+bool GUI::newState; 
+
+uint32_t GUI::update_timer;
+
+
+float GUI::voltageScaler; 
+float GUI::currentScaler; 
+
+
+void GUI::Init(){
     Display::Init();
 
     update_timer = 0; 
@@ -95,6 +110,21 @@ void GUI::Update(){
     }
 }
 
+
+void GUI::ChangeVoltageScaler(){
+
+}
+ 
+void GUI::ChangeCurrentScaler(){
+    
+}
+
+float GUI::GetVoltageScaler(){
+    return 1; 
+} 
+float GUI::GetCurrentScaler(){
+    return 1; 
+}
 
 
 
