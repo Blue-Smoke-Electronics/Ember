@@ -33,6 +33,7 @@ add_executable(${PROJECT_NAME}
     src/Booster.cpp
     src/Analog.cpp
     src/Knobs.cpp
+    src/Battery.cpp
 )
 
 # Create C header file with the name <pio program>.pio.h

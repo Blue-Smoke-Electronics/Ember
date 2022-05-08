@@ -68,7 +68,8 @@
         "streambuf": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "istream": "cpp"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

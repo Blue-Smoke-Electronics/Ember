@@ -17,6 +17,7 @@
 #include "PSU.h"
 #include "Analog.h"
 #include "Knobs.h"
+#include "Battery.h"
 
 
 int main() {
@@ -31,12 +32,8 @@ int main() {
     ComandLineInterface::Init();
     GUI::Init();
     Knobs::Init();
+    Battery::Init; 
 
-
-
-    PSU::SetVoltage(5.0f);
-    PSU::SetCurrent(150.0f);
-    PSU::Enable();
 
 
     while (true) {
@@ -47,8 +44,8 @@ int main() {
         PSU::Update(); 
         ComandLineInterface::Update();
         GUI::Update();
-        Display::Update();
         Knobs::Update(); 
+        Battery::Update(); 
         
 
 

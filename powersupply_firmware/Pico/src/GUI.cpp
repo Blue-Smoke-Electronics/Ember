@@ -36,6 +36,8 @@ void GUI::Init(){
 
 }
 void GUI::Update(){
+    Display::Update();
+
     if(time_us_32() - update_timer > update_freq_us )
     {
         update_timer = time_us_32(); 
@@ -62,6 +64,8 @@ void GUI::Update(){
             if (newState){
                 newState = false; 
                 Display::Clear_all();
+                Display::Draw_sprite(100,20,Flash::logo);
+
 
             }
             streamObj << std::fixed;
@@ -93,6 +97,13 @@ void GUI::Update(){
             streamObj <<"Power: "<< PSU::getPower() << "W";
             Display::Draw_string(200,125,Flash::smalFont,streamObj.str());
 
+            if(PSU::IsEnabled()){
+                Display::Draw_sprite(20,Display::height-Flash::outputOnSymbol.height-20 ,Flash::outputOnSymbol);
+            }
+            else{
+                Display::Draw_sprite(20,Display::height-Flash::outputOnSymbol.height-20,Flash::outputOffSymbol);
+            }
+            
             //state = State::booting;
             //newState = true; 
 

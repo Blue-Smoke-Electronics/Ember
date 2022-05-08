@@ -272,6 +272,7 @@ void Display::Update(){
     SpiData data = spiQuie.front();
     spiQuie.pop();
     
+    
   
     gpio_put(Pcb::display_NCS_pin,0);
 

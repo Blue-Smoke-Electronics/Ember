@@ -6,16 +6,20 @@
 
 #include "hardware/sync.h"
 
-uint8_t * Flash::end_of_program_memory = (uint8_t *)XIP_BASE+Pcb::flash_size_bytes/2 -Pcb::flash_size_bytes% FLASH_SECTOR_SIZE; 
+uint8_t * Flash::end_of_program_memory = get_next_avilable_address((uint8_t *)XIP_BASE+Pcb::flash_size_bytes/2 ,0); 
 
 Sprite Flash::bootscreen = Sprite(480,320,end_of_program_memory); 
-Sprite Flash::logo = Sprite(30,24,Flash::bootscreen.flash_address+Flash::bootscreen.size+FLASH_SECTOR_SIZE-Flash::bootscreen.size%FLASH_SECTOR_SIZE); 
+Sprite Flash::logo = Sprite(30,24,get_next_avilable_address(bootscreen)); 
 
-Font Flash::bigFont =  Font(32,50, Flash::logo.flash_address+Flash::logo.size+FLASH_SECTOR_SIZE-Flash::logo.size%FLASH_SECTOR_SIZE);
- Font Flash::smalFont =  Font(16,25, Flash::bigFont.flash_address+Flash::bigFont.size+FLASH_SECTOR_SIZE-Flash::bigFont.size%FLASH_SECTOR_SIZE); 
+Font Flash::bigFont =  Font(32,50, get_next_avilable_address(logo));
+Font Flash::smalFont =  Font(16,25, get_next_avilable_address(bigFont)); 
 
+Sprite Flash::outputOnSymbol = Sprite(64,64, get_next_avilable_address(smalFont));
+Sprite Flash::outputOffSymbol = Sprite(64,64, get_next_avilable_address(outputOnSymbol));
 
-
+float * Flash::batteryCapacity = (float*)get_next_avilable_address(outputOffSymbol);
+float * Flash::outputVoltage = (float*)get_next_avilable_address(batteryCapacity);
+float * Flash::outputCurrent = (float*)get_next_avilable_address(outputVoltage);
 
 uint8_t *Flash:: write_address; 
 int Flash::cnt_since_program;
@@ -67,6 +71,19 @@ void Flash::stream_byte(uint8_t data){
     }
 }
 
+void Flash::Save(float * address, float data){
+    
+    uint32_t  a = ((uint32_t)address-(uint32_t)XIP_BASE);
+    printf("adress :%#010x  a %#010x  Flash::outputOffSymbol %#10x\r\n",(uint32_t)address,a,(uint32_t)Flash::outputOffSymbol.flash_address); 
+    flash_range_erase(a, FLASH_SECTOR_SIZE);
+    write_buffer[0] = ((uint8_t*)(&data))[0]; 
+    write_buffer[1] = ((uint8_t*)(&data))[1]; 
+    write_buffer[2] = ((uint8_t*)(&data))[2]; 
+    write_buffer[3] = ((uint8_t*)(&data))[3]; 
+    flash_range_program(a, write_buffer, FLASH_PAGE_SIZE);
+
+}
+
 void Flash::Load(Sprite sprite){
     start_data_stream(sprite.flash_address);
     for (int i=0; i< sprite.size;i++){
@@ -87,3 +104,17 @@ void Flash::Load(Font font){
     }
     stop_data_stream();
 }
+
+uint8_t * Flash::get_next_avilable_address(Font font){
+    return get_next_avilable_address(font.flash_address,font.size);
+}
+uint8_t * Flash::get_next_avilable_address(Sprite sprite){
+    return get_next_avilable_address(sprite.flash_address,sprite.size);
+} 
+uint8_t * Flash::get_next_avilable_address(uint8_t * address, int size){
+    return address+size+FLASH_SECTOR_SIZE-size%FLASH_SECTOR_SIZE; 
+}
+uint8_t * Flash::get_next_avilable_address(float * address){
+    return get_next_avilable_address((uint8_t * )address,1); 
+}
+

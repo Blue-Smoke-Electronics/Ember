@@ -2,6 +2,7 @@
 #include "LinReg.h"
 #include "Booster.h"
 #include "Pcb.h"
+#include "Flash.h"
 
 uint32_t PSU::update_timer =0; 
 float PSU::targetVoltage =0; 
@@ -21,8 +22,8 @@ void PSU::Init(){
 
     enabled = false; 
     //todo: load from flash
-    SetVoltage(0.0f);
-    SetCurrent(0.0f);
+    SetVoltage(*Flash::outputVoltage);
+    SetCurrent(*Flash::outputCurrent);
     
 
 

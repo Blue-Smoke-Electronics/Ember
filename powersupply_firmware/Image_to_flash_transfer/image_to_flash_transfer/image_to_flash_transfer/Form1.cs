@@ -47,6 +47,10 @@ namespace image_to_flash_transfer
         {
             port.Write(loadComand +"\n");
             string line = port.ReadLine();
+            while (!line.Contains(loadComand))
+            {
+                line = port.ReadLine(); 
+            }
             int i = 0; 
             while (i < data.Length)
             {
@@ -110,6 +114,18 @@ namespace image_to_flash_transfer
         private void button4_Click(object sender, EventArgs e)
         {
             load_to_flash("FLASHLOADBIGFONT", font_to_data(new Font("Consolas", 32)));
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Bitmap img = new Bitmap("../../../../output_on_symbol.png");
+            load_to_flash("OUTPUTONSYMBOL", bitmap_to_data(img));
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Bitmap img = new Bitmap("../../../../output_off_symbol.png");
+            load_to_flash("OUTPUTOFFSYMBOL", bitmap_to_data(img));
         }
     }
 }

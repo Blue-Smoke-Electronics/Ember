@@ -172,5 +172,21 @@ void ComandLineInterface::desifre_command(std::string command){
         return;
     }
 
+    compare = "OUTPUTONSYMBOL";
+    if (command.rfind(compare.c_str(), 0) == 0)
+    {
+        Flash::Load(Flash::outputOnSymbol);
+        return;
+    }
+
+
+    compare = "OUTPUTOFFSYMBOL";
+    if (command.rfind(compare.c_str(), 0) == 0)
+    {
+        Flash::Load(Flash::outputOffSymbol);
+        return;
+    }
+
+
     printf("invalid comand: %s \r\n", command.c_str()); 
 }
