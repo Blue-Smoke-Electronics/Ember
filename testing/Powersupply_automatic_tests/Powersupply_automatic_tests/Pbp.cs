@@ -14,7 +14,9 @@ namespace Powersupply_automatic_tests
         SerialPort port;
         public Pbp()
         {
-            port = new SerialPort("COM19", 256000, Parity.None, 8, StopBits.One);
+            port = new SerialPort("COM22", 115200, Parity.None, 8, StopBits.One);
+            port.RtsEnable = true;
+            port.DtrEnable = true;
             //port.WriteTimeout = 1000; 
         }
         ~Pbp()
@@ -60,6 +62,8 @@ namespace Powersupply_automatic_tests
         {
             if (port.IsOpen)
             {
+                
+                
                 port.WriteLine("VSET " + V.ToString());
                 System.Threading.Thread.Sleep(100);
                 port.DiscardInBuffer(); // remove reply form inputbuffer

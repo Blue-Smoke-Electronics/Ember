@@ -4,6 +4,7 @@
 #include <string.h>
 #include "Flash.h"
 #include "PSU.h"
+#include "Battery.h"
 
 int ComandLineInterface::update_timer; 
 std::string ComandLineInterface::rx_data; 
@@ -134,10 +135,20 @@ void ComandLineInterface::desifre_command(std::string command){
         return;
     }
 
-    compare = "BATGET";
+    compare = "BATGETP";
     if (command.rfind(compare.c_str(), 0) == 0)
     {
-        float current = 1337;//battery_get_procentage();
+        float current = Battery::GetBatteryProcentage();
+        char  s [20]; 
+        sprintf(s,"%f\r\n",current);
+        printf(s);
+        return;
+    }
+
+    compare = "BATGETV";
+    if (command.rfind(compare.c_str(), 0) == 0)
+    {
+        float current = Battery::GetVoltage();
         char  s [20]; 
         sprintf(s,"%f\r\n",current);
         printf(s);

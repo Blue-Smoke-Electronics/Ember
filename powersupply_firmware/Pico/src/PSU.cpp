@@ -40,7 +40,7 @@ void PSU::Update(){
         if(enabled){
         LinReg::SetVoltage(targetVoltage);
         LinReg::SetCurrent(targetCurrent); 
-        Booster::SetVoltage(LinReg::GetVoltage()+3);
+        Booster::SetVoltage(LinReg::GetVoltage()+3.0f);
         }
         else{
             LinReg::SetVoltage(0);

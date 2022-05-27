@@ -13,10 +13,10 @@ namespace Powersupply_automatic_tests
 
         const float maxCurrent = 500; // mA 
         const float maxVoltage = 12; // V
-        const int stablisationTime = 2000; //ms
+        const int stablisationTime = 5000; //ms
 
-        const float maxVoltageError = 0.1f;
-        const float maxCurrentError = 5f;
+        const float maxVoltageError = 0.5f;
+        const float maxCurrentError = 10f;
         
         Pbp pbp;
         KonradLoad konradLoad;
@@ -88,6 +88,8 @@ namespace Powersupply_automatic_tests
                 MessageBox.Show("ERROR ConstantVoltageShortedLoadVarCurrentTest FAILED!!!");
             }
         }
+
+
 
         public void Random(int testCnt)
         {

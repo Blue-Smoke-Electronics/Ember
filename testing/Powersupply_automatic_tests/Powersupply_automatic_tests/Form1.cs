@@ -202,5 +202,13 @@ namespace Powersupply_automatic_tests
         {
             
         }
+
+        private void button1_Click_3(object sender, EventArgs e)
+        {
+            float P_in = this.konradPsu.Vget() * this.konradPsu.Iget();
+            float P_out = this.konradLoad.Vget() * this.konradLoad.Iget();
+
+            MessageBox.Show((P_out / P_in).ToString());
+        }
     }
 }

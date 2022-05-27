@@ -14,6 +14,8 @@ namespace Powersupply_automatic_tests
         public KonradPsu()
         {
             port = new SerialPort("COM15", 9600, Parity.None, 8, StopBits.One);
+            port.RtsEnable = true;
+            port.DtrEnable = true;
         }
         ~KonradPsu()
         {
@@ -43,7 +45,7 @@ namespace Powersupply_automatic_tests
         {
             if (port.IsOpen)
             {
-                port.WriteLine("ISET " + V.ToString());
+                port.WriteLine("ISET1: " + V.ToString());
             }
             else
             {
@@ -56,10 +58,8 @@ namespace Powersupply_automatic_tests
         {
             if (port.IsOpen)
             {
-                port.Write("VGET\n");
+                port.Write("VOUT1?\n");
 
-                string echo = port.ReadLine();
-                string chargereturn1 = port.ReadLine();
                 string data = port.ReadLine();
                 return float.Parse(data);
             }
@@ -73,12 +73,11 @@ namespace Powersupply_automatic_tests
             if (port.IsOpen)
             {
 
-                port.WriteLine("Iget");
-                string echo = port.ReadLine();
-                string chargereturn1 = port.ReadLine();
+                port.WriteLine("IOUT1?");
+
                 string response = port.ReadLine();
 
-                return float.Parse(response);
+                return float.Parse(response)*1000;
             }
             else
             {
