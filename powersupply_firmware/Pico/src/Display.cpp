@@ -159,17 +159,17 @@ void Display::Draw_pixel(int x,int y,uint8_t red, uint8_t green, uint8_t blue){
     }
     // set colomn 
     WriteComm(0x2b);
-    WriteData(x>>8);
-    WriteData(x);
-    WriteData((x+1)>>8);
-    WriteData(x+1);
-    
-    //set row
-    WriteComm(0x2a);
     WriteData(y>>8);
     WriteData(y);
     WriteData((y+1)>>8);
     WriteData(y+1);
+    
+    //set row
+    WriteComm(0x2a);
+    WriteData(x>>8);
+    WriteData(x);
+    WriteData((x+1)>>8);
+    WriteData(x+1);
     
     // draw pixel
     WriteComm(0x2c);

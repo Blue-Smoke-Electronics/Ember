@@ -7,6 +7,7 @@
 #include <iomanip>
 
 #include "PSU.h"
+#include "Battery.h"
 
 Font GUI::big_font; 
 Font GUI::Smal_font;
@@ -32,6 +33,9 @@ void GUI::Init(){
     
     state = State::booting; 
     newState = true; 
+
+    voltageScaler =1.0f; 
+    currentScaler =1.0f; 
 
 
 }
@@ -64,14 +68,25 @@ void GUI::Update(){
             if (newState){
                 newState = false; 
                 Display::Clear_all();
-                Display::Draw_sprite(100,20,Flash::logo);
+                for (int i = 100 ; i < 380;i+=50){
+                    Display::Draw_sprite(i,280,Flash::logo);
+                }
 
 
             }
-            streamObj << std::fixed;
-            streamObj << std::setprecision(2);
-            streamObj << "V Set: " << PSU::getTargetVoltage();
-            Display::Draw_string(200,15,Flash::smalFont,streamObj.str());
+            streamObj <<std::fixed<< std::setprecision(2);
+            streamObj << "V Set:" <<  std::setw(5)<< PSU::getTargetVoltage();
+            Display::Draw_string(200,15,Flash::smalFont,streamObj.str()); 
+            if(voltageScaler <= 0.01f){
+                Display::Draw_sprite(200+Flash::smalFont.char_widht*10,38,Flash::selectedMarker);
+            }
+            else if(voltageScaler <= 0.1f){
+                Display::Draw_sprite(200+Flash::smalFont.char_widht*9,38,Flash::selectedMarker);
+            }
+            else if(voltageScaler <= 1.0f){
+                Display::Draw_sprite(200+Flash::smalFont.char_widht*7,38,Flash::selectedMarker);
+            }
+            
 
             streamObj.str("");
             streamObj.clear();
@@ -82,14 +97,24 @@ void GUI::Update(){
             streamObj.str("");
             streamObj.clear();
             streamObj << std::setprecision(0);
-            streamObj <<"I Set: "<< PSU::getTargetCurrent() << " mA";
+            streamObj <<"I Set: "<< std::setw(4)<< PSU::getTargetCurrent() << " mA";
             Display::Draw_string(200,180,Flash::smalFont,streamObj.str());
+            if(currentScaler <= 1.0f){
+                Display::Draw_sprite(200+Flash::smalFont.char_widht*10,203,Flash::selectedMarker);
+            }
+            else if(currentScaler <= 10.0f){
+                Display::Draw_sprite(200+Flash::smalFont.char_widht*9,203,Flash::selectedMarker);
+            }
+            else if(currentScaler <= 100.0f){
+                Display::Draw_sprite(200+Flash::smalFont.char_widht*8,203,Flash::selectedMarker);
+            }
+            
 
             streamObj.str("");
             streamObj.clear();
             streamObj << std::setw(4)<<PSU::getCurrent()<< "mA";
             Display::Draw_string(240,210,Flash::bigFont,streamObj.str());
-
+            
                        
              streamObj.str("");
             streamObj.clear();
@@ -97,6 +122,7 @@ void GUI::Update(){
             streamObj <<"Power: "<< PSU::getPower() << "W";
             Display::Draw_string(200,125,Flash::smalFont,streamObj.str());
 
+            
             if(PSU::IsEnabled()){
                 Display::Draw_sprite(20,Display::height-Flash::outputOnSymbol.height-20 ,Flash::outputOnSymbol);
             }
@@ -104,6 +130,40 @@ void GUI::Update(){
                 Display::Draw_sprite(20,Display::height-Flash::outputOnSymbol.height-20,Flash::outputOffSymbol);
             }
             
+
+            streamObj.str("");
+            streamObj.clear();
+            streamObj << std::setprecision(0)<< std::setw(3);
+            streamObj <<Battery::GetBatteryProcentage() << "%";
+            Display::Draw_string(50,10,Flash::smalFont,streamObj.str());
+
+
+            streamObj.str("");
+            streamObj.clear();
+            streamObj << std::setprecision(0);
+            streamObj << std::setw(2)<<(int)Battery::GetBatteryLife_s()/3600 << "h" << std::setw(2)<< ((int)Battery::GetBatteryLife_s()%3600 )/60 <<"m";
+            Display::Draw_string(50,20+Flash::smalFont.char_height,Flash::smalFont,streamObj.str());
+
+            if(Battery::GetBatteryProcentage() > 75){
+                Display::Draw_sprite(10,20,Flash::batterySymbolHigh);
+            }
+            else if(Battery::GetBatteryProcentage() > 50){
+                Display::Draw_sprite(10,20,Flash::batterySymbolMedHigh);
+            }
+            else if(Battery::GetBatteryProcentage() > 25){
+                Display::Draw_sprite(10,20,Flash::batterySymbolMedLow);
+            }
+            else if(Battery::GetBatteryProcentage() > 0){
+                Display::Draw_sprite(10,20,Flash::batterySymbolLow);
+            }
+            else{
+                Display::Draw_sprite(10,20,Flash::batterySymbolEmpty);
+            }
+
+            if(Battery::IsCharging()){
+                Display::Draw_sprite(13,30,Flash::batteryChargingSymbol);
+            }
+
             //state = State::booting;
             //newState = true; 
 
@@ -123,18 +183,26 @@ void GUI::Update(){
 
 
 void GUI::ChangeVoltageScaler(){
-
+    voltageScaler /= 10; 
+    if (voltageScaler< 0.01f){
+        voltageScaler = 1.00f; 
+    }
+   
 }
  
 void GUI::ChangeCurrentScaler(){
-    
+    currentScaler /= 10; 
+    if (currentScaler< 1.0f){
+        currentScaler = 100.0f; 
+    }
+   
 }
 
 float GUI::GetVoltageScaler(){
-    return 1; 
+    return voltageScaler; 
 } 
 float GUI::GetCurrentScaler(){
-    return 1; 
+    return currentScaler; 
 }
 
 

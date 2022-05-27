@@ -172,7 +172,7 @@ void ComandLineInterface::desifre_command(std::string command){
         return;
     }
 
-    compare = "OUTPUTONSYMBOL";
+    compare = "FLASHLOADOUTPUTONSYMBOL";
     if (command.rfind(compare.c_str(), 0) == 0)
     {
         Flash::Load(Flash::outputOnSymbol);
@@ -180,10 +180,58 @@ void ComandLineInterface::desifre_command(std::string command){
     }
 
 
-    compare = "OUTPUTOFFSYMBOL";
+    compare = "FLASHLOADOUTPUTOFFSYMBOL";
     if (command.rfind(compare.c_str(), 0) == 0)
     {
         Flash::Load(Flash::outputOffSymbol);
+        return;
+    }
+
+        compare = "FLASHLOADBATTERYSYMBOLLOW";
+    if (command.rfind(compare.c_str(), 0) == 0)
+    {
+        Flash::Load(Flash::batterySymbolLow);
+        return;
+    }
+
+        compare = "FLASHLOADBATTERYSYMBOLMEDLOW";
+    if (command.rfind(compare.c_str(), 0) == 0)
+    {
+        Flash::Load(Flash::batterySymbolMedLow);
+        return;
+    }
+
+        compare = "FLASHLOADBATTERYSYMBOLMEDHIGH";
+    if (command.rfind(compare.c_str(), 0) == 0)
+    {
+        Flash::Load(Flash::batterySymbolMedHigh);
+        return;
+    }
+
+        compare = "FLASHLOADBATTERYSYMBOLHIGH";
+    if (command.rfind(compare.c_str(), 0) == 0)
+    {
+        Flash::Load(Flash::batterySymbolHigh);
+        return;
+    }
+
+    compare = "FLASHLOADBATTERYSYMBOLEMPTY";
+    if (command.rfind(compare.c_str(), 0) == 0)
+    {
+        Flash::Load(Flash::batterySymbolEmpty);
+        return;
+    }
+
+    compare = "FLASHLOADSELECTEDMARKER";
+    if (command.rfind(compare.c_str(), 0) == 0)
+    {
+        Flash::Load(Flash::selectedMarker);
+        return;
+    }
+        compare = "FLASHLOADBATTERYCHARGINGSYMBOL";
+    if (command.rfind(compare.c_str(), 0) == 0)
+    {
+        Flash::Load(Flash::batteryChargingSymbol);
         return;
     }
 

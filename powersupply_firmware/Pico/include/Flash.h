@@ -36,6 +36,15 @@ class Flash{
         static Sprite outputOnSymbol; 
         static Sprite outputOffSymbol; 
 
+        static Sprite batterySymbolLow;
+        static Sprite batterySymbolMedLow;
+        static Sprite batterySymbolMedHigh;
+        static Sprite batterySymbolHigh;
+        static Sprite batterySymbolEmpty;
+        static Sprite batteryChargingSymbol; 
+
+        static Sprite selectedMarker;
+
         static float *  batteryCapacity; 
         static float * outputVoltage; 
         static float * outputCurrent; 

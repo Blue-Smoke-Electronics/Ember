@@ -69,7 +69,10 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "queue": "cpp",
-        "istream": "cpp"
+        "istream": "cpp",
+        "ctime": "cpp",
+        "iomanip": "cpp",
+        "sstream": "cpp"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

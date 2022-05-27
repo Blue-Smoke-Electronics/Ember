@@ -119,13 +119,55 @@ namespace image_to_flash_transfer
         private void button5_Click(object sender, EventArgs e)
         {
             Bitmap img = new Bitmap("../../../../output_on_symbol.png");
-            load_to_flash("OUTPUTONSYMBOL", bitmap_to_data(img));
+            load_to_flash("FLASHLOADOUTPUTONSYMBOL", bitmap_to_data(img));
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
             Bitmap img = new Bitmap("../../../../output_off_symbol.png");
-            load_to_flash("OUTPUTOFFSYMBOL", bitmap_to_data(img));
+            load_to_flash("FLASHLOADOUTPUTOFFSYMBOL", bitmap_to_data(img));
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            Bitmap img = new Bitmap("../../../../battery_low.png");
+            load_to_flash("FLASHLOADBATTERYSYMBOLLOW", bitmap_to_data(img));
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            Bitmap img = new Bitmap("../../../../battery_med_low.png");
+            load_to_flash("FLASHLOADBATTERYSYMBOLMEDLOW", bitmap_to_data(img));
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            Bitmap img = new Bitmap("../../../../battery_med_high.png");
+            load_to_flash("FLASHLOADBATTERYSYMBOLMEDHIGH", bitmap_to_data(img));
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            Bitmap img = new Bitmap("../../../../battery_high.png");
+            load_to_flash("FLASHLOADBATTERYSYMBOLHIGH", bitmap_to_data(img));
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            Bitmap img = new Bitmap("../../../../battery_empty.png");
+            load_to_flash("FLASHLOADBATTERYSYMBOLEMPTY", bitmap_to_data(img));
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            Bitmap img = new Bitmap("../../../../selectedmarker.png");
+            load_to_flash("FLASHLOADSELECTEDMARKER", bitmap_to_data(img));
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            Bitmap img = new Bitmap("../../../../charging_symbol.png");
+            load_to_flash("FLASHLOADBATTERYCHARGINGSYMBOL", bitmap_to_data(img));
         }
     }
 }

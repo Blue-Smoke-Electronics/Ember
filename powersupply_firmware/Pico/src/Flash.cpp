@@ -21,6 +21,16 @@ float * Flash::batteryCapacity = (float*)get_next_avilable_address(outputOffSymb
 float * Flash::outputVoltage = (float*)get_next_avilable_address(batteryCapacity);
 float * Flash::outputCurrent = (float*)get_next_avilable_address(outputVoltage);
 
+
+Sprite Flash::batterySymbolLow = Sprite(26,50, get_next_avilable_address(outputCurrent));
+Sprite Flash::batterySymbolMedLow = Sprite(26,50, get_next_avilable_address(batterySymbolLow)); 
+Sprite Flash::batterySymbolMedHigh = Sprite(26,50, get_next_avilable_address(batterySymbolMedLow));
+Sprite Flash::batterySymbolHigh = Sprite(26,50, get_next_avilable_address(batterySymbolMedHigh));
+Sprite Flash::batterySymbolEmpty = Sprite(26,50, get_next_avilable_address(batterySymbolHigh));
+Sprite Flash::batteryChargingSymbol = Sprite(19,29, get_next_avilable_address(batterySymbolEmpty));
+
+Sprite Flash::selectedMarker = Sprite(16,2, get_next_avilable_address(batteryChargingSymbol));
+
 uint8_t *Flash:: write_address; 
 int Flash::cnt_since_program;
 int Flash::cnt_since_erase;
@@ -72,7 +82,7 @@ void Flash::stream_byte(uint8_t data){
 }
 
 void Flash::Save(float * address, float data){
-    
+    uint32_t ints = save_and_disable_interrupts();// todo disable dual core
     uint32_t  a = ((uint32_t)address-(uint32_t)XIP_BASE);
     printf("adress :%#010x  a %#010x  Flash::outputOffSymbol %#10x\r\n",(uint32_t)address,a,(uint32_t)Flash::outputOffSymbol.flash_address); 
     flash_range_erase(a, FLASH_SECTOR_SIZE);
@@ -81,6 +91,7 @@ void Flash::Save(float * address, float data){
     write_buffer[2] = ((uint8_t*)(&data))[2]; 
     write_buffer[3] = ((uint8_t*)(&data))[3]; 
     flash_range_program(a, write_buffer, FLASH_PAGE_SIZE);
+    restore_interrupts (ints);
 
 }
 

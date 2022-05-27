@@ -65,11 +65,11 @@ void Knobs::IRS(uint gpio, uint32_t events){
                 on_off_switch_is_pushed = true; 
             break;  
         case Pcb::encoder_voltage_switch_pin:
-
+            GUI::ChangeVoltageScaler();
             break; 
 
         case Pcb::encoder_current_switch_pin:
-
+            GUI::ChangeCurrentScaler(); 
             break; 
         case Pcb::encoder_voltage_A_pin: 
             if (gpio_get(Pcb::encoder_voltage_B_pin)){
