@@ -5,11 +5,12 @@
 
 class Onoff{
     private: 
-        
+        static bool watchdogenabled; 
 
     public: 
         static void Init(); 
         static void Turn_off_device();
+        static void KeepAlive(); 
 
 };
 
