@@ -26,20 +26,26 @@ uint Booster::pwm_slice_num;
  }
  void Booster::SetVoltage(float Voltage_V){
      targetVoltage = Voltage_V; 
+     //targetVoltage = 18.0f; 
  }
 
 float Booster::GetVoltage(){
      return Analog::GetBoosterVoltage(); 
  }
 
-
+uint8_t j =0; 
 void Booster::Update(){
     if(time_us_32() - update_timer > update_freq_us ){
            update_timer = time_us_32() ;
-
-        if (GetVoltage() < targetVoltage && pwm_value < 900 ){
+        /*if (j == 0 ) {
+            printf (" %f \r\n", pwm_value); 
+             
+        }
+        j++;*/
+        if (GetVoltage() < targetVoltage && pwm_value < 860 ){
             pwm_value  +=.1; 
         }
+       
         if (GetVoltage() > targetVoltage && pwm_value > 0){
             pwm_value -=.1; 
         }
