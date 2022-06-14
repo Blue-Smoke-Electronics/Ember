@@ -58,3 +58,7 @@ powersupply_firmware/Image_to_flash_transfer/image_to_flash_transfer/image_to_fl
 powersupply_firmware/Image_to_flash_transfer/image_to_flash_transfer/image_to_flash_transfer/obj/
 powersupply_firmware/Image_to_flash_transfer/image_to_flash_transfer/image_to_flash_transfer/Properties/
 encosure/inventor/rev4/PCB1_2.step
+encosure/inventor/rev4/PCB1_print.stl
+encosure/inventor/rev4/PCB1_print.step
+pcb/altium/Powersupply/jlcpcb_assembely_files/
+pcb/altium/Powersupply/Production files/
