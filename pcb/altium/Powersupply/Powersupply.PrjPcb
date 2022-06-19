@@ -234,10 +234,14 @@ DocumentPath=jlcpcb_assembely_files\2022-06-13\14-55\Bill of Materials.csv
 DItemRevisionGUID=
 
 [GeneratedDocument4]
-DocumentPath=jlcpcb_assembely_files\2022-06-13\14-55\Generates pick and place files.csv
+DocumentPath=Project Outputs for Powersupply\Design Rule Check - PCB1.html
 DItemRevisionGUID=
 
 [GeneratedDocument5]
+DocumentPath=jlcpcb_assembely_files\2022-06-13\14-55\Generates pick and place files.csv
+DItemRevisionGUID=
+
+[GeneratedDocument6]
 DocumentPath=Project Outputs for Powersupply\BOM\partsbox_bom-Powersupply.csv
 DItemRevisionGUID=
 
