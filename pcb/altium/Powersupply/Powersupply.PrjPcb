@@ -31,7 +31,7 @@ ReportSuppressedErrorsInMessages=0
 FSMCodingStyle=eFMSDropDownList_OneProcess
 FSMEncodingStyle=eFMSDropDownList_OneHot
 IsProjectConflictPreventionWarningsEnabled=1
-OutputPath=
+OutputPath=Project Outputs for Powersupply
 LogFolderPath=
 ManagedProjectGUID=8D5049B3-47BB-4F3A-B635-3E70F253D647
 VaultGUID=B14D6B2F-DA59-431E-816B-CE3BA623CFED
@@ -316,7 +316,7 @@ SCH_HasExpandLogicalToPhysicalSheets=-1
 SaveSettingsToOutJob=-1
 
 [Generic_EDE]
-OutputDir=
+OutputDir=Project Outputs for Powersupply
 
 [OutputGroup1]
 Name=Netlist Outputs
