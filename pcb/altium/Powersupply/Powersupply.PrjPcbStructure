@@ -1,3 +1,3 @@
-Record=TopLevelDocument|FileName=top.SchDoc|SheetNumber= 
-Record=SheetSymbol|SourceDocument=top.SchDoc|Designator=U_Controll|SchDesignator=U_Controll|FileName=Controll.SchDoc|SheetNumber= |SymbolType=Normal|RawFileName=Controll.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
-Record=SheetSymbol|SourceDocument=top.SchDoc|Designator=U_power|SchDesignator=U_power|FileName=power.SchDoc|SheetNumber= |SymbolType=Normal|RawFileName=power.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
+Record=TopLevelDocument|FileName=Controll.SchDoc|SheetNumber= 
+Record=NoMainPathDocument|SourceDocument=Controll.SchDoc|FileName=power.SchDoc|SheetNumber= 
+Record=NoMainPathDocument|SourceDocument=Controll.SchDoc|FileName=Regulator.SchDoc|SheetNumber= 

@@ -37,7 +37,7 @@ void LinReg::Update(){
     if(time_us_32() - update_timer > update_freq_us ){
         update_timer = time_us_32() ;
 
-        //voltageCorrection += (targetVoltage - GetVoltage())*0.1f;  
+        voltageCorrection += (targetVoltage - GetVoltage())*0.1f;  
         if(voltageCorrection > 0.5f){
             voltageCorrection = 0.5f;
         }

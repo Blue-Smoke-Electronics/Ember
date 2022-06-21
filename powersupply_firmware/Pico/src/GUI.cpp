@@ -68,11 +68,6 @@ void GUI::Update(){
             if (newState){
                 newState = false; 
                 Display::Clear_all();
-                for (int i = 100 ; i < 380;i+=50){
-                    Display::Draw_sprite(i,280,Flash::logo);
-                }
-
-
             }
             streamObj <<std::fixed<< std::setprecision(2);
             streamObj << "V Set:" <<  std::setw(5)<< PSU::getTargetVoltage();
