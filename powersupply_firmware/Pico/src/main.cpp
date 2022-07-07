@@ -31,14 +31,15 @@ int main() {
     PSU::Init(); 
     ComandLineInterface::Init();
     GUI::Init();
+    Battery::Init();
     Knobs::Init();
-    Battery::Init; 
+     
 
 
 
     while (true) {
         
-        Onoff::KeepAlive(); 
+        //Onoff::KeepAlive(); 
         hartbeat.Update(); 
     
         PSU::Update(); 

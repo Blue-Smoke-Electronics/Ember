@@ -84,7 +84,7 @@ void Flash::stream_byte(uint8_t data){
 void Flash::Save(float * address, float data){
     uint32_t ints = save_and_disable_interrupts();// todo disable dual core
     uint32_t  a = ((uint32_t)address-(uint32_t)XIP_BASE);
-    printf("adress :%#010x  a %#010x  Flash::outputOffSymbol %#10x\r\n",(uint32_t)address,a,(uint32_t)Flash::outputOffSymbol.flash_address); 
+    //printf("adress :%#010x  a %#010x  Flash::outputOffSymbol %#10x\r\n",(uint32_t)address,a,(uint32_t)Flash::outputOffSymbol.flash_address); 
     flash_range_erase(a, FLASH_SECTOR_SIZE);
     write_buffer[0] = ((uint8_t*)(&data))[0]; 
     write_buffer[1] = ((uint8_t*)(&data))[1]; 

@@ -18,7 +18,7 @@ namespace image_to_flash_transfer
         public Form1()
         {
             InitializeComponent();
-            port = new SerialPort("COM15", 115200, Parity.None, 8, StopBits.One);
+            port = new SerialPort("COM22", 115200, Parity.None, 8, StopBits.One);
             port.RtsEnable = true;
             port.DtrEnable = true; 
             port.Close();

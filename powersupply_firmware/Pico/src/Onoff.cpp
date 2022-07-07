@@ -26,7 +26,7 @@ void Onoff::Turn_off_device(){
     gpio_put(Pcb::on_off_latch_pin,false);
 }
 
-void Onoff::KeepAlive(){
+/*void Onoff::KeepAlive(){
     // can not be starte in init
     if (!watchdogenabled){
         watchdog_enable(1000,true);
@@ -34,4 +34,4 @@ void Onoff::KeepAlive(){
     }
     
     watchdog_update();
-}
+}*/

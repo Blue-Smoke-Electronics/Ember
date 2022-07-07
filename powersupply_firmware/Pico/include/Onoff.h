@@ -10,7 +10,7 @@ class Onoff{
     public: 
         static void Init(); 
         static void Turn_off_device();
-        static void KeepAlive(); 
+        //static void KeepAlive(); 
 
 };
 

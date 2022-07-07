@@ -10,6 +10,7 @@ uint32_t Knobs::update_timer;
 
 
 volatile bool Knobs::on_off_switch_is_pushed = false;
+volatile bool Knobs::power_switch_is_pushed = false;
 volatile int Knobs::voltage_encoder_cnt; 
 volatile int Knobs::current_encoder_cnt; 
 
@@ -50,6 +51,12 @@ void Knobs::Update(){
                 PSU::Enable(); 
             }
         }
+
+        if (power_switch_is_pushed){
+            power_switch_is_pushed = false; 
+            Onoff::Turn_off_device();
+        }
+
         PSU::ChangeVoltage(voltage_encoder_cnt*GUI::GetVoltageScaler());
         voltage_encoder_cnt =0; 
         PSU::ChangeCurrent(current_encoder_cnt*GUI::GetCurrentScaler());
@@ -59,7 +66,7 @@ void Knobs::Update(){
 void Knobs::IRS(uint gpio, uint32_t events){
     switch (gpio){
         case Pcb::on_off_switch_pin:
-                Onoff::Turn_off_device();
+                power_switch_is_pushed = true; 
             break; 
         case Pcb::ouput_on_off_switch_pin:
                 on_off_switch_is_pushed = true; 

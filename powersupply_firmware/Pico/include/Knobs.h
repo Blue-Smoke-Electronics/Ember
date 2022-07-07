@@ -9,7 +9,8 @@ class Knobs{
         static uint32_t update_timer;
         static const uint32_t update_freq_us = 100*1000; 
 
-        static volatile bool on_off_switch_is_pushed; 
+        static volatile bool on_off_switch_is_pushed;
+        static volatile bool power_switch_is_pushed;  
         static volatile int voltage_encoder_cnt; 
         static volatile int current_encoder_cnt; 
 
