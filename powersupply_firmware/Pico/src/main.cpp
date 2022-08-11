@@ -21,10 +21,13 @@
 
 
 int main() {
+    //sleep_ms(500);
+    stdio_init_all();   // allowing printf debung in onoff init
+    printf("hello world\r\n");
     // keap device powered on, need to be the frist thin that happens 
     Onoff::Init(); 
     
-    stdio_init_all();    
+    //stdio_init_all();   
 
     Hartbeat hartbeat = Hartbeat(); 
     Analog::Init(); 

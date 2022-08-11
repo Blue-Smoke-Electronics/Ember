@@ -8,6 +8,7 @@
 
 #include "PSU.h"
 #include "Battery.h"
+#include "Onoff.h"
 
 Font GUI::big_font; 
 Font GUI::Smal_font;
@@ -60,6 +61,10 @@ void GUI::Update(){
 
             if(time_us_32()-boot_start_time > boot_time_us ){
                 state = State::running; 
+                newState = true; 
+            }
+            if(!Onoff::IsOn){
+                state = State::charging;
                 newState = true; 
             }
 
@@ -159,15 +164,40 @@ void GUI::Update(){
                 Display::Draw_sprite(13,30,Flash::batteryChargingSymbol);
             }
 
-            //state = State::booting;
-            //newState = true; 
+
+            if(!Onoff::IsOn){
+                state = State::charging;
+                newState = true; 
+            }
 
             break;
         case State::menu:
             /* code */
             break;
         case State::charging:
-            /* code */
+            if (newState){
+                newState = false; 
+                Display::Clear_all(); 
+                Display::Draw_sprite(220,150,Flash::batteryChargingSymbol);
+            }
+
+            streamObj.str("");
+            streamObj.clear();
+            streamObj << std::setprecision(0)<< std::setw(3);
+            streamObj <<Battery::GetBatteryProcentage() << "%";
+            Display::Draw_string(180,80,Flash::smalFont,streamObj.str());
+
+
+            streamObj.str("");
+            streamObj.clear();
+            streamObj << std::setprecision(0);
+            streamObj << std::setw(2)<<(int)Battery::GetBatteryLife_s()/3600 << "h" << std::setw(2)<< ((int)Battery::GetBatteryLife_s()%3600 )/60 <<"m";
+            Display::Draw_string(180,80+Flash::smalFont.char_height,Flash::smalFont,streamObj.str());
+
+            if(Onoff::IsOn){
+                state = State::booting;
+                newState = true; 
+            }
             break;
         default:
             break;
@@ -178,17 +208,20 @@ void GUI::Update(){
 
 
 void GUI::ChangeVoltageScaler(){
-    voltageScaler /= 10; 
-    if (voltageScaler< 0.01f){
-        voltageScaler = 1.00f; 
+    if(Onoff::IsOn){
+        voltageScaler /= 10; 
+        if (voltageScaler< 0.01f){
+            voltageScaler = 1.00f; 
+        }
     }
-   
 }
  
 void GUI::ChangeCurrentScaler(){
-    currentScaler /= 10; 
-    if (currentScaler< 1.0f){
-        currentScaler = 100.0f; 
+    if(Onoff::IsOn){
+        currentScaler /= 10; 
+        if (currentScaler< 1.0f){
+            currentScaler = 100.0f; 
+        }
     }
    
 }
