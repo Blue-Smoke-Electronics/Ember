@@ -31,6 +31,9 @@ const int Display::width = 480;
 std::queue<SpiData> Display::spiQuie = std::queue<SpiData>();
 uint8_t Display::static_byte; 
 
+bool Display::display_queue_overflow = false; 
+
+
 void Display::WriteComm(uint8_t data){
     Push_to_spiQueue(SpiData(true,data));
 }
@@ -311,7 +314,11 @@ void Display::Push_to_spiQueue(SpiData spiData){
         spiQuie.push(spiData);
     }
     else{
-        printf("display quieu overflow\r\n");
+        if(!display_queue_overflow){
+            display_queue_overflow = true; 
+            printf("display quieu overflow\r\n");
+        }
+        
     }
     
 }

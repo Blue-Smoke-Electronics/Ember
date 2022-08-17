@@ -62,6 +62,8 @@ class Display{
     static void Draw_image(uint16_t x,uint16_t y,uint16_t width, uint16_t heigth, const uint8_t * img); 
     static void Push_to_spiQueue(SpiData spiData);
 
+    static bool display_queue_overflow; 
+
   public:     
   
     static const int width; 

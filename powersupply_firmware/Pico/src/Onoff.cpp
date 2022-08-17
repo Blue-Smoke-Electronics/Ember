@@ -18,14 +18,13 @@ void Onoff::Init(){
     gpio_set_dir(Pcb::on_off_latch_pin, GPIO_OUT);
     
     
-    gpio_put(Pcb::on_off_latch_pin,true);
+    gpio_put(Pcb::on_off_latch_pin,false); // if not expicitly turned on, remain off when disconnected 
+
     if (gpio_get(Pcb::usb_connected_pin)){ // pluging in usb turns on device
-        //printf("usb is connected \r\n");
         IsOn = false; 
 
     }
     else {  // pressing power on button turns on device 
-        //printf("trun on device\r\n");
        Turn_on_device();  
     }
 
@@ -36,11 +35,13 @@ void Onoff::Init(){
 
 
 void Onoff::Turn_off_device(){
-
+    //printf("staring shutdown \r\n");
     IsOn = false; 
     Flash::Save(Flash::batteryCapacity,Battery::GetCapasityLeft());
     Flash::Save(Flash::outputVoltage,PSU::getTargetVoltage());
     Flash::Save(Flash::outputCurrent,PSU::getTargetCurrent());
+
+    //printf("shutdown compleated \r\n\n");
     gpio_put(Pcb::on_off_latch_pin,false); // turn device off, if usb is not connected 
     PSU::Disable();
 }

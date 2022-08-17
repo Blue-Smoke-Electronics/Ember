@@ -69,7 +69,7 @@ void Battery::Update(){
 
 float Battery::GetQuisentPower(){
     //unit is mW
-    return 155*GetVoltage(); // guestimated values. Todo: mesure values
+    return 240*GetVoltage(); // guestimated values. Todo: mesure values
 }
 float Battery::GetPsuQuisentPower(){
     //unit is mW
@@ -77,7 +77,7 @@ float Battery::GetPsuQuisentPower(){
 }
 float Battery::GetChargingPower(){
     //unit is mW
-    return 5*380; 
+    return 5*340; 
 }
 bool Battery::IsChargerConnected(){
     return gpio_get(Pcb::usb_connected_pin); 
