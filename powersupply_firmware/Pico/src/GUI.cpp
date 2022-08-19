@@ -56,9 +56,14 @@ void GUI::Update(){
             if (newState){
                 newState = false; 
                 boot_start_time = time_us_32();
-                Display::Draw_sprite(0,0,Flash::bootscreen);   
-            }
+                //Display::Clear_all();
+                Display::Draw_char(10,10,Flash::smalFont,'a');
 
+                
+                Display::Clear_all();
+                Display::Draw_sprite(50,60,Flash::logo);   
+            }
+            /*
             if(time_us_32()-boot_start_time > boot_time_us ){
                 state = State::running; 
                 newState = true; 
@@ -67,6 +72,7 @@ void GUI::Update(){
                 state = State::charging;
                 newState = true; 
             }
+            */
 
             break;
         case State::running:
