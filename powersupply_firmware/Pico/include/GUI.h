@@ -5,8 +5,6 @@
 #include "Font.h"
 #include"Sprite.h"
 
-
-
 class GUI{
     private:
         enum class State { booting, running, menu, charging };
@@ -40,7 +38,5 @@ class GUI{
         static float GetCurrentScaler();
 
 };
-
-
 
 #endif

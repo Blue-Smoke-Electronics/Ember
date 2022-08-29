@@ -107,13 +107,13 @@ namespace image_to_flash_transfer
 
         private void button3_Click(object sender, EventArgs e)
         {
-            load_to_flash("FLASHLOADSMALLFONT", font_to_data(new Font("Consolas", 16)));
+            load_to_flash("FLASHLOADSMALLFONT", font_to_data(new Font("Consolas", 12)));
 
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            load_to_flash("FLASHLOADBIGFONT", font_to_data(new Font("Consolas", 32)));
+            load_to_flash("FLASHLOADBIGFONT", font_to_data(new Font("Consolas", 24)));
         }
 
         private void button5_Click(object sender, EventArgs e)

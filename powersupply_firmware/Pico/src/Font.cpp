@@ -15,5 +15,6 @@ Font::Font(int width, int height, uint8_t * flash_address ){
 
 
 uint8_t * Font::Get_char_address(char c){
+
     return (uint8_t *)(flash_address + (c -start_char )*char_size);
 }
