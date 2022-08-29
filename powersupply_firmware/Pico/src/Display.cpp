@@ -19,147 +19,157 @@
 #include "hardware/dma.h"
 #include "Pcb.h"
 
-
-
-
 int Display::dma_channal; 
 dma_channel_config Display::dma_channal_config; 
-
-const int Display::height = 320; 
-const int Display::width = 480; 
-
+const int Display::height = 128; 
+const int Display::width = 160; 
 std::queue<SpiData> Display::spiQuie = std::queue<SpiData>();
 uint8_t Display::static_byte; 
-
 bool Display::display_queue_overflow = false; 
 
-
-void Display::WriteComm(uint8_t data){
+void Display::WriteComm (uint8_t data) {
     Push_to_spiQueue(SpiData(true,data));
 }
-void Display::WriteData(uint8_t data){
+
+void Display::WriteData (uint8_t data) {
     Push_to_spiQueue(SpiData(false,data));
 
 }
 
-void Display::Init(){
- // #define READ_BIT 0x80
+void Display::Init () {
+    spi_init(spi0,40000000); //    65000000); // 62.5Mhz
+    gpio_set_function(Pcb::display_MISO_pin,GPIO_FUNC_SPI);
+    gpio_set_function(Pcb::display_SCL_pin,GPIO_FUNC_SPI);
+    gpio_set_function(Pcb::display_MOSI_pin,GPIO_FUNC_SPI);
 
+    // Chip select is active-low, so we'll initialise it to a driven-high state
+    gpio_init(Pcb::display_NCS_pin);
+    gpio_init(Pcb::display_DC_pin);
+    gpio_init(Pcb::dispaly_RST_pin);
+    gpio_set_dir(Pcb::display_NCS_pin, GPIO_OUT);
+    gpio_set_dir(Pcb::display_DC_pin, GPIO_OUT);
+    gpio_set_dir(Pcb::dispaly_RST_pin, GPIO_OUT);
+    gpio_put(Pcb::display_NCS_pin, 1);
 
-  spi_init(spi0,65000000); // 62.5Mhz
-  gpio_set_function(Pcb::display_MISO_pin,GPIO_FUNC_SPI);
-  gpio_set_function(Pcb::display_SCL_pin,GPIO_FUNC_SPI);
-  gpio_set_function(Pcb::display_MOSI_pin,GPIO_FUNC_SPI);
-
-   // Chip select is active-low, so we'll initialise it to a driven-high state
-  gpio_init(Pcb::display_NCS_pin);
-  gpio_init(Pcb::display_DC_pin);
-  gpio_init(Pcb::dispaly_RST_pin);
-  gpio_set_dir(Pcb::display_NCS_pin, GPIO_OUT);
-  gpio_set_dir(Pcb::display_DC_pin, GPIO_OUT);
-  gpio_set_dir(Pcb::dispaly_RST_pin, GPIO_OUT);
-  gpio_put(Pcb::display_NCS_pin, 1);
-
-
-//*********Hardware reset*********//
+    //Hardware reset
     gpio_put(Pcb::dispaly_RST_pin, 1);
-sleep_ms(15);
+    sleep_ms(15);
     gpio_put(Pcb::dispaly_RST_pin, 0);
-sleep_ms(120);
+    sleep_ms(120);
     gpio_put(Pcb::dispaly_RST_pin, 1);
-sleep_ms(120);
+    sleep_ms(120);
+
+    // Display init comands 
+    WriteComm(0x01); //  1: Software reset,
+    WriteComm(0x11); //  2: Out of sleep mode,
+    
+    WriteComm(0xB1); //  4: Frame rate control,  Rate = fosc/(1x2+40) * (LINE+2C+2D)
+    WriteData(0x01); //    
+    WriteData(0x2C); //     
+    WriteData(0x2D); //    
+
+    WriteComm(0xB2); // Framerate ctrl - idle mode,
+    WriteData(0x01);
+    WriteData(0x2C);
+    WriteData(0x2D);
+
+    WriteComm(0xB3); // Frame Rate Control (In Partial mode/ full colors)
+    WriteData(0x01);
+    WriteData(0x2C);
+    WriteData(0x2D);
+    WriteData(0x01);
+    WriteData(0x2C);
+    WriteData(0x2D);
+
+    WriteComm(0xB4);
+    WriteData(0x07);//     No inversion
+
+    WriteComm(0xC0);
+    WriteData(0xA2);
+    WriteData(0x02);
+    WriteData(0x84);
+
+    WriteComm(0xC1);
+    WriteData(0xC5);
+
+    WriteComm(0xC2);
+    WriteData(0x0A);
+    WriteData(0x00);
+
+    WriteComm(0xC3);
+    WriteData(0x8A);
+    WriteData(0x2A);
+
+    WriteComm(0xC4);
+    WriteData(0x8A);
+    WriteData(0xEE);
+
+    WriteComm(0xC5);
+    WriteData(0x0E);
+    
+    WriteComm(0x20);
+    
+    WriteComm(0x36);  // madctl :: scanning direction of frame memory 
+    WriteData(0b10101000);  // setting display orientation and BGR color mode 
 
 
+    WriteComm(0x3A);  //  3: Set color mode,
+    WriteData(0x06);  // 6 =  18 bit mode - 18 bit is max with spi  | 5 = 16bit (5r 6b 5g) do not work :( 
 
-WriteComm(0x01);
-sleep_ms(5);
+    WriteComm(0xE0);  // setting gamma 
+    WriteData(0x02);
+    WriteData(0x1c);
+    WriteData(0x07);
+    WriteData(0x12);
+    WriteData(0x37);
+    WriteData(0x32);
+    WriteData(0x29);
+    WriteData(0x2d);
+    WriteData(0x29);
+    WriteData(0x25);
+    WriteData(0x2B);
+    WriteData(0x39);
+    WriteData(0x00);
+    WriteData(0x01);
+    WriteData(0x03);
+    WriteData(0x10);
 
-WriteComm(0xE0); //P-Gamma
-WriteData(0x00);
-WriteData(0x13);
-WriteData(0x18);
-WriteData(0x04);
-WriteData(0x0F);
-WriteData(0x06);
-WriteData(0x3A);
-WriteData(0x56);
-WriteData(0x4D);
-WriteData(0x03);
-WriteData(0x0A);
-WriteData(0x06);
-WriteData(0x30);
-WriteData(0x3E);
-WriteData(0x0F);
-WriteComm(0XE1); //N-Gamma
-WriteData(0x00);
-WriteData(0x13);
-WriteData(0x18);
-WriteData(0x01);
-WriteData(0x11);
-WriteData(0x06);
-WriteData(0x38);
-WriteData(0x34);
-WriteData(0x4D);
-WriteData(0x06);
-WriteData(0x0D);
-WriteData(0x0B);
-WriteData(0x31);
-WriteData(0x37);
-WriteData(0x0F);
-WriteComm(0xC0);
-WriteData(0x18);
-WriteData(0x16);
-WriteComm(0xC1);
-WriteData(0x45);
-WriteComm(0xC5); //VCOM
-WriteData(0x00);
-WriteData(0x63);
-WriteData(0x01);
-WriteComm(0x36); // 
-WriteData(0b00100000); // rgb, display read left to right, topp to bottom
-WriteComm(0x3A); //Interface Mode Control
-WriteData(0x06); // 6 =  18 bit mode - 18 bit is max with spi  | 5 = 16bit (5r 6b 5g) do not work :( 
-WriteComm(0xB0); //Interface Mode Control
-WriteData(0x00);
-WriteComm(0xB1); //Frame rate 70HZ
-WriteData(0xB0);
-WriteComm(0xB4);
-WriteData(0x02);
-WriteComm(0xB6); //RGB/MCU Interface Control
-WriteData(0x02);
-//WriteData(0x22);
-WriteComm(0xE9);
-WriteData(0x00);
-WriteComm(0xF7);
-WriteData(0xA9);
-WriteData(0x51);
-WriteData(0x2C);
-WriteData(0x82);
-WriteComm(0x11);
-WriteComm(0x21); // invert display, use with isp display 
-sleep_ms(120);
+    WriteComm(0xE1);  // setting gamma 
+    WriteData(0x03);
+    WriteData(0x1d);
+    WriteData(0x07);
+    WriteData(0x06);
+    WriteData(0x2E);
+    WriteData(0x2C);
+    WriteData(0x29);
+    WriteData(0x2D);
+    WriteData(0x2E);
+    WriteData(0x2E);
+    WriteData(0x37);
+    WriteData(0x3F);
+    WriteData(0x00);
+    WriteData(0x00);
+    WriteData(0x02);
+    WriteData(0x10);
 
-WriteComm(0x29);
+    WriteComm(0x3A);  //  3: Set color mode,
+    WriteData(0x06);  // 6 =  18 bit mode - 18 bit is max with spi  | 5 = 16bit (5r 6b 5g) do not work :( 
+    WriteComm(0x13);  // Normal display on
+    WriteComm(0x29);  // Main screen turn on   
 
-
-
-// setup dma 
-dma_channal = dma_claim_unused_channel(true);
-dma_channal_config = dma_channel_get_default_config(dma_channal);
-channel_config_set_transfer_data_size(&dma_channal_config,DMA_SIZE_8); // spi uses 8 bit for each transferr 
-channel_config_set_dreq(&dma_channal_config,DREQ_SPI0_TX); // wait on spi to compleat send befor moving data
-
-
-
+    // setup dma 
+    dma_channal = dma_claim_unused_channel(true);
+    dma_channal_config = dma_channel_get_default_config(dma_channal);
+    channel_config_set_transfer_data_size(&dma_channal_config,DMA_SIZE_8); // spi uses 8 bit for each transferr 
+    channel_config_set_dreq(&dma_channal_config,DREQ_SPI0_TX); // wait on spi to compleat send befor moving data
 }
 
-
-
-void Display::Draw_pixel(int x,int y,uint8_t red, uint8_t green, uint8_t blue){
+void Display::Draw_pixel (int x,int y,uint8_t red, uint8_t green, uint8_t blue) {
     if (x >= 480 && y >= 320 && x < 0 && y < 0){
         printf("Display, draw_pixel: invalid x or y, x= %d y= %d\r\n",x,y);
         return;
     }
+
     // set colomn 
     WriteComm(0x2b);
     WriteData(y>>8);
@@ -179,76 +189,64 @@ void Display::Draw_pixel(int x,int y,uint8_t red, uint8_t green, uint8_t blue){
     WriteData(blue);
     WriteData(green);
     WriteData(red );
-    WriteData(0x0);
-    
 
+    //nop
+    WriteComm(0x0);
 }
 
-void Display::Clear_square(int x,int y,int width, int heigth){
+void Display::Clear_square (int x,int y,int width, int heigth) {
     if (x+width >= width && y+heigth >= height && x < 0 && y <0){
         printf("Display, draw_square: invalid x or y, minx= %d miny= %d maxx= %d maxy= %d\r\n",x,y,x+width,y+heigth);
         return;
     }
     
-    
-    // set colomn 
-    WriteComm(0x2a);
+    WriteComm(0x2a); // set colomn 
     WriteData(x>>8);
     WriteData(x);
     WriteData((x+width-1)>>8);
     WriteData(x+width-1);
     
-    //set row
-    WriteComm(0x2b);
+    WriteComm(0x2b);  //set row
     WriteData(y>>8);
     WriteData(y);
     WriteData((y+heigth-1)>>8);
     WriteData( y+heigth-1);
-    
-    
-    // draw pixels
-    WriteComm(0x2c);
+     
+    WriteComm(0x2c);  // draw pixels
     Push_to_spiQueue(SpiData(0xFF,width*heigth*3));
 
     WriteComm(0x0); // nop, signals that transmition is done. 
-   
 }
-void Display::Draw_sprite(int x, int y, Sprite sprite){
+void Display::Draw_sprite (int x, int y, Sprite sprite) {
     if (x+sprite.width >= width && y+sprite.height >= height && x < 0 && y <0){
         printf("Display, draw_square: invalid x or y, minx= %d miny= %d maxx= %d maxy= %d\r\n",x,y,x+sprite.width,y+sprite.height);
         return;
     }
     
-    
-    // set colomn 
-    WriteComm(0x2a);
+    WriteComm(0x2a);  // set colomn 
     WriteData(x>>8);
     WriteData(x);
     WriteData((x+sprite.width-1)>>8);
     WriteData(x+sprite.width-1);
     
-    //set row
-    WriteComm(0x2b);
+    WriteComm(0x2b);  //set row
     WriteData(y>>8);
     WriteData(y);
     WriteData((y+sprite.height-1)>>8);
     WriteData( y+sprite.height-1);
     
-    
-    // draw pixels
-    WriteComm(0x2c);
-
-    Push_to_spiQueue(SpiData(sprite.flash_address,sprite.size));
-
-    WriteComm(0x0); // nop, signals that transmition is done. 
+    WriteComm(0x2c);  // draw pixels
+    Push_to_spiQueue(SpiData(sprite.flash_address,sprite.size)); // send data from flash to display 
+    WriteComm(0x0);  // NOP
 }
 
-void Display::Draw_char(int xpos, int ypos, Font font, char c){
+void Display::Draw_char (int xpos, int ypos, Font font, char c) {
     
     Sprite char_img = Sprite(font.char_widht,font.char_height,font.Get_char_address(c));
     Draw_sprite(xpos,ypos,char_img);
 }
-void Display::Draw_string(int xpos, int ypos, Font font, std::string s){
+
+void Display::Draw_string (int xpos, int ypos, Font font, std::string s) {
     int pos = xpos; 
     for (int i = 0; i < s.length() ; i++){
         Draw_char(pos,ypos,font,s[i]);
@@ -256,65 +254,67 @@ void Display::Draw_string(int xpos, int ypos, Font font, std::string s){
     }
 }
 
-void Display::Clear_all(){
-    Clear_square(0,0,480,320);
+void Display::Clear_all () {
+    Clear_square(0,0,width,height);
 }
 
-
-void Display::Update(){
+void Display::Update () {
     if(dma_channel_is_busy(dma_channal)  ){
         //printf("dma is busy\r\n");
         return; 
     }
-    
-    if( spiQuie.empty() ){
+    if (spiQuie.empty() ){
         return; 
     }
-    
     
     SpiData data = spiQuie.front();
     spiQuie.pop();
     
+    if (data.isComand) {  
+        sleep_us(10); 
+    }
     
-  
     gpio_put(Pcb::display_NCS_pin,0);
 
-    if(data.isComand){
+    if (data.isComand) {
         gpio_put(Pcb::display_DC_pin,0);
     }
-    else{
+    else {
         gpio_put(Pcb::display_DC_pin,1);
     }
 
-    if(data.staticInput){
+    if (data.staticInput) {
         channel_config_set_read_increment(&dma_channal_config,false); // do copy data from the same address evrey time
     }
-    else{
+    else {
         channel_config_set_read_increment(&dma_channal_config,true);
     }
-
     
-    if(data.useAddress){
+    if (data.useAddress) {
         dma_channel_configure(dma_channal,&dma_channal_config,&spi_get_hw(spi0)->dr,data.data_ptr,data.size,true);
         //spi_write_blocking(spi0,data.data_ptr,data.size); 
  
     }
-    else{
+    else {
         Display::static_byte = data.data;  
         dma_channel_configure(dma_channal,&dma_channal_config,&spi_get_hw(spi0)->dr,&Display::static_byte,data.size,true);
         //spi_write_blocking(spi0,&data.data,data.size); 
     }
-    
 
+    if (data.isComand && data.data == 0x01) { // this is a software Reset comand, and it requres 120 ms dalay for the display to start up again 
+        sleep_ms(120); 
+    }
+    if (data.isComand && data.data == 0x11) { // this is a sleep out comand , and it requres 120 ms dalay for the display to start up again 
+        sleep_ms(120); 
+    }
 } 
 
-
-void Display::Push_to_spiQueue(SpiData spiData){
+void Display::Push_to_spiQueue (SpiData spiData) {
     if(spiQuie.size() < 1000){
         spiQuie.push(spiData);
     }
-    else{
-        if(!display_queue_overflow){
+    else {
+        if (!display_queue_overflow) {
             display_queue_overflow = true; 
             printf("display quieu overflow\r\n");
         }

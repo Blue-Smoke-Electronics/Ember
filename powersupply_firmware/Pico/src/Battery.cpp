@@ -69,7 +69,7 @@ void Battery::Update(){
 
 float Battery::GetQuisentPower(){
     //unit is mW
-    return 240*GetVoltage(); // guestimated values. Todo: mesure values
+    return 75*GetVoltage(); // guestimated values. Todo: mesure values
 }
 float Battery::GetPsuQuisentPower(){
     //unit is mW

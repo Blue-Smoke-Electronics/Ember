@@ -1,5 +1,5 @@
 #ifndef COMANDLINEINTERFACE_H
-#define COMANDLINEINTEFACE_H
+#define COMANDLINEINTERFACE_H
 
 #include <string>
 
