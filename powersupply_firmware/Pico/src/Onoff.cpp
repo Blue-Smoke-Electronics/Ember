@@ -5,33 +5,51 @@
 #include "Battery.h"
 #include "PSU.h"
 #include "hardware/watchdog.h"
+#include "GUI.h"
 
-bool Onoff::watchdogenabled = false; 
+
+bool Onoff::IsOn = false; 
+
+bool Onoff::skip_next_disable = false;
 
 void Onoff::Init(){
     // keap device powerd on when powerswitch releases 
     gpio_init(Pcb::on_off_latch_pin);
     gpio_set_dir(Pcb::on_off_latch_pin, GPIO_OUT);
-    gpio_put(Pcb::on_off_latch_pin,true);
+    
+    
+    gpio_put(Pcb::on_off_latch_pin,false); // if not expicitly turned on, remain off when disconnected 
 
-    //watchdog_enable(10000,true); // give time for device to start up 
+    if (gpio_get(Pcb::usb_connected_pin)){ // pluging in usb turns on device
+        IsOn = false; 
+
+    }
+    else {  // pressing power on button turns on device 
+       Turn_on_device();  
+    }
+
+    
+
 
 }
 
 
 void Onoff::Turn_off_device(){
+    //printf("staring shutdown \r\n");
+    IsOn = false; 
     Flash::Save(Flash::batteryCapacity,Battery::GetCapasityLeft());
     Flash::Save(Flash::outputVoltage,PSU::getTargetVoltage());
     Flash::Save(Flash::outputCurrent,PSU::getTargetCurrent());
-    gpio_put(Pcb::on_off_latch_pin,false);
+
+    //printf("shutdown compleated \r\n\n");
+    gpio_put(Pcb::on_off_latch_pin,false); // turn device off, if usb is not connected 
+    PSU::Disable();
 }
 
-void Onoff::KeepAlive(){
-    // can not be starte in init
-    if (!watchdogenabled){
-        watchdog_enable(1000,true);
-        watchdogenabled = true; 
-    }
-    
-    watchdog_update();
-}
+void Onoff::Turn_on_device(){
+    IsOn = true; 
+    gpio_put(Pcb::on_off_latch_pin,true);
+
+
+}   
+

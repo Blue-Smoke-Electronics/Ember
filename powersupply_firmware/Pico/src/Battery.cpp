@@ -55,13 +55,13 @@ void Battery::Update(){
             capasityLeft = maxCapacity*0.2f > capasityLeft ? maxCapacity*0.2f :  capasityLeft; 
         }
         
-        if (GetVoltage() < 3.4f){
+        if (GetVoltage() < 3.2f){
             capasityLeft = 0;
-            //PSU::Disable();
+            PSU::Disable();
         }
-        if (GetVoltage() < 3.35f){
+        if (GetVoltage() < 3.0f){
             capasityLeft = 0;
-            //Onoff::Turn_off_device();
+            Onoff::Turn_off_device();
         }
 
     }
@@ -69,7 +69,7 @@ void Battery::Update(){
 
 float Battery::GetQuisentPower(){
     //unit is mW
-    return 155*GetVoltage(); // guestimated values. Todo: mesure values
+    return 75*GetVoltage(); // guestimated values. Todo: mesure values
 }
 float Battery::GetPsuQuisentPower(){
     //unit is mW
@@ -77,7 +77,7 @@ float Battery::GetPsuQuisentPower(){
 }
 float Battery::GetChargingPower(){
     //unit is mW
-    return 5*380; 
+    return 5*340; 
 }
 bool Battery::IsChargerConnected(){
     return gpio_get(Pcb::usb_connected_pin); 

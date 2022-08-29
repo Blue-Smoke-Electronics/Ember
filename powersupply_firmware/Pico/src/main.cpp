@@ -21,24 +21,26 @@
 
 
 int main() {
+    stdio_init_all();   // allowing printf debung in onoff init
+
     // keap device powered on, need to be the frist thin that happens 
     Onoff::Init(); 
     
-    stdio_init_all();    
 
     Hartbeat hartbeat = Hartbeat(); 
     Analog::Init(); 
     PSU::Init(); 
     ComandLineInterface::Init();
     GUI::Init();
+    Battery::Init();
     Knobs::Init();
-    Battery::Init; 
+     
 
 
 
     while (true) {
         
-        Onoff::KeepAlive(); 
+        //Onoff::KeepAlive(); 
         hartbeat.Update(); 
     
         PSU::Update(); 

@@ -10,7 +10,7 @@ float PSU::targetCurrent =0;
 bool PSU::enabled = false;
 
 const float PSU::maxVoltage = 15.0f; 
-const float PSU::maxCurrent = 500.0f; 
+const float PSU::maxCurrent = 999.0f; 
 
 void PSU::Init(){
     LinReg::Init(); 
