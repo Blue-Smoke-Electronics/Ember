@@ -37,9 +37,7 @@
       uint8_t *  data_ptr ;
       uint8_t data; 
       int size; 
-
-
-      
+    
       SpiData(bool isComand, uint8_t data);
       SpiData(uint8_t data,int size); 
       SpiData(uint8_t * data,int size); 

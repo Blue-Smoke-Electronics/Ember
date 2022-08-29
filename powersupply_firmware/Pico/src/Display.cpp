@@ -37,7 +37,7 @@ void Display::WriteData (uint8_t data) {
 }
 
 void Display::Init () {
-    spi_init(spi0,25000000); //    65000000); // 62.5Mhz
+    spi_init(spi0,40000000); //    65000000); // 62.5Mhz
     gpio_set_function(Pcb::display_MISO_pin,GPIO_FUNC_SPI);
     gpio_set_function(Pcb::display_SCL_pin,GPIO_FUNC_SPI);
     gpio_set_function(Pcb::display_MOSI_pin,GPIO_FUNC_SPI);
@@ -270,10 +270,10 @@ void Display::Update () {
     SpiData data = spiQuie.front();
     spiQuie.pop();
     
-    if (data.isComand && data.data != 0x2c && data.data != 0x00 &&data.data != 0x2a &&data.data != 0x2b ) {  
-        sleep_ms(20); 
+    if (data.isComand) {  
+        sleep_us(10); 
     }
-  
+    
     gpio_put(Pcb::display_NCS_pin,0);
 
     if (data.isComand) {
