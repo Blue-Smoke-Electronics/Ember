@@ -94,7 +94,7 @@ void GUI::Update(){
                 streamObj.clear();
                 streamObj<< std::setw(5) << PSU::getVoltage()<< "";
                 Display::Draw_string(Display::width-5*Flash::bigFont.char_widht-5,Flash::smalFont.char_height+10,Flash::bigFont,streamObj.str());
-                /*
+                
                 streamObj.str("");
                 streamObj.clear();
                 streamObj << std::setprecision(0);
@@ -115,7 +115,7 @@ void GUI::Update(){
                 streamObj.clear();
                 streamObj << std::setw(4)<<PSU::getCurrent()<< "";
                 Display::Draw_string(Display::width-4*Flash::bigFont.char_widht-5,Display::height-Flash::bigFont.char_height,Flash::bigFont,streamObj.str());
-                *//*
+                /*
                         
                 streamObj.str("");
                 streamObj.clear();
@@ -193,7 +193,6 @@ void GUI::Update(){
                 streamObj << std::setprecision(0)<< std::setw(3);
                 streamObj <<Battery::GetBatteryProcentage() << "%";
                 Display::Draw_string(60,65,Flash::smalFont,streamObj.str());
-
 
                 streamObj.str("");
                 streamObj.clear();
