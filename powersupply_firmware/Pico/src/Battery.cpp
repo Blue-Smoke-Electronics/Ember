@@ -7,7 +7,7 @@
 #include "LinReg.h"
 #include "Onoff.h"
 
-const float Battery::maxCapacity =3.7*2500*3600 ; //V*mA*s/h == mJ
+const float Battery::maxCapacity =3.7*2500*3600; //V*mA*s/h == mJ
 
 const uint32_t Battery::update_freq_us = 2*1000*1000; 
 uint32_t Battery::update_timer;
@@ -55,11 +55,11 @@ void Battery::Update(){
             capasityLeft = maxCapacity*0.2f > capasityLeft ? maxCapacity*0.2f :  capasityLeft; 
         }
         
-        if (GetVoltage() < 3.2f){
+        if (GetVoltage() < 3.0f){
             capasityLeft = 0;
             PSU::Disable();
         }
-        if (GetVoltage() < 3.0f){
+        if (GetVoltage() < 2.8f){
             capasityLeft = 0;
             Onoff::Turn_off_device();
         }
