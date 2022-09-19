@@ -7,7 +7,7 @@
 #include "LinReg.h"
 #include "Onoff.h"
 
-const float Battery::maxCapacity =3.7*2500*3600; //V*mA*s/h == mJ
+const float Battery::maxCapacity =3.7*1000*3600; //V*mA*s/h == mJ
 
 const uint32_t Battery::update_freq_us = 2*1000*1000; 
 uint32_t Battery::update_timer;
