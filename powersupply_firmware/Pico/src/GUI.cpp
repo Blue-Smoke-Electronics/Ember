@@ -38,6 +38,9 @@ void GUI::Init(){
 
 void GUI::Update(){
     Display::Update();
+    if (!Display::Isready()){
+        return;
+    }
 
     if(time_us_32() - update_timer > update_freq_us) {
         update_timer = time_us_32(); 

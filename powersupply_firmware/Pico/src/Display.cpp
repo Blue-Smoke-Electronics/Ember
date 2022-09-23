@@ -23,7 +23,10 @@ int Display::dma_channal;
 dma_channel_config Display::dma_channal_config; 
 const int Display::height = 128; 
 const int Display::width = 160; 
-std::queue<SpiData> Display::spiQuie = std::queue<SpiData>();
+const uint16_t Display::spiQuie_size = 400;
+SpiData Display::spiQuie[Display::spiQuie_size];
+uint16_t Display::spiQuie_cnt =0; 
+uint16_t Display::spiQuie_read_pos =0;
 uint8_t Display::static_byte; 
 bool Display::display_queue_overflow = false; 
 
@@ -33,7 +36,6 @@ void Display::WriteComm (uint8_t data) {
 
 void Display::WriteData (uint8_t data) {
     Push_to_spiQueue(SpiData(false,data));
-
 }
 
 void Display::Init () {
@@ -50,6 +52,12 @@ void Display::Init () {
     gpio_set_dir(Pcb::display_DC_pin, GPIO_OUT);
     gpio_set_dir(Pcb::dispaly_RST_pin, GPIO_OUT);
     gpio_put(Pcb::display_NCS_pin, 1);
+
+    // setup dma 
+    dma_channal = dma_claim_unused_channel(true);
+    dma_channal_config = dma_channel_get_default_config(dma_channal);
+    channel_config_set_transfer_data_size(&dma_channal_config,DMA_SIZE_8); // spi uses 8 bit for each transferr 
+    channel_config_set_dreq(&dma_channal_config,DREQ_SPI0_TX); // wait on spi to compleat send befor moving data
 
     //Hardware reset
     gpio_put(Pcb::dispaly_RST_pin, 1);
@@ -156,12 +164,6 @@ void Display::Init () {
     WriteData(0x06);  // 6 =  18 bit mode - 18 bit is max with spi  | 5 = 16bit (5r 6b 5g) do not work :( 
     WriteComm(0x13);  // Normal display on
     WriteComm(0x29);  // Main screen turn on   
-
-    // setup dma 
-    dma_channal = dma_claim_unused_channel(true);
-    dma_channal_config = dma_channel_get_default_config(dma_channal);
-    channel_config_set_transfer_data_size(&dma_channal_config,DMA_SIZE_8); // spi uses 8 bit for each transferr 
-    channel_config_set_dreq(&dma_channal_config,DREQ_SPI0_TX); // wait on spi to compleat send befor moving data
 }
 
 void Display::Draw_pixel (int x,int y,uint8_t red, uint8_t green, uint8_t blue) {
@@ -241,7 +243,6 @@ void Display::Draw_sprite (int x, int y, Sprite sprite) {
 }
 
 void Display::Draw_char (int xpos, int ypos, Font font, char c) {
-    
     Sprite char_img = Sprite(font.char_widht,font.char_height,font.Get_char_address(c));
     Draw_sprite(xpos,ypos,char_img);
 }
@@ -263,12 +264,17 @@ void Display::Update () {
         //printf("dma is busy\r\n");
         return; 
     }
-    if (spiQuie.empty() ){
+
+    if (spiQuie_cnt ==0 ) { // nothing to draw
         return; 
     }
     
-    SpiData data = spiQuie.front();
-    spiQuie.pop();
+    SpiData data = spiQuie[spiQuie_read_pos];
+    spiQuie_read_pos++;
+    spiQuie_cnt--;
+    if (spiQuie_read_pos >= spiQuie_size){
+        spiQuie_read_pos=0;
+    }
     
     if (data.isComand) {  
         sleep_us(10); 
@@ -292,13 +298,10 @@ void Display::Update () {
     
     if (data.useAddress) {
         dma_channel_configure(dma_channal,&dma_channal_config,&spi_get_hw(spi0)->dr,data.data_ptr,data.size,true);
-        //spi_write_blocking(spi0,data.data_ptr,data.size); 
- 
     }
     else {
         Display::static_byte = data.data;  
         dma_channel_configure(dma_channal,&dma_channal_config,&spi_get_hw(spi0)->dr,&Display::static_byte,data.size,true);
-        //spi_write_blocking(spi0,&data.data,data.size); 
     }
 
     if (data.isComand && data.data == 0x01) { // this is a software Reset comand, and it requres 120 ms dalay for the display to start up again 
@@ -309,20 +312,31 @@ void Display::Update () {
     }
 } 
 
-void Display::Push_to_spiQueue (SpiData spiData) {
-    if(spiQuie.size() < 1000){
-        spiQuie.push(spiData);
+bool Display::Isready(){
+    if (spiQuie_cnt ==0 ){
+        return true; 
     }
     else {
-        if (!display_queue_overflow) {
-            display_queue_overflow = true; 
-            printf("display quieu overflow\r\n");
-        }
-        
+        return false; 
     }
-    
 }
 
+void Display::Push_to_spiQueue (SpiData spiData) {
+    int writepos = spiQuie_read_pos+spiQuie_cnt;
+    if(writepos >=spiQuie_size){
+        writepos -= spiQuie_size; 
+    }
+    spiQuie_array[writepos] = spiData;
+    spiQuie_cnt++; 
+    
+    if (spiQuie_cnt > spiQuie_size){
+        printf("display quieu overflow\r\n");
+    }
+    Display::Update();
+}
+
+SpiData::SpiData(){
+}
 
 SpiData::SpiData(bool isComand, uint8_t data){
     this->isComand = isComand; 
@@ -332,6 +346,7 @@ SpiData::SpiData(bool isComand, uint8_t data){
     this->size = 1; 
     this->staticInput = false;  
 }
+
 SpiData::SpiData(uint8_t * data,int size){
     this->isComand = false; 
     this->data = 0xFF; 
@@ -340,6 +355,7 @@ SpiData::SpiData(uint8_t * data,int size){
     this->size = size; 
     this->staticInput = false; 
 }
+
 SpiData::SpiData(uint8_t  data,int size){
     this->isComand = false; 
     this->data = data;  

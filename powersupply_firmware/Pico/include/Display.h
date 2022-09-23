@@ -37,7 +37,7 @@
       uint8_t *  data_ptr ;
       uint8_t data; 
       int size; 
-    
+      SpiData();
       SpiData(bool isComand, uint8_t data);
       SpiData(uint8_t data,int size); 
       SpiData(uint8_t * data,int size); 
@@ -53,6 +53,10 @@ class Display{
     static dma_channel_config dma_channal_config;  
 
     static std::queue<SpiData> spiQuie;
+    static SpiData spiQuie_array [] ; 
+    static const uint16_t spiQuie_size;
+    static uint16_t spiQuie_read_pos;
+    static uint16_t spiQuie_cnt; 
     
     static void Send_packet(uint8_t command, uint8_t * data);
     static void WriteComm(uint8_t data);
@@ -68,6 +72,7 @@ class Display{
     static const int height;
     static void Init(); 
     static void Update(); 
+    static bool Isready();
     static void Draw_pixel(int xpos,int ypos,uint8_t red, uint8_t green, uint8_t blue);
     static void Draw_sprite(int xpos, int ypos, Sprite sprite);
     static void Draw_char(int xpos, int ypos, Font font, char c); 
