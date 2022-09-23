@@ -52,8 +52,7 @@ class Display{
     static int dma_channal; 
     static dma_channel_config dma_channal_config;  
 
-    static std::queue<SpiData> spiQuie;
-    static SpiData spiQuie_array [] ; 
+    static SpiData spiQuie [] ; 
     static const uint16_t spiQuie_size;
     static uint16_t spiQuie_read_pos;
     static uint16_t spiQuie_cnt; 

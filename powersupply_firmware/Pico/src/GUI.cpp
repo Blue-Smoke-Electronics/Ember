@@ -29,7 +29,7 @@ void GUI::Init(){
 
     update_timer = 0; 
 
-    state = State::booting; 
+    state = State::running; 
     newState = true; 
 
     voltageScaler =1.0f; 
@@ -204,7 +204,7 @@ void GUI::Update(){
                 Display::Draw_string(40,65+Flash::smalFont.char_height,Flash::smalFont,streamObj.str());
 
                 if(Onoff::IsOn){
-                    state = State::booting;
+                    state = State::running;
                     newState = true; 
                 }
                 break;

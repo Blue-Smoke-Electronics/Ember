@@ -326,7 +326,7 @@ void Display::Push_to_spiQueue (SpiData spiData) {
     if(writepos >=spiQuie_size){
         writepos -= spiQuie_size; 
     }
-    spiQuie_array[writepos] = spiData;
+    spiQuie[writepos] = spiData;
     spiQuie_cnt++; 
     
     if (spiQuie_cnt > spiQuie_size){

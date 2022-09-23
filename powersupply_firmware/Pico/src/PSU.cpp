@@ -38,17 +38,19 @@ void PSU::Update(){
         update_timer = time_us_32() ;
         
         if(enabled){
-        LinReg::SetVoltage(targetVoltage);
-        LinReg::SetCurrent(targetCurrent); 
-        Booster::SetVoltage(LinReg::GetVoltage()+3.0f);
+            LinReg::SetVoltage(targetVoltage);
+            LinReg::SetCurrent(targetCurrent); 
+            Booster::SetVoltage(LinReg::GetVoltage()+3.0f);
+            gpio_put(Pcb::ouput_on_off_led_pin,true); 
         }
         else{
             LinReg::SetVoltage(0);
             LinReg::SetCurrent(0); 
             Booster::SetVoltage(0);
+            gpio_put(Pcb::ouput_on_off_led_pin,false); 
         }
 
-        gpio_put(Pcb::ouput_on_off_led_pin,enabled); 
+        
         
     }
 }

@@ -50,13 +50,16 @@ void Knobs::Update(){
     if(time_us_32() - update_timer > update_freq_us ){
         update_timer = time_us_32() ;
 
-        if (on_off_switch_is_pushed){
+        if (on_off_switch_is_pushed ){
             on_off_switch_is_pushed = false; 
             if(PSU::IsEnabled()){
                 PSU::Disable();
             }
             else {
-                PSU::Enable(); 
+                if (Onoff::IsOn){
+                    PSU::Enable();
+                }
+                 
             }
         }
 
@@ -66,7 +69,7 @@ void Knobs::Update(){
             power_switch_is_pushed = false; 
             if(on_off_switch_skipp_first==0){ // becoms 0 when the powerbutton has been released for a short period
                 if(Onoff::IsOn){
-                Onoff::Turn_off_device(); 
+                    Onoff::Turn_off_device(); 
                 }
                 else{
                     Onoff::Turn_on_device();
