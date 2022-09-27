@@ -4,7 +4,7 @@
 Font::Font(){
     
 }
-Font::Font(int width, int height, uint8_t * flash_address ){
+Font::Font(int width, int height, const uint8_t * flash_address ){
     this->flash_address = flash_address; 
     this->char_widht = width; 
     this->char_height = height; 

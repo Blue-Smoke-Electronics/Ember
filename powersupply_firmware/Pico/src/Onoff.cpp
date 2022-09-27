@@ -37,9 +37,7 @@ void Onoff::Init(){
 void Onoff::Turn_off_device(){
     //printf("staring shutdown \r\n");
     IsOn = false; 
-    Flash::Save(Flash::batteryCapacity,Battery::GetCapasityLeft());
-    Flash::Save(Flash::outputVoltage,PSU::getTargetVoltage());
-    Flash::Save(Flash::outputCurrent,PSU::getTargetCurrent());
+    Flash::Save(Battery::GetCapasityLeft(), PSU::getTargetVoltage(), PSU::getTargetCurrent());
 
     //printf("shutdown compleated \r\n\n");
     gpio_put(Pcb::on_off_latch_pin,false); // turn device off, if usb is not connected 

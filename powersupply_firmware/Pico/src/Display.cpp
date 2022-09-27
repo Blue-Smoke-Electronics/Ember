@@ -23,7 +23,7 @@ int Display::dma_channal;
 dma_channel_config Display::dma_channal_config; 
 const int Display::height = 128; 
 const int Display::width = 160; 
-const uint16_t Display::spiQuie_size = 400;
+const uint16_t Display::spiQuie_size = 600;
 SpiData Display::spiQuie[Display::spiQuie_size];
 uint16_t Display::spiQuie_cnt =0; 
 uint16_t Display::spiQuie_read_pos =0;
@@ -261,7 +261,6 @@ void Display::Clear_all () {
 
 void Display::Update () {
     if(dma_channel_is_busy(dma_channal)  ){
-        //printf("dma is busy\r\n");
         return; 
     }
 
@@ -347,7 +346,7 @@ SpiData::SpiData(bool isComand, uint8_t data){
     this->staticInput = false;  
 }
 
-SpiData::SpiData(uint8_t * data,int size){
+SpiData::SpiData(const uint8_t * data,int size){
     this->isComand = false; 
     this->data = 0xFF; 
     this->data_ptr = data; 

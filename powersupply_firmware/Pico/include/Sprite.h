@@ -14,10 +14,11 @@ class Sprite{
         int width; 
         int height; 
         int size; 
-        uint8_t * flash_address;
+        const uint8_t * flash_address;
 
         Sprite();
-        Sprite(int width, int height,uint8_t * flash_address); 
+        Sprite(int width, int height,const uint8_t * flash_address); 
+ 
 
 };
 

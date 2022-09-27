@@ -29,7 +29,7 @@ void GUI::Init(){
 
     update_timer = 0; 
 
-    state = State::running; 
+    state = State::booting; 
     newState = true; 
 
     voltageScaler =1.0f; 
@@ -53,6 +53,7 @@ void GUI::Update(){
                     boot_start_time = time_us_32();
 
                     Display::Clear_all();
+                    Display::Draw_pixel(100,100,0,0,0);
                     Display::Draw_sprite(0,0,Flash::bootscreen);   
                 }
                 
@@ -75,42 +76,42 @@ void GUI::Update(){
             
                 streamObj <<std::fixed<< std::setprecision(2);
                 streamObj << "" <<  std::setw(5)<< PSU::getTargetVoltage()<<"V";
-                Display::Draw_string(Display::width-6*Flash::smalFont.char_widht-5,0,Flash::smalFont,streamObj.str()); 
+                Display::Draw_string(Display::width-6*Flash::smallFont.char_widht-5,0,Flash::smallFont,streamObj.str()); 
                 if(voltageScaler <= 0.01f){
-                    Display::Draw_sprite(Display::width-Flash::smalFont.char_widht*2-5,Flash::smalFont.char_height, Flash::selectedMarker);
-                    Display::Clear_square(Display::width-Flash::smalFont.char_widht*3-5,Flash::smalFont.char_height,Flash::selectedMarker.width,Flash::selectedMarker.height);
-                    Display::Clear_square(Display::width-Flash::smalFont.char_widht*5-5,Flash::smalFont.char_height,Flash::selectedMarker.width,Flash::selectedMarker.height);
+                    Display::Draw_sprite(Display::width-Flash::smallFont.char_widht*2-5,Flash::smallFont.char_height, Flash::selectedMarker);
+                    Display::Clear_square(Display::width-Flash::smallFont.char_widht*3-5,Flash::smallFont.char_height,Flash::selectedMarker.width,Flash::selectedMarker.height);
+                    Display::Clear_square(Display::width-Flash::smallFont.char_widht*5-5,Flash::smallFont.char_height,Flash::selectedMarker.width,Flash::selectedMarker.height);
                 }
                 else if(voltageScaler <= 0.1f){
-                    Display::Draw_sprite(Display::width-Flash::smalFont.char_widht*3-5,Flash::smalFont.char_height, Flash::selectedMarker);
-                    Display::Clear_square(Display::width-Flash::smalFont.char_widht*2-5,Flash::smalFont.char_height,Flash::selectedMarker.width,Flash::selectedMarker.height);
-                    Display::Clear_square(Display::width-Flash::smalFont.char_widht*5-5,Flash::smalFont.char_height,Flash::selectedMarker.width,Flash::selectedMarker.height);
+                    Display::Draw_sprite(Display::width-Flash::smallFont.char_widht*3-5,Flash::smallFont.char_height, Flash::selectedMarker);
+                    Display::Clear_square(Display::width-Flash::smallFont.char_widht*2-5,Flash::smallFont.char_height,Flash::selectedMarker.width,Flash::selectedMarker.height);
+                    Display::Clear_square(Display::width-Flash::smallFont.char_widht*5-5,Flash::smallFont.char_height,Flash::selectedMarker.width,Flash::selectedMarker.height);
                 }
                 else if(voltageScaler <= 1.0f){
-                    Display::Draw_sprite(Display::width-Flash::smalFont.char_widht*5-5,Flash::smalFont.char_height, Flash::selectedMarker);
-                    Display::Clear_square(Display::width-Flash::smalFont.char_widht*3-5,Flash::smalFont.char_height,Flash::selectedMarker.width,Flash::selectedMarker.height);
-                    Display::Clear_square(Display::width-Flash::smalFont.char_widht*2-5,Flash::smalFont.char_height,Flash::selectedMarker.width,Flash::selectedMarker.height);
+                    Display::Draw_sprite(Display::width-Flash::smallFont.char_widht*5-5,Flash::smallFont.char_height, Flash::selectedMarker);
+                    Display::Clear_square(Display::width-Flash::smallFont.char_widht*3-5,Flash::smallFont.char_height,Flash::selectedMarker.width,Flash::selectedMarker.height);
+                    Display::Clear_square(Display::width-Flash::smallFont.char_widht*2-5,Flash::smallFont.char_height,Flash::selectedMarker.width,Flash::selectedMarker.height);
                 }
                 
 
                 streamObj.str("");
                 streamObj.clear();
                 streamObj<< std::setw(5) << PSU::getVoltage()<< "";
-                Display::Draw_string(Display::width-5*Flash::bigFont.char_widht-5,Flash::smalFont.char_height+10,Flash::bigFont,streamObj.str());
+                Display::Draw_string(Display::width-5*Flash::bigFont.char_widht-5,Flash::smallFont.char_height+10,Flash::bigFont,streamObj.str());
                 
                 streamObj.str("");
                 streamObj.clear();
                 streamObj << std::setprecision(0);
                 streamObj <<""<< std::setw(4)<< PSU::getTargetCurrent() << "mA";
-                Display::Draw_string(Display::width-6*Flash::smalFont.char_widht-5,Display::height-Flash::bigFont.char_height-Flash::smalFont.char_height,Flash::smalFont,streamObj.str());
+                Display::Draw_string(Display::width-6*Flash::smallFont.char_widht-5,Display::height-Flash::bigFont.char_height-Flash::smallFont.char_height,Flash::smallFont,streamObj.str());
                 if(currentScaler <= 1.0f){
-                    Display::Draw_sprite(Display::width-Flash::smalFont.char_widht*3-5,Display::height-Flash::bigFont.char_height - Flash::selectedMarker.height, Flash::selectedMarker);
+                    Display::Draw_sprite(Display::width-Flash::smallFont.char_widht*3-5,Display::height-Flash::bigFont.char_height - Flash::selectedMarker.height, Flash::selectedMarker);
                 }
                 else if(currentScaler <= 10.0f){
-                    Display::Draw_sprite(Display::width-Flash::smalFont.char_widht*4-5,Display::height-Flash::bigFont.char_height - Flash::selectedMarker.height, Flash::selectedMarker);
+                    Display::Draw_sprite(Display::width-Flash::smallFont.char_widht*4-5,Display::height-Flash::bigFont.char_height - Flash::selectedMarker.height, Flash::selectedMarker);
                 }
                 else if(currentScaler <= 100.0f){
-                    Display::Draw_sprite(Display::width-Flash::smalFont.char_widht*5-5,Display::height-Flash::bigFont.char_height - Flash::selectedMarker.height, Flash::selectedMarker);
+                    Display::Draw_sprite(Display::width-Flash::smallFont.char_widht*5-5,Display::height-Flash::bigFont.char_height - Flash::selectedMarker.height, Flash::selectedMarker);
                 }
                 
                 
@@ -124,7 +125,7 @@ void GUI::Update(){
                 streamObj.clear();
                 streamObj << std::setprecision(1);
                 streamObj <<"Power: "<< PSU::getPower() << "W";
-                Display::Draw_string(200,125,Flash::smalFont,streamObj.str());
+                Display::Draw_string(200,125,Flash::smallFont,streamObj.str());
                 */
 
                 
@@ -141,19 +142,19 @@ void GUI::Update(){
                 streamObj.clear();
                 streamObj << std::setprecision(0)<< std::setw(3);
                 streamObj <<Battery::GetBatteryProcentage() << "%";
-                Display::Draw_string(50,10,Flash::smalFont,streamObj.str());
+                Display::Draw_string(50,10,Flash::smallFont,streamObj.str());
                 */
 
                 streamObj.str("");
                 streamObj.clear();
                 streamObj << std::setprecision(0);
                 streamObj << std::setw(2)<<(int)Battery::GetBatteryLife_s()/3600 << "h";
-                Display::Draw_string(0,5+Flash::batterySymbolLow.height,Flash::smalFont,streamObj.str());
+                Display::Draw_string(0,5+Flash::batterySymbolLow.height,Flash::smallFont,streamObj.str());
                 streamObj.str("");
                 streamObj.clear();
                 streamObj << std::setprecision(0);
                 streamObj << std::setw(2)<< ((int)Battery::GetBatteryLife_s()%3600 )/60 <<"m";
-                Display::Draw_string(0,5+Flash::batterySymbolLow.height + Flash::smalFont.char_height,Flash::smalFont,streamObj.str());
+                Display::Draw_string(0,5+Flash::batterySymbolLow.height + Flash::smallFont.char_height,Flash::smallFont,streamObj.str());
                
                 if(Battery::GetBatteryProcentage() > 75){
                     Display::Draw_sprite(5,5,Flash::batterySymbolHigh);
@@ -171,7 +172,7 @@ void GUI::Update(){
                     Display::Draw_sprite(5,5,Flash::batterySymbolEmpty);
                 }
                 if(Battery::IsCharging()){
-                    Display::Draw_sprite(8,15,Flash::batteryChargingSymbol);
+                    Display::Draw_sprite(8,15,Flash::chargingSymbol);
                 }
                
                 if(!Onoff::IsOn){
@@ -183,28 +184,29 @@ void GUI::Update(){
             case State::menu:
                 /* code */
                 break;
+
                 
             case State::charging:
                 if (newState){
                     newState = false; 
                     Display::Clear_all(); 
-                    Display::Draw_sprite(68,30,Flash::batteryChargingSymbol);
+                    Display::Draw_sprite(68,30,Flash::chargingSymbol);
                 }
 
                 streamObj.str("");
                 streamObj.clear();
                 streamObj << std::setprecision(0)<< std::setw(3);
                 streamObj <<Battery::GetBatteryProcentage() << "%";
-                Display::Draw_string(60,65,Flash::smalFont,streamObj.str());
+                Display::Draw_string(60,65,Flash::smallFont,streamObj.str());
 
                 streamObj.str("");
                 streamObj.clear();
                 streamObj << std::setprecision(0);
                 streamObj << std::setw(2)<<(int)Battery::GetBatteryLife_s()/3600 << "h" << std::setw(2)<< ((int)Battery::GetBatteryLife_s()%3600 )/60 <<"m";
-                Display::Draw_string(40,65+Flash::smalFont.char_height,Flash::smalFont,streamObj.str());
+                Display::Draw_string(40,65+Flash::smallFont.char_height,Flash::smallFont,streamObj.str());
 
                 if(Onoff::IsOn){
-                    state = State::running;
+                    state = State::booting;
                     newState = true; 
                 }
                 break;

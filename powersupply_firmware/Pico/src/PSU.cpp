@@ -22,8 +22,8 @@ void PSU::Init(){
 
     enabled = false; 
     //todo: load from flash
-    SetVoltage(*Flash::outputVoltage);
-    SetCurrent(*Flash::outputCurrent);
+    SetVoltage(Flash::GetOutputVoltage());
+    SetCurrent(Flash::GetOutputCurrent());
     
 
 

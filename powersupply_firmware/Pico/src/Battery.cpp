@@ -22,7 +22,7 @@ void Battery::Init(){
     gpio_init(Pcb::battery_charger_status_pin);
     gpio_set_dir(Pcb::battery_charger_status_pin,GPIO_IN);
 
-    capasityLeft = *Flash::batteryCapacity; 
+    capasityLeft = Flash::GetBatteryCapacity(); 
     
 }
 void Battery::Update(){

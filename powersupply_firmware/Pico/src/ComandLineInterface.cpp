@@ -154,7 +154,7 @@ void ComandLineInterface::desifre_command(std::string command){
         printf(s);
         return;
     }
-    
+    /*
     compare = "FLASHLOADBOOTSCREEN";
     if (command.rfind(compare.c_str(), 0) == 0)
     {
@@ -172,7 +172,7 @@ void ComandLineInterface::desifre_command(std::string command){
     compare = "FLASHLOADSMALLFONT";
     if (command.rfind(compare.c_str(), 0) == 0)
     {
-        Flash::Load(Flash::smalFont);
+        Flash::Load(Flash::smallFont);
         return;
     }
 
@@ -244,7 +244,7 @@ void ComandLineInterface::desifre_command(std::string command){
     {
         Flash::Load(Flash::batteryChargingSymbol);
         return;
-    }
+    }*/
 
 
     printf("invalid comand: %s \r\n", command.c_str()); 

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
+using System.IO;
 
 namespace image_to_flash_transfer
 {
@@ -18,7 +19,7 @@ namespace image_to_flash_transfer
         public Form1()
         {
             InitializeComponent();
-            port = new SerialPort("COM22", 115200, Parity.None, 8, StopBits.One);
+            port = new SerialPort("COM15", 115200, Parity.None, 8, StopBits.One);
             port.RtsEnable = true;
             port.DtrEnable = true; 
             port.Close();
@@ -72,17 +73,74 @@ namespace image_to_flash_transfer
 
             }
         }
+        private void save_to_H_file(string name, Bitmap img)
+        {
+            
+            using (StreamWriter writetext = new StreamWriter("../../../../../Pico/flash_data/" + name +".cpp"))
+            {
+                writetext.WriteLine("//Autogenereated by c# script");
+                writetext.WriteLine("#include \"Flash.h\"");
+                writetext.WriteLine("static const uint8_t " + name+"_DATA [] ={");
+                writetext.Write("\t");
+                byte[] data = bitmap_to_data(img);
+                for (int i =0; i < data.Length; i++)
+                {
+                    writetext.Write(""+data[i].ToString() + ",");
+                    if (i % 25 == 24)
+                    {
+                        writetext.Write("\n\t");
+                    }
+                }
+                writetext.WriteLine("");
+                writetext.WriteLine("};");  
+                
+                writetext.WriteLine("Sprite Flash::"+name+" = Sprite(");
+                writetext.WriteLine("\t" + img.Width  +", ");
+                writetext.WriteLine("\t" + img.Height +", ");
+                writetext.WriteLine("\t" + name + "_DATA" + "); ");
+            }
+        }
+
+        private void save_to_H_file(string name, Font font)
+        {
+
+            using (StreamWriter writetext = new StreamWriter("../../../../../Pico/flash_data/" + name + ".cpp"))
+            {
+                writetext.WriteLine("//Autogenereated by c# script");
+                writetext.WriteLine("#include \"Flash.h\"");
+                writetext.WriteLine("static const uint8_t " + name + "_DATA [] ={");
+                writetext.Write("\t");
+                byte[] data = font_to_data(font);
+                for (int i = 0; i < data.Length; i++)
+                {
+                    writetext.Write("" + data[i].ToString() + ",");
+                    if (i % 25 == 24)
+                    {
+                        writetext.Write("\n\t");
+                    }
+                }
+                writetext.WriteLine("");
+                writetext.WriteLine("};");
+
+                writetext.WriteLine("Font Flash::"+name+" = Font(");
+                writetext.WriteLine("\t" + font.Size + ", ");
+                writetext.WriteLine("\t" + font.Height + ", ");
+                writetext.WriteLine("\t" + name + "_DATA" + "); ");
+            }
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Bitmap img = new Bitmap("../../../../logo.png");
+            Bitmap img = new Bitmap("../../../../selectedmarker.png");
+
             load_to_flash("FLASHLOADLOGO", bitmap_to_data(img));
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Bitmap img = new Bitmap("../../../../bootscreen.png");
+            Bitmap img = new Bitmap("../../../../logo.png");
             load_to_flash("FLASHLOADBOOTSCREEN", bitmap_to_data(img));
+            //save_to_H_file("Bootscreen", bitmap_to_data(img));
 
         }
 
@@ -168,6 +226,20 @@ namespace image_to_flash_transfer
         {
             Bitmap img = new Bitmap("../../../../charging_symbol.png");
             load_to_flash("FLASHLOADBATTERYCHARGINGSYMBOL", bitmap_to_data(img));
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            string[] files = Directory.GetFiles(@"../../../../", "*.png");
+            foreach (var file in files)
+            {
+                Bitmap img = new Bitmap(file);
+                Console.WriteLine(System.IO.Path.GetFileNameWithoutExtension(file));
+                save_to_H_file(System.IO.Path.GetFileNameWithoutExtension(file), img);
+            }
+
+            save_to_H_file("smallFont", new Font("Consolas", 12));
+            save_to_H_file("bigFont", new Font("Consolas", 24));
         }
     }
 }
