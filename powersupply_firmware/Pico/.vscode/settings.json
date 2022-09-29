@@ -72,7 +72,8 @@
         "istream": "cpp",
         "ctime": "cpp",
         "iomanip": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "map": "cpp"
     },
     "C_Cpp.errorSquiggles": "Enabled",
     "cortex-debug.variableUseNaturalFormat": true

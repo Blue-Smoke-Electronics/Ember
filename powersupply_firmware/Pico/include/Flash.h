@@ -7,6 +7,8 @@
 #include "Font.h"
 
 
+
+
 class Flash{
     private: 
         static const int  flash_size = 16*1024*1024;
@@ -26,6 +28,7 @@ class Flash{
         static Sprite selectedMarker;
         
         static Font smallFont; 
+        static Font smallFontRed; 
         static Font bigFont; 
 
         static float GetBatteryCapacity(); 
@@ -33,10 +36,6 @@ class Flash{
         static float GetOutputCurrent(); 
 
         static void Save(float batteryCapacity ,float outputVoltage, float outputCurrent); 
-
-    
-
-
 };
 
 

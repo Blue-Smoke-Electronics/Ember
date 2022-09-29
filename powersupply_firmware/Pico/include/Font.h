@@ -3,25 +3,29 @@
 
 #include "pico/stdlib.h"
 
+#include <map>
+
 
 class Font{
     private:
-        const int char_cnt = 126-32; 
-        const char start_char  =32; 
+
+        const char *includedchars;
+        const uint8_t *data; 
+
     
     public:
         
         int char_widht; 
         int char_height; 
-        int char_size; 
-        int size;
-        const uint8_t * flash_address; 
+        int char_size;
+        int char_cnt; 
+        int data_size;
+        //const uint8_t * flash_address; 
         
         Font();
-        Font(int width, int height, const uint8_t * flash_address); 
-        uint8_t * Get_char_address(char c); 
-
-
+        //Font(int width, int height, const uint8_t * flash_address); 
+        Font(const char * includedchars, const uint8_t* setup, const uint8_t * data); 
+        const uint8_t * Get_char_address(char c); 
 };
 
 

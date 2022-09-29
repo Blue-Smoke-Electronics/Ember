@@ -45,8 +45,6 @@ add_executable(${PROJECT_NAME}
     flash_data/outputOffSymbol.cpp
     flash_data/outputOnSymbol.cpp
     flash_data/selectedMarker.cpp
-    flash_data/smallFont.cpp
-    flash_data/bigFont.cpp
 )
 
 # Create C header file with the name <pio program>.pio.h
@@ -61,6 +59,7 @@ add_executable(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME} PUBLIC 
 
     include/
+    flash_data/
     
 
 )

@@ -4,6 +4,12 @@
 #include "Pcb.h"
 #include "hardware/sync.h"
 
+#include "Font.h"
+
+#include "smallFont.h"
+#include "smallFontRed.h"
+#include "bigFont.h"
+
 uint8_t Flash::write_buffer[FLASH_PAGE_SIZE/sizeof(float)];   
 
 void Flash::Save(float batteryCapacity ,float outputVoltage, float outputCurrent ){   
@@ -37,3 +43,7 @@ float Flash::GetOutputCurrent(){
     return ((float*)(XIP_BASE+Pcb::flash_size_bytes-FLASH_SECTOR_SIZE))[2];
 } 
 
+
+Font Flash::smallFont =  Font(smallFont_CHARS,smallFont_SETUP,smallFont_DATA);
+Font Flash::smallFontRed =  Font(smallFontRed_CHARS,smallFontRed_SETUP,smallFontRed_DATA);
+Font Flash::bigFont =  Font(bigFont_CHARS,bigFont_SETUP,bigFont_DATA);
