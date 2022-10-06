@@ -12,7 +12,7 @@ class Pcb{
         static const int uart_rx_pin = 1;
         static const int display_SCL_pin = 2; 
         static const int display_MISO_pin = 3; 
-        static const int display_MOSI_pin = 4; 
+        static const int display_BACKLIGHT_pin = 4; 
         static const int display_NCS_pin = 5; 
         static const int display_DC_pin = 6; 
         static const int dispaly_RST_pin = 7; 

@@ -42,16 +42,20 @@ void Display::Init () {
     spi_init(spi0,40000000); //    65000000); // 62.5Mhz
     gpio_set_function(Pcb::display_MISO_pin,GPIO_FUNC_SPI);
     gpio_set_function(Pcb::display_SCL_pin,GPIO_FUNC_SPI);
-    gpio_set_function(Pcb::display_MOSI_pin,GPIO_FUNC_SPI);
+    //gpio_set_function(Pcb::display_MOSI_pin,GPIO_FUNC_SPI);
 
     // Chip select is active-low, so we'll initialise it to a driven-high state
     gpio_init(Pcb::display_NCS_pin);
     gpio_init(Pcb::display_DC_pin);
     gpio_init(Pcb::dispaly_RST_pin);
+    gpio_init(Pcb::display_BACKLIGHT_pin);
     gpio_set_dir(Pcb::display_NCS_pin, GPIO_OUT);
     gpio_set_dir(Pcb::display_DC_pin, GPIO_OUT);
     gpio_set_dir(Pcb::dispaly_RST_pin, GPIO_OUT);
+    gpio_set_dir(Pcb::display_BACKLIGHT_pin, GPIO_OUT);
     gpio_put(Pcb::display_NCS_pin, 1);
+    gpio_put(Pcb::display_BACKLIGHT_pin, 1);
+
 
     // setup dma 
     dma_channal = dma_claim_unused_channel(true);
