@@ -1,4 +1,4 @@
-#include "ComandlineInterface.h"
+#include "CommandlineInterface.h"
 #include "pico/stdlib.h"
 #include <stdio.h>
 #include <string.h>
@@ -6,16 +6,16 @@
 #include "PSU.h"
 #include "Battery.h"
 
-int ComandLineInterface::update_timer; 
-std::string ComandLineInterface::rx_data; 
-int ComandLineInterface::rx_data_ptr; 
+int CommandLineInterface::update_timer;
+std::string CommandLineInterface::rx_data;
+int CommandLineInterface::rx_data_ptr;
 
 
-void ComandLineInterface::Init(){ 
+void CommandLineInterface::Init(){
     rx_data_ptr =0; 
 
 }
-void ComandLineInterface::Update(){
+void CommandLineInterface::Update(){
     if(time_us_32() - update_timer > update_freq_us )
     {
         update_timer = time_us_32(); 
@@ -51,7 +51,7 @@ void ComandLineInterface::Update(){
     }
 }
 
-void ComandLineInterface::desifre_command(std::string command){
+void CommandLineInterface::desifre_command(std::string command){
 
     std::string compare = "VSET";
     if (command.rfind(compare.c_str(), 0) == 0)
@@ -247,5 +247,5 @@ void ComandLineInterface::desifre_command(std::string command){
     }*/
 
 
-    printf("invalid comand: %s \r\n", command.c_str()); 
+    printf("invalid command: %s \r\n", command.c_str());
 }

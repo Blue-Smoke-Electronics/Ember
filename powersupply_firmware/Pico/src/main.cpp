@@ -12,7 +12,7 @@
 #include "Pcb.h"
 #include "Onoff.h"
 #include "Hartbeat.h"
-#include "ComandlineInterface.h"
+#include "CommandlineInterface.h"
 #include "GUI.h"
 #include "PSU.h"
 #include "Analog.h"
@@ -30,7 +30,7 @@ int main() {
     Hartbeat hartbeat = Hartbeat(); 
     Analog::Init(); 
     PSU::Init(); 
-    ComandLineInterface::Init();
+    CommandLineInterface::Init();
     GUI::Init();
     Battery::Init();
     Knobs::Init();
@@ -44,7 +44,7 @@ int main() {
         hartbeat.Update(); 
     
         PSU::Update(); 
-        ComandLineInterface::Update();
+        CommandLineInterface::Update();
         GUI::Update();
         Knobs::Update(); 
         Battery::Update(); 
