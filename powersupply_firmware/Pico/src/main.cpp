@@ -11,7 +11,7 @@
 #include "Flash.h"
 #include "Pcb.h"
 #include "Onoff.h"
-#include "Hartbeat.h"
+#include "Heartbeat.h"
 #include "ComandlineInterface.h"
 #include "GUI.h"
 #include "PSU.h"
@@ -27,7 +27,7 @@ int main() {
     Onoff::Init(); 
     
 
-    Hartbeat hartbeat = Hartbeat(); 
+    Heartbeat heartbeat = Heartbeat();
     Analog::Init(); 
     PSU::Init(); 
     ComandLineInterface::Init();
@@ -41,7 +41,7 @@ int main() {
     while (true) {
         
         //Onoff::KeepAlive(); 
-        hartbeat.Update(); 
+        heartbeat.Update();
     
         PSU::Update(); 
         ComandLineInterface::Update();
