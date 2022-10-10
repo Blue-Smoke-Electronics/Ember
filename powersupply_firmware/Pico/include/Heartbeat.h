@@ -1,18 +1,18 @@
-#ifndef HARTBEAT_H
-#define HARTBEAT_H
+#ifndef HEARTBEAT_H
+#define HEARTBEAT_H
 
 #include "pico/stdlib.h"
 
-class Hartbeat{
+class Heartbeat{
     private:
         const int update_freq_us = 1*1000*1000;
 
-        //static void Hartbeat_task(void* param);
+        //static void Heartbeat_task(void* param);
         uint32_t update_timer; 
         bool led_value; 
 
     public: 
-        Hartbeat();
+        Heartbeat();
         void Update(); 
 };
 
