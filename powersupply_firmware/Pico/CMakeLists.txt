@@ -27,7 +27,7 @@ add_executable(${PROJECT_NAME}
     src/Onoff.cpp
     src/Heartbeat.cpp
     src/Font.cpp
-    src/ComandLineInterface.cpp
+    src/CommandLineInterface.cpp
     src/PSU.cpp
     src/LinReg.cpp
     src/Booster.cpp

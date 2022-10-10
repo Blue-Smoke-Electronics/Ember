@@ -23,7 +23,7 @@
 #include <string>
 #include <queue>
 
-#define DISPLAY_COMAND 0
+#define DISPLAY_COMMAND 0
 #define DISPLAY_DATA 1
 
  class SpiData{
@@ -31,14 +31,14 @@
    
       
    public: 
-      bool isComand; 
+      bool isCommand;
       bool staticInput;
       bool useAddress;  
       const uint8_t *  data_ptr ;
       uint8_t data; 
       int size; 
       SpiData();
-      SpiData(bool isComand, uint8_t data);
+      SpiData(bool isCommand, uint8_t data);
       SpiData(uint8_t data,int size); 
       SpiData(const uint8_t * data,int size); 
   };

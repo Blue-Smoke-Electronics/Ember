@@ -1,9 +1,9 @@
-#ifndef COMANDLINEINTERFACE_H
-#define COMANDLINEINTERFACE_H
+#ifndef COMMANDLINEINTERFACE_H
+#define COMMANDLINEINTERFACE_H
 
 #include <string>
 
-class ComandLineInterface{
+class CommandLineInterface{
     private:
         static const int update_freq_us = 1000*10; 
         static int update_timer; 
