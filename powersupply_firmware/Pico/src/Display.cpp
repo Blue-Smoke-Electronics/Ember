@@ -71,7 +71,7 @@ void Display::Init () {
     gpio_put(Pcb::dispaly_RST_pin, 1);
     sleep_ms(120);
 
-    // Display init comands 
+    // Display init commands
     WriteComm(0x01); //  1: Software reset,
     WriteComm(0x11); //  2: Out of sleep mode,
     
@@ -279,13 +279,13 @@ void Display::Update () {
         spiQuie_read_pos=0;
     }
     
-    if (data.isComand) {  
+    if (data.isCommand) {
         sleep_us(10); 
     }
     
     gpio_put(Pcb::display_NCS_pin,0);
 
-    if (data.isComand) {
+    if (data.isCommand) {
         gpio_put(Pcb::display_DC_pin,0);
     }
     else {
@@ -307,10 +307,10 @@ void Display::Update () {
         dma_channel_configure(dma_channal,&dma_channal_config,&spi_get_hw(spi0)->dr,&Display::static_byte,data.size,true);
     }
 
-    if (data.isComand && data.data == 0x01) { // this is a software Reset comand, and it requres 120 ms dalay for the display to start up again 
+    if (data.isCommand && data.data == 0x01) { // this is a software Reset command, and it requres 120 ms dalay for the display to start up again 
         sleep_ms(120); 
     }
-    if (data.isComand && data.data == 0x11) { // this is a sleep out comand , and it requres 120 ms dalay for the display to start up again 
+    if (data.isCommand && data.data == 0x11) { // this is a sleep out command , and it requres 120 ms dalay for the display to start up again 
         sleep_ms(120); 
     }
 } 
@@ -341,8 +341,8 @@ void Display::Push_to_spiQueue (SpiData spiData) {
 SpiData::SpiData(){
 }
 
-SpiData::SpiData(bool isComand, uint8_t data){
-    this->isComand = isComand; 
+SpiData::SpiData(bool isCommand, uint8_t data){
+    this->isCommand = isCommand;
     this->data = data;  
     this->data_ptr = &this->data;
     this->useAddress = false; 
@@ -351,7 +351,7 @@ SpiData::SpiData(bool isComand, uint8_t data){
 }
 
 SpiData::SpiData(const uint8_t * data,int size){
-    this->isComand = false; 
+    this->isCommand = false;
     this->data = 0xFF; 
     this->data_ptr = data; 
     this->useAddress = true; 
@@ -360,7 +360,7 @@ SpiData::SpiData(const uint8_t * data,int size){
 }
 
 SpiData::SpiData(uint8_t  data,int size){
-    this->isComand = false; 
+    this->isCommand = false;
     this->data = data;  
     this->data_ptr = &this->data;
     this->useAddress = false; 
