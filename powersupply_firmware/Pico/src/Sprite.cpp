@@ -1,12 +1,23 @@
 #include "Sprite.h"
+#include "Font.h"
 
 Sprite::Sprite(){
     
 }
-Sprite::Sprite(int width, int height,const uint8_t * flash_address){
-    this->width = width; 
-    this -> height = height; 
+Sprite::Sprite(const uint8_t* setup, const uint8_t * data){
+    this->width = setup[0]; 
+    this -> height = setup[1]; 
     this->size = width*height*3;
-    this->flash_address = flash_address; 
+    this->data = data; 
 }
 
+Sprite::Sprite(Font font, char c){
+    this->width = font.char_widht; 
+    this -> height = font.char_height; 
+    this->size = font.char_size;
+    this->data = font.Get_char_address(c); 
+}
+
+const uint8_t * Sprite::Get_address(){
+    return this->data;
+}

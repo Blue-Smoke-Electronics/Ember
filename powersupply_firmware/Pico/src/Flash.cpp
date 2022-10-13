@@ -10,6 +10,18 @@
 #include "smallFontRed.h"
 #include "bigFont.h"
 
+#include "logo.h"
+#include "bootscreen.h"
+#include "outputOnSymbol.h"      
+#include "outputOffSymbol.h"
+#include "batterySymbolLow.h"
+#include "batterySymbolMedLow.h"
+#include "batterySymbolMedHigh.h"
+#include "batterySymbolHigh.h"
+#include "batterySymbolEmpty.h"
+#include "chargingSymbol.h"    
+#include "selectedMarker.h"     
+ 
 uint8_t Flash::write_buffer[FLASH_PAGE_SIZE/sizeof(float)];   
 
 void Flash::Save(float batteryCapacity ,float outputVoltage, float outputCurrent ){   
@@ -33,12 +45,15 @@ void Flash::Save(float batteryCapacity ,float outputVoltage, float outputCurrent
     flash_range_program(Pcb::flash_size_bytes-FLASH_SECTOR_SIZE, write_buffer, FLASH_PAGE_SIZE);
     restore_interrupts (ints);
 }
+
 float Flash::GetBatteryCapacity(){
     return ((float*)(XIP_BASE+Pcb::flash_size_bytes-FLASH_SECTOR_SIZE))[0];
 }
+
 float Flash::GetOutputVoltage(){
     return ((float*)(XIP_BASE+Pcb::flash_size_bytes-FLASH_SECTOR_SIZE))[1];
 } 
+
 float Flash::GetOutputCurrent(){
     return ((float*)(XIP_BASE+Pcb::flash_size_bytes-FLASH_SECTOR_SIZE))[2];
 } 
@@ -47,3 +62,15 @@ float Flash::GetOutputCurrent(){
 Font Flash::smallFont =  Font(smallFont_CHARS,smallFont_SETUP,smallFont_DATA);
 Font Flash::smallFontRed =  Font(smallFontRed_CHARS,smallFontRed_SETUP,smallFontRed_DATA);
 Font Flash::bigFont =  Font(bigFont_CHARS,bigFont_SETUP,bigFont_DATA);
+
+Sprite Flash::bootscreen=           Sprite(bootscreen_SETUP             ,bootscreen_DATA);
+Sprite Flash::logo=                 Sprite(logo_SETUP                   ,logo_DATA);
+Sprite Flash::outputOnSymbol=       Sprite(outputOnSymbol_SETUP         ,outputOnSymbol_DATA);
+Sprite Flash::outputOffSymbol=      Sprite(outputOffSymbol_SETUP        ,outputOffSymbol_DATA);
+Sprite Flash::batterySymbolLow=     Sprite(batterySymbolLow_SETUP       ,batterySymbolLow_DATA);
+Sprite Flash::batterySymbolMedLow=  Sprite(batterySymbolMedLow_SETUP    ,batterySymbolMedLow_DATA);
+Sprite Flash::batterySymbolMedHigh= Sprite(batterySymbolMedHigh_SETUP   ,batterySymbolMedHigh_DATA);
+Sprite Flash::batterySymbolHigh=    Sprite(batterySymbolHigh_SETUP      ,batterySymbolHigh_DATA);
+Sprite Flash::batterySymbolEmpty=   Sprite(batterySymbolEmpty_SETUP     ,batterySymbolEmpty_DATA);
+Sprite Flash::chargingSymbol=       Sprite(chargingSymbol_SETUP         ,chargingSymbol_DATA);
+Sprite Flash::selectedMarker=       Sprite(selectedMarker_SETUP         ,selectedMarker_DATA);

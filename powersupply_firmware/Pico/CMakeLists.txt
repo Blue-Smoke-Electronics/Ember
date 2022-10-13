@@ -34,17 +34,6 @@ add_executable(${PROJECT_NAME}
     src/Analog.cpp
     src/Knobs.cpp
     src/Battery.cpp
-    flash_data/batterySymbolEmpty.cpp
-    flash_data/batterySymbolHigh.cpp
-    flash_data/batterySymbolLow.cpp
-    flash_data/batterySymbolMedHigh.cpp
-    flash_data/batterySymbolMedLow.cpp
-    flash_data/bootscreen.cpp
-    flash_data/chargingSymbol.cpp
-    flash_data/logo.cpp
-    flash_data/outputOffSymbol.cpp
-    flash_data/outputOnSymbol.cpp
-    flash_data/selectedMarker.cpp
 )
 
 # Create C header file with the name <pio program>.pio.h

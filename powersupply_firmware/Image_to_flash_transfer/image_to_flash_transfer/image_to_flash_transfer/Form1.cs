@@ -41,28 +41,34 @@ namespace image_to_flash_transfer
         private void save_to_H_file(string name, Bitmap img)
         {
             
-            using (StreamWriter writetext = new StreamWriter("../../../../../Pico/flash_data/" + name +".cpp"))
+            using (StreamWriter writetext = new StreamWriter("../../../../../Pico/flash_data/" + name +".h"))
             {
                 writetext.WriteLine("//Autogenereated by c# script");
-                writetext.WriteLine("#include \"Flash.h\"");
-                writetext.WriteLine("static const uint8_t " + name+"_DATA [] ={");
-                writetext.Write("\t");
+                
+                writetext.WriteLine("static const uint8_t " + name + "_SETUP [2] ={" +
+                    img.Width.ToString() + "," +
+                    img.Height.ToString() + "};");
+
                 byte[] data = bitmap_to_data(img);
-                for (int i =0; i < data.Length; i++)
+                writetext.WriteLine("static const uint8_t " + name+"_DATA ["+data.Length.ToString() + "] ={");
+                writetext.Write("\t");
+
+                int i = 0; 
+                for (int x =0; x < img.Width; x++)
                 {
-                    writetext.Write(""+data[i].ToString() + ",");
-                    if (i % 25 == 24)
+                    for (int y =0; y < img.Height; y++)
                     {
-                        writetext.Write("\n\t");
+                        for (int c = 0; c < 3; c++)
+                        {
+                            writetext.Write("" + data[i].ToString() + ",");
+                            i++;
+                        }
                     }
+                    writetext.WriteLine();
+                    writetext.Write("\t");
                 }
                 writetext.WriteLine("");
                 writetext.WriteLine("};");  
-                
-                writetext.WriteLine("Sprite Flash::"+name+" = Sprite(");
-                writetext.WriteLine("\t" + img.Width  +", ");
-                writetext.WriteLine("\t" + img.Height +", ");
-                writetext.WriteLine("\t" + name + "_DATA" + "); ");
             }
         }
 

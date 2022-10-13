@@ -253,12 +253,12 @@ void Display::Draw_sprite (int x, int y, Sprite sprite) {
     WriteData( y+sprite.height-1);
     
     WriteComm(0x2c);  // draw pixels
-    Push_to_spiQueue(SpiData(sprite.flash_address,sprite.size)); // send data from flash to display 
+    Push_to_spiQueue(SpiData(sprite.Get_address(),sprite.size)); // send data from flash to display 
     WriteComm(0x0);  // NOP
 }
 
 void Display::Draw_char (int xpos, int ypos, Font font, char c) {
-    Sprite char_img = Sprite(font.char_widht,font.char_height,font.Get_char_address(c));
+    Sprite char_img = Sprite(font,c);
     Draw_sprite(xpos,ypos,char_img);
 }
 

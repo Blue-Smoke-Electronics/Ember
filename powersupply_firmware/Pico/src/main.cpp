@@ -36,6 +36,5 @@ int main() {
         GUI::Update();
         Knobs::Update(); 
         Battery::Update();    
-        Display::Set_backlight(50); 
     }
 }
