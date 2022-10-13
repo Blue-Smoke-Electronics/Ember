@@ -18,6 +18,7 @@
 #include "Flash.h"
 #include "hardware/dma.h"
 #include "Pcb.h"
+#include "hardware/pwm.h"
 
 int Display::dma_channal; 
 dma_channel_config Display::dma_channal_config; 
@@ -29,6 +30,7 @@ uint16_t Display::spiQuie_cnt =0;
 uint16_t Display::spiQuie_read_pos =0;
 uint8_t Display::static_byte; 
 bool Display::display_queue_overflow = false; 
+uint Display::backlight_pwm_slice_num;
 
 void Display::WriteComm (uint8_t data) {
     Push_to_spiQueue(SpiData(true,data));
@@ -48,13 +50,22 @@ void Display::Init () {
     gpio_init(Pcb::display_NCS_pin);
     gpio_init(Pcb::display_DC_pin);
     gpio_init(Pcb::dispaly_RST_pin);
-    gpio_init(Pcb::display_BACKLIGHT_pin);
     gpio_set_dir(Pcb::display_NCS_pin, GPIO_OUT);
     gpio_set_dir(Pcb::display_DC_pin, GPIO_OUT);
     gpio_set_dir(Pcb::dispaly_RST_pin, GPIO_OUT);
-    gpio_set_dir(Pcb::display_BACKLIGHT_pin, GPIO_OUT);
     gpio_put(Pcb::display_NCS_pin, 1);
+
+    // setup backlint pwm
+    gpio_init(Pcb::display_BACKLIGHT_pin);
+    gpio_set_dir(Pcb::display_BACKLIGHT_pin, GPIO_OUT);
     gpio_put(Pcb::display_BACKLIGHT_pin, 1);
+    // do not actiwait this before backlight pinn is reconnected to somthing other than gipo4
+    // gpio_set_function(Pcb::display_BACKLIGHT_pin,GPIO_FUNC_PWM);
+    // backlight_pwm_slice_num = pwm_gpio_to_slice_num(Pcb::display_BACKLIGHT_pin);
+    // pwm_set_clkdiv(backlight_pwm_slice_num,200.0f);
+    // pwm_set_wrap(backlight_pwm_slice_num,100); // 133kHz
+    // pwm_set_enabled(backlight_pwm_slice_num,true);
+    // Set_backlight(100);
 
 
     // setup dma 
@@ -336,6 +347,24 @@ void Display::Push_to_spiQueue (SpiData spiData) {
         printf("display quieu overflow\r\n");
     }
     Display::Update();
+}
+
+void Display::Set_backlight(int percent){
+    if (percent > 99){
+        percent =99;
+    }
+    if (percent<0){
+        percent =0; 
+    }
+
+    //pwm_set_chan_level(backlight_pwm_slice_num,pwm_gpio_to_channel(Pcb::display_BACKLIGHT_pin),percent);
+    if (percent == 0 ){
+        gpio_put(Pcb::display_BACKLIGHT_pin, 0);
+    }
+    else{
+        gpio_put(Pcb::display_BACKLIGHT_pin, 1);
+    }
+
 }
 
 SpiData::SpiData(){

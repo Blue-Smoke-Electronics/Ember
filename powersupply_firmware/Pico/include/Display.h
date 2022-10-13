@@ -47,6 +47,7 @@
 class Display{
   private:    
 
+    static uint backlight_pwm_slice_num; 
 
     static uint8_t static_byte; 
     static int dma_channal; 
@@ -78,6 +79,7 @@ class Display{
     static void Draw_string(int xpos, int ypos, Font font, std::string s);
     static void Clear_square(int x,int y,int width, int heigth);
     static void Clear_all();
+    static void Set_backlight(int percent);
     
   
     

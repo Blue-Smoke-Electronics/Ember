@@ -7,7 +7,7 @@
 #include "LinReg.h"
 #include "Onoff.h"
 
-const float Battery::maxCapacity =3.7*1000*3600; //V*mA*s/h == mJ
+const float Battery::maxCapacity =3.65*1600*3600; //V*mA*s/h == mJ // 3.65 is avrage voltage lever during messurements.
 
 const uint32_t Battery::update_freq_us = 2*1000*1000; 
 uint32_t Battery::update_timer;

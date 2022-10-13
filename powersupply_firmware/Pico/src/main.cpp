@@ -28,12 +28,14 @@ int main() {
     Battery::Init();
     Knobs::Init();
 
+    int i =0; 
     while (true) {
         heartbeat.Update();
         PSU::Update(); 
         CommandLineInterface::Update();
         GUI::Update();
         Knobs::Update(); 
-        Battery::Update();     
+        Battery::Update();    
+        Display::Set_backlight(50); 
     }
 }
