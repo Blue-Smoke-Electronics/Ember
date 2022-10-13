@@ -45,9 +45,10 @@ namespace Powersupply_automatic_tests
             }
         }
 
-        public void SetCC( int Ampere)
+        public void SetCC( float Ampere)
         {
-            port.WriteLine(":FUNC CURR\n:CURR " + Ampere.ToString() + "A");
+            port.WriteLine(":FUNC CURR\n:CURR " + Ampere.ToString("N3") + "A");
+            //port.WriteLine(":FUNC CURR\n:CURR 2.500A");
         }
 
         public void SetCR(int ohm)

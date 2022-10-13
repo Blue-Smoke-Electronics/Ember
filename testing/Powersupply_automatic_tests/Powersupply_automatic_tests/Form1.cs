@@ -8,8 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
+using System.IO;
 using ScottPlot; // downloawd with nuGet
-
+using System.Threading;
 
 
 namespace Powersupply_automatic_tests
@@ -198,10 +199,6 @@ namespace Powersupply_automatic_tests
             }
         }
 
-        private void button1_Click_2(object sender, EventArgs e)
-        {
-            
-        }
 
         private void button1_Click_3(object sender, EventArgs e)
         {
@@ -209,6 +206,44 @@ namespace Powersupply_automatic_tests
             float P_out = this.konradLoad.Vget() * this.konradLoad.Iget();
 
             MessageBox.Show((P_out / P_in).ToString());
+        }
+
+        private void buttonBatteryTest_Click(object sender, EventArgs e)
+        {
+            if (!konradLoad.IsConnected)
+            {
+                MessageBox.Show("load is not connected");
+                return;
+            }
+
+            if (konradLoad.Vget() < 4.0f)
+            {
+                MessageBox.Show("Battery is not fully charged");
+                return;
+            }
+            float testcurrent_A = 2.5000f;
+            float time = 0; 
+            konradLoad.SetCC(testcurrent_A);
+            konradLoad.EnableOutput();
+
+            StreamWriter file = new StreamWriter("battery_test_log.txt");
+            System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+            watch.Start();
+            while (konradLoad.Vget() > 2.7)
+            {
+
+                float volt = konradLoad.Vget();
+                time = watch.ElapsedMilliseconds/1000.0f;
+
+                file.WriteLine(time.ToString() + " " + volt.ToString());
+                file.Flush();
+                Thread.Sleep(1000);
+            }
+            konradLoad.DisableOutput();
+            watch.Stop();
+            file.Close();
+            MessageBox.Show("Battery test finished: " + (testcurrent_A * time / 3600).ToString()+ " Ah");
+
         }
     }
 }

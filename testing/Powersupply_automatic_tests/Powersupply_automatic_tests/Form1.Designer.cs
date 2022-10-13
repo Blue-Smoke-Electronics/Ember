@@ -55,6 +55,7 @@ namespace Powersupply_automatic_tests
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.randomButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.buttonBatteryTest = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonSerial
@@ -286,11 +287,22 @@ namespace Powersupply_automatic_tests
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_3);
             // 
+            // buttonBatteryTest
+            // 
+            this.buttonBatteryTest.Location = new System.Drawing.Point(518, 24);
+            this.buttonBatteryTest.Name = "buttonBatteryTest";
+            this.buttonBatteryTest.Size = new System.Drawing.Size(75, 23);
+            this.buttonBatteryTest.TabIndex = 24;
+            this.buttonBatteryTest.Text = "Battery test";
+            this.buttonBatteryTest.UseVisualStyleBackColor = true;
+            this.buttonBatteryTest.Click += new System.EventHandler(this.buttonBatteryTest_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.buttonBatteryTest);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.randomButton);
             this.Controls.Add(this.label8);
@@ -351,6 +363,7 @@ namespace Powersupply_automatic_tests
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button randomButton;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonBatteryTest;
     }
 }
 
