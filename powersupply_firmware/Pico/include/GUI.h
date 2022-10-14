@@ -7,9 +7,9 @@
 
 class GUI{
     private:
-        enum class State { booting, running, menu, charging };
+        enum class State { booting, running, menu, charging, batteryEmpty };
 
-        static const int boot_time_us = 200*1000;
+        static const int boot_time_us = 500*1000;
 
         static Font big_font; 
         static Font Smal_font;

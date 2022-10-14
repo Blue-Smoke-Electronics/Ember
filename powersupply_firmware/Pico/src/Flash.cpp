@@ -11,14 +11,10 @@
 #include "bigFont.h"
 
 #include "logo.h"
-#include "bootscreen.h"
 #include "outputOnSymbol.h"      
 #include "outputOffSymbol.h"
-#include "batterySymbolLow.h"
-#include "batterySymbolMedLow.h"
-#include "batterySymbolMedHigh.h"
-#include "batterySymbolHigh.h"
-#include "batterySymbolEmpty.h"
+#include "batterySymbol.h"
+#include "batterySymbol_bar.h"
 #include "chargingSymbol.h"    
 #include "selectedMarker.h"     
  
@@ -63,14 +59,10 @@ Font Flash::smallFont =  Font(smallFont_CHARS,smallFont_SETUP,smallFont_DATA);
 Font Flash::smallFontRed =  Font(smallFontRed_CHARS,smallFontRed_SETUP,smallFontRed_DATA);
 Font Flash::bigFont =  Font(bigFont_CHARS,bigFont_SETUP,bigFont_DATA);
 
-Sprite Flash::bootscreen=           Sprite(bootscreen_SETUP             ,bootscreen_DATA);
 Sprite Flash::logo=                 Sprite(logo_SETUP                   ,logo_DATA);
 Sprite Flash::outputOnSymbol=       Sprite(outputOnSymbol_SETUP         ,outputOnSymbol_DATA);
 Sprite Flash::outputOffSymbol=      Sprite(outputOffSymbol_SETUP        ,outputOffSymbol_DATA);
-Sprite Flash::batterySymbolLow=     Sprite(batterySymbolLow_SETUP       ,batterySymbolLow_DATA);
-Sprite Flash::batterySymbolMedLow=  Sprite(batterySymbolMedLow_SETUP    ,batterySymbolMedLow_DATA);
-Sprite Flash::batterySymbolMedHigh= Sprite(batterySymbolMedHigh_SETUP   ,batterySymbolMedHigh_DATA);
-Sprite Flash::batterySymbolHigh=    Sprite(batterySymbolHigh_SETUP      ,batterySymbolHigh_DATA);
-Sprite Flash::batterySymbolEmpty=   Sprite(batterySymbolEmpty_SETUP     ,batterySymbolEmpty_DATA);
+Sprite Flash::batterySymbol=     Sprite(batterySymbol_SETUP       ,batterySymbol_DATA);
+Sprite Flash::batterySymbol_bar=     Sprite(batterySymbol_bar_SETUP       ,batterySymbol_bar_DATA);
 Sprite Flash::chargingSymbol=       Sprite(chargingSymbol_SETUP         ,chargingSymbol_DATA);
 Sprite Flash::selectedMarker=       Sprite(selectedMarker_SETUP         ,selectedMarker_DATA);

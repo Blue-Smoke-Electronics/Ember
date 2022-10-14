@@ -221,7 +221,7 @@ namespace Powersupply_automatic_tests
                 MessageBox.Show("Battery is not fully charged");
                 return;
             }
-            float testcurrent_A = 2.5000f;
+            float testcurrent_A = 0.10000f;
             float time = 0; 
             konradLoad.SetCC(testcurrent_A);
             konradLoad.EnableOutput();

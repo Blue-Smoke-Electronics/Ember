@@ -19,11 +19,8 @@ class Flash{
         static Sprite logo; 
         static Sprite outputOnSymbol; 
         static Sprite outputOffSymbol; 
-        static Sprite batterySymbolLow;
-        static Sprite batterySymbolMedLow;
-        static Sprite batterySymbolMedHigh;
-        static Sprite batterySymbolHigh;
-        static Sprite batterySymbolEmpty;
+        static Sprite batterySymbol;
+        static Sprite batterySymbol_bar;
         static Sprite chargingSymbol; 
         static Sprite selectedMarker;
         
