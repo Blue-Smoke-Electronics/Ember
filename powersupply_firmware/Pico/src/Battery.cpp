@@ -66,12 +66,12 @@ void Battery::Update(){
     }
 }  
 
-float Battery::GetQuisentPower(){
+float Battery::GetQuiescentPower(){
     //unit is mW
     return 75 * GetVoltage(); // guestimated values. Todo: mesure values
 }
 
-float Battery::GetPsuQuisentPower(){
+float Battery::GetPsuQuiescentPower(){
     //unit is mW
     return 10 * PSU::getVoltage();
 }
@@ -96,11 +96,11 @@ bool Battery::GetChargerStatus(){
 float Battery::GetTotalPowerDraw(){
     float totalpower = 0;
     
-    totalpower += GetQuisentPower();
+    totalpower += GetQuiescentPower();
     if(PSU::IsEnabled()){
         float linRegLosses = (Booster::GetVoltage() - LinReg::GetVoltage()) * LinReg::GetCurrent();
         float boosterLosses = PSU::getPower() * 0.2; 
-        totalpower += GetPsuQuisentPower() + PSU::getPower() * 1000 + linRegLosses + boosterLosses;
+        totalpower += GetPsuQuiescentPower() + PSU::getPower() * 1000 + linRegLosses + boosterLosses;
     }
 
     if(IsChargerConnected())
