@@ -49,10 +49,10 @@ class Display{
         static int dma_channal;
         static dma_channel_config dma_channal_config;
 
-        static SpiData spiQuie [];
-        static const uint16_t spiQuie_size;
-        static uint16_t spiQuie_read_pos;
-        static uint16_t spiQuie_cnt;
+        static SpiData spiQueue [];
+        static const uint16_t spiQueue_size;
+        static uint16_t spiQueue_read_pos;
+        static uint16_t spiQueue_cnt;
 
         static void Send_packet(uint8_t command, uint8_t * data);
         static void WriteComm(uint8_t data);
