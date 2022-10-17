@@ -5,31 +5,31 @@
 
 class PSU{
     private:
-    static const int update_freq_us = 10*1000;
-    static uint32_t update_timer;
-    static float targetVoltage; 
-    static float targetCurrent; 
-    static bool enabled; 
+        static const int update_freq_us = 10*1000;
+        static uint32_t update_timer;
+        static float targetVoltage;
+        static float targetCurrent;
+        static bool enabled;
 
-    public: 
-    static const float maxVoltage; 
-    static const float maxCurrent; 
-    static void Init();
-    static void Update();
+    public:
+        static const float maxVoltage;
+        static const float maxCurrent;
+        static void Init();
+        static void Update();
 
-    static float getVoltage();
-    static float getCurrent();
-    static float getPower();
-    static float getTargetVoltage();
-    static float getTargetCurrent(); 
-    static void SetVoltage(float voltage_V);
-    static void SetCurrent(float current_mA); 
-    static void ChangeVoltage(float voltage_v);
-    static void ChangeCurrent(float current_mA);
+        static float getVoltage();
+        static float getCurrent();
+        static float getPower();
+        static float getTargetVoltage();
+        static float getTargetCurrent();
+        static void SetVoltage(float voltage_V);
+        static void SetCurrent(float current_mA);
+        static void ChangeVoltage(float voltage_v);
+        static void ChangeCurrent(float current_mA);
 
-    static void Enable();
-    static void Disable(); 
-    static bool IsEnabled(); 
+        static void Enable();
+        static void Disable();
+        static bool IsEnabled();
 };
 
 

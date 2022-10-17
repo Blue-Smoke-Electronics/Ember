@@ -5,14 +5,11 @@
 
 #include <map>
 
-
 class Font{
     private:
 
         const char *includedchars;
         const uint8_t *data; 
-
-    
     public:
         
         int char_widht; 
@@ -27,6 +24,5 @@ class Font{
         Font(const char * includedchars, const uint8_t* setup, const uint8_t * data); 
         const uint8_t * Get_char_address(char c); 
 };
-
 
 #endif

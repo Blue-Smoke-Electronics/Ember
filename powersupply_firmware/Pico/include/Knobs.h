@@ -4,8 +4,6 @@
 
 class Knobs{
     private:
-        
-
         static uint32_t update_timer;
         static const uint32_t update_freq_us = 100*1000; 
 
@@ -15,12 +13,10 @@ class Knobs{
         static volatile int voltage_encoder_cnt; 
         static volatile int current_encoder_cnt; 
 
-
         static void IRS(uint gpio, uint32_t events); 
-        
     public:
         static void Init();
         static void Update();  
-
 };
+
 #endif

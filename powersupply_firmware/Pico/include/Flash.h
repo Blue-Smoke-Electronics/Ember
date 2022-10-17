@@ -6,9 +6,6 @@
 #include "Sprite.h"
 #include "Font.h"
 
-
-
-
 class Flash{
     private: 
         static const int  flash_size = 16*1024*1024;
@@ -34,8 +31,5 @@ class Flash{
 
         static void Save(float batteryCapacity ,float outputVoltage, float outputCurrent); 
 };
-
-
-
 
 #endif

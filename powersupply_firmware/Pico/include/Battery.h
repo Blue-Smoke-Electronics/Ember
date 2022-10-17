@@ -18,9 +18,7 @@ class Battery{
         static bool IsChargerConnected();
         static bool GetChargerStatus();
         static float GetTotalPowerDraw();
-        
 
-        
     public:
         static void Init();
         static void Update(); 

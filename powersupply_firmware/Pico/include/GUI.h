@@ -36,7 +36,6 @@ class GUI{
         static float GetVoltageScaler();  
         static void ChangeCurrentScaler();
         static float GetCurrentScaler();
-
 };
 
 #endif
