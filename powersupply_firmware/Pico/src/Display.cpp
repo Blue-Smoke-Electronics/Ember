@@ -24,10 +24,10 @@ int Display::dma_channal;
 dma_channel_config Display::dma_channal_config;
 const int Display::height = 128;
 const int Display::width = 160;
-const uint16_t Display::spiQuie_size = 600;
-SpiData Display::spiQuie[Display::spiQuie_size];
-uint16_t Display::spiQuie_cnt = 0;
-uint16_t Display::spiQuie_read_pos = 0;
+const uint16_t Display::spiQueue_size = 600;
+SpiData Display::spiQueue[Display::spiQueue_size];
+uint16_t Display::spiQueue_cnt = 0;
+uint16_t Display::spiQueue_read_pos = 0;
 uint8_t Display::static_byte;
 bool Display::display_queue_overflow = false;
 uint Display::backlight_pwm_slice_num;
@@ -277,14 +277,14 @@ void Display::Update() {
     if(dma_channel_is_busy(dma_channal))
         return; 
 
-    if (spiQuie_cnt == 0) // nothing to draw
+    if (spiQueue_cnt == 0) // nothing to draw
         return; 
 
-    SpiData data = spiQuie[spiQuie_read_pos];
-    spiQuie_read_pos++;
-    spiQuie_cnt--;
-    if (spiQuie_read_pos >= spiQuie_size)
-        spiQuie_read_pos = 0;
+    SpiData data = spiQueue[spiQueue_read_pos];
+    spiQueue_read_pos++;
+    spiQueue_cnt--;
+    if (spiQueue_read_pos >= spiQueue_size)
+        spiQueue_read_pos = 0;
 
     if (data.isCommand)
         sleep_us(10); 
@@ -315,21 +315,21 @@ void Display::Update() {
 } 
 
 bool Display::Isready(){
-    if (spiQuie_cnt == 0)
+    if (spiQueue_cnt == 0)
         return true; 
     else
         return false;
 }
 
 void Display::Push_to_spiQueue(SpiData spiData) {
-    int writepos = spiQuie_read_pos + spiQuie_cnt;
-    if(writepos >= spiQuie_size)
-        writepos -= spiQuie_size;
+    int writepos = spiQueue_read_pos + spiQueue_cnt;
+    if(writepos >= spiQueue_size)
+        writepos -= spiQueue_size;
 
-    spiQuie[writepos] = spiData;
-    spiQuie_cnt++;
+    spiQueue[writepos] = spiData;
+    spiQueue_cnt++;
 
-    if (spiQuie_cnt > spiQuie_size)
+    if (spiQueue_cnt > spiQueue_size)
         printf("display quieu overflow\r\n");
 
     Display::Update();

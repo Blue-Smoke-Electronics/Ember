@@ -12,8 +12,8 @@ class Battery{
 
         static float capasityLeft; 
 
-        static float GetQuisentPower();
-        static float GetPsuQuisentPower();
+        static float GetQuiescentPower();
+        static float GetPsuQuiescentPower();
         static float GetChargingPower();
         static bool IsChargerConnected();
         static bool GetChargerStatus();
