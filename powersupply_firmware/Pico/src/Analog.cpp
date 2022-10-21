@@ -23,8 +23,8 @@ float Analog::GetTemp(){
 
 float Analog::GetOutputCurrent(){ // output in mA
     adc_select_input(Pcb::output_current_sens_adc_channal);
-    uint16_t raw_output_current = 0;
-    raw_output_current += adc_read();
+    
+    int16_t raw_output_current = adc_read()-12;
 
     float output_current = (raw_output_current) * 3.3f / (1 << 12) / 2.5f;
     output_current -= 0.0043f; // current trought constat current circuit 
@@ -36,7 +36,7 @@ float Analog::GetOutputCurrent(){ // output in mA
 
 float Analog::GetOutputVoltage(){
     adc_select_input(Pcb::output_voltage_sens_adc_channal);
-    uint16_t raw_output_voltage = adc_read();
+    int16_t raw_output_voltage = adc_read()-12;
     float output_voltage = raw_output_voltage * 3.3f / (1 << 12) * 11.0f;
     if (output_voltage < 0.0f)
         output_voltage = 0.0f;
