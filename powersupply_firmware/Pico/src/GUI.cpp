@@ -134,12 +134,12 @@ void GUI::Update(){
                     streamObj << std::setw(2) << ((int)Battery::GetBatteryLife_s() % 3600 ) / 60 << "m";
                 Display::Draw_string(5, 25, Flash::smallFont, streamObj.str());
                 
-                /*if(Battery::IsCharging()){
-                    Display::Draw_sprite(15,30,Flash::chargingSymbol);
+                if(Battery::IsCharging()){
+                    Display::Draw_sprite(45,5,Flash::chargingSymbol);
                 }
                 else{
-                    Display::Clear_square(15,30,Flash::chargingSymbol.width,Flash::chargingSymbol.height);
-                }*/
+                    Display::Clear_square(45,5,Flash::chargingSymbol.width,Flash::chargingSymbol.height);
+                }
 
                 for (int i =0; i < 5; i++){
                     if(Battery::GetBatteryProcentage() / 20 > i)

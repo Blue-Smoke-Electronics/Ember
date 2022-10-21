@@ -94,10 +94,11 @@ namespace image_to_flash_transfer
                 }
                 writetext.WriteLine("};");
 
-
+                
                 // data array
                 Bitmap bitmap = new Bitmap((int)font.Size, font.Height);
                 Graphics graphics = Graphics.FromImage(bitmap);
+
                 
                 writetext.WriteLine("static const uint8_t " + name + "_DATA [" + 
                     (includedChars.Length* bitmap_to_data(bitmap).Length).ToString() + 
@@ -109,7 +110,11 @@ namespace image_to_flash_transfer
                 {
                     writetext.Write("\t");
                     graphics.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
-                    graphics.DrawString(c.ToString(), font, color, new PointF(0, 0));
+                    graphics.DrawString(c.ToString(), font, color, new PointF(0, 0));   
+                   //Bitmap resizedmap = bitmap.Clone(new Rectangle((int)(bitmap.Width * (1.0f / 3)), (int)(bitmap.Width * (1.0f / 3)), (int)(bitmap.Width * (2.0f / 3)), bitmap.Height-(int)(bitmap.Width * (2.0f / 3))), bitmap.PixelFormat);
+                   // resizedmap.Save(c.ToString() + ".png",System.Drawing.Imaging.ImageFormat.Png);
+    
+
                     foreach (byte b in bitmap_to_data(bitmap)){
                         writetext.Write("" + b.ToString() + ",");
                     }
@@ -133,6 +138,11 @@ namespace image_to_flash_transfer
             save_to_H_file("smallFont", new Font("Consolas", 12),Brushes.Black, "VmA01923456789hms.% ".ToCharArray());
             save_to_H_file("smallFontRed", new Font("Consolas", 12), Brushes.Red, "Off".ToCharArray());
             save_to_H_file("bigFont", new Font("Consolas", 24), Brushes.Black, "1234567890. ".ToCharArray());
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
