@@ -51,22 +51,22 @@ namespace Powersupply_automatic_tests
             //port.WriteLine(":FUNC CURR\n:CURR 2.500A");
         }
 
-        public void SetCR(int ohm)
+        public void SetCR(float ohm)
         {
             if(ohm > 7500)
             {
                 ohm = 7500; // limit of device
             }
-            port.WriteLine(":FUNC RES\n:RES "+ ohm.ToString()+ "OHM");
+            port.WriteLine(":FUNC RES\n:RES "+ ohm.ToString("F2")+ "OHM");
         }
         
         public void SetCV(float Voltage)
         {
-            port.WriteLine(":FUNC VOLT\n:VOLT " + Voltage.ToString() + "V");
+            port.WriteLine(":FUNC VOLT\n:VOLT " + Voltage.ToString("F3") + "V");
         }
         public void SetCW(float Watt)
         {
-            port.WriteLine(":FUNC POW\n:POW " + Watt.ToString() + "W");
+            port.WriteLine(":FUNC POW\n:POW " + Watt.ToString("F3") + "W");
         }
 
         public float Vget()

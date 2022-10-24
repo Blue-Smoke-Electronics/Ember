@@ -11,12 +11,12 @@ namespace Powersupply_automatic_tests
     {
 
 
-        const float maxCurrent = 500; // mA 
-        const float maxVoltage = 12; // V
+        const float maxCurrent = 1000; // mA 
+        const float maxVoltage = 15; // V
         const int stablisationTime = 5000; //ms
 
         const float maxVoltageError = 0.5f;
-        const float maxCurrentError = 10f;
+        const float maxCurrentError = 5.0f;
         
         Pbp pbp;
         KonradLoad konradLoad;
@@ -118,7 +118,7 @@ namespace Powersupply_automatic_tests
                 teoreticalVoltage.Add( Math.Min(voltage, (current/1000.0f) * resistance));
                 teoreticalCurrent.Add(Math.Min(current, (voltage / resistance)*1000));
 
-                konradLoad.SetCR((int)resistance);
+                konradLoad.SetCR((float)resistance);
                 pbp.Iset((float)current);
                 pbp.Vset((float)voltage);
 
@@ -130,11 +130,17 @@ namespace Powersupply_automatic_tests
                 acutalResistance.Add(resistance);
 
 
-                if ((Math.Abs(teoreticalVoltage.Last() - acutalVoltage.Last()) > maxVoltageError) || 
-                    (Math.Abs(teoreticalCurrent.Last() - acutalCurrent.Last()) > maxCurrentError) )
+                if (Math.Abs(teoreticalVoltage.Last() - acutalVoltage.Last()) > maxVoltageError)
                 {
                     Console.WriteLine("failed!! --target  Voltage: "+ teoreticalVoltage.Last().ToString() + "  Current: " + teoreticalCurrent.Last().ToString() + " Power: " + (teoreticalVoltage.Last() * teoreticalCurrent.Last() / 1000).ToString());
                     Console.WriteLine("failed!! --actual Voltage: " + acutalVoltage.Last().ToString() + "  Current: " + acutalCurrent.Last().ToString() + " Power: " + (acutalVoltage.Last() * acutalCurrent.Last() / 1000).ToString());
+                    failed = true;
+                    
+                }
+                if (Math.Abs(teoreticalCurrent.Last() - acutalCurrent.Last()) > maxCurrentError)
+                {
+                    Console.WriteLine("failed!! --actual Voltage: " + acutalVoltage.Last().ToString() + "  Current: " + acutalCurrent.Last().ToString() + " Power: " + (acutalVoltage.Last() * acutalCurrent.Last() / 1000).ToString());
+                    Console.WriteLine("failed!! --target  Voltage: " + teoreticalVoltage.Last().ToString() + "  Current: " + teoreticalCurrent.Last().ToString() + " Power: " + (teoreticalVoltage.Last() * teoreticalCurrent.Last() / 1000).ToString());
                     failed = true;
                 }
 

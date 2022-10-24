@@ -44,11 +44,11 @@ void LinReg::Update(){
             voltageCorrection = -0.5f;
 
         currentCorrection += (targetCurrent - GetCurrent()) * 0.1f;
-        if(currentCorrection > 50.0f)
-            currentCorrection = 50.0f;
+        if(currentCorrection > 20.0f)
+            currentCorrection = 20.0f;
 
-        if(currentCorrection < -50.0f)
-            currentCorrection = -50.0f;
+        if(currentCorrection < -20.0f)
+            currentCorrection = -20.0f;
 
         pwm_set_chan_level(voltage_limit_pwm_slice_num, pwm_gpio_to_channel(Pcb::voltage_limit_pwm_pin), ((targetVoltage + voltageCorrection) / 4.7037) * (10000 / 3.3f));
         pwm_set_chan_level(current_limit_pwm_slice_num, pwm_gpio_to_channel(Pcb::current_limit_pwm_pin), ((targetCurrent + currentCorrection) * 2.5f) * (10 / 3.3f));
