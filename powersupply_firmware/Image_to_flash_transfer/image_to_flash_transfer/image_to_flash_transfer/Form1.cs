@@ -135,8 +135,9 @@ namespace image_to_flash_transfer
                 save_to_H_file(System.IO.Path.GetFileNameWithoutExtension(file), img);
             }
 
-            save_to_H_file("smallFont", new Font("Consolas", 12),Brushes.Black, "VmA01923456789hms.% ".ToCharArray());
-            save_to_H_file("smallFontRed", new Font("Consolas", 12), Brushes.Red, "Off".ToCharArray());
+            save_to_H_file("timeFont", new Font("Consolas", 8), Brushes.Black, "01923456789hm ".ToCharArray());
+            save_to_H_file("smallFont", new Font("Consolas", 12),Brushes.Black, "VmA01923456789.%hm ".ToCharArray());
+            //save_to_H_file("smallFontRed", new Font("Consolas", 12), Brushes.Red, "Off".ToCharArray());
             save_to_H_file("bigFont", new Font("Consolas", 24), Brushes.Black, "1234567890. ".ToCharArray());
         }
 

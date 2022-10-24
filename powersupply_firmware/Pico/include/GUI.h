@@ -1,6 +1,8 @@
 #ifndef GUD_H
 #define GUD_H
 
+#include <string>
+
 #include "Display.h"
 #include "Font.h"
 #include"Sprite.h"
@@ -26,7 +28,15 @@ class GUI{
         static float voltageScaler; 
         static float currentScaler; 
 
-        void Show_boot_screen();
+        static std::string lastTimeString;
+        static std::string lastVsetString;
+        static std::string lastVString;
+        static std::string lastIsetString;
+        static std::string lastIString;
+
+        static void Show_boot_screen();
+
+
 
     public: 
         static void Init(); 

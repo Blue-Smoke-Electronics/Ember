@@ -15,7 +15,7 @@ class Battery{
         static float GetQuiescentPower();
         static float GetPsuQuiescentPower();
         static float GetChargingPower();
-        static bool IsChargerConnected();
+        
         static bool GetChargerStatus();
         static float GetTotalPowerDraw();
 
@@ -28,6 +28,7 @@ class Battery{
         static float GetBatteryProcentage(); 
         static bool IsCharging();
         static float GetVoltage();
+        static bool IsChargerConnected();
 };
 
 #endif

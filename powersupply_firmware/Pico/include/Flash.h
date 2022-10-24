@@ -18,11 +18,14 @@ class Flash{
         static Sprite outputOffSymbol; 
         static Sprite batterySymbol;
         static Sprite batterySymbol_bar;
+        static Sprite batteryUpArrow;
+        static Sprite batteryDownArrow;
+        static Sprite batteryChargingSymbol;
         static Sprite chargingSymbol; 
         static Sprite selectedMarker;
         
         static Font smallFont; 
-        static Font smallFontRed; 
+        static Font timeFont; 
         static Font bigFont; 
 
         static float GetBatteryCapacity(); 

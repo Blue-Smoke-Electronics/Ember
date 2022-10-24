@@ -7,7 +7,7 @@
 #include "Font.h"
 
 #include "smallFont.h"
-#include "smallFontRed.h"
+#include "timeFont.h"
 #include "bigFont.h"
 
 #include "logo.h"
@@ -15,6 +15,9 @@
 #include "outputOffSymbol.h"
 #include "batterySymbol.h"
 #include "batterySymbol_bar.h"
+#include "batteryUpArrow.h"
+#include "batteryDownArrow.h"
+#include "batteryChargingSymbol.h"
 #include "chargingSymbol.h"
 #include "selectedMarker.h"
  
@@ -56,7 +59,7 @@ float Flash::GetOutputCurrent(){
 
 
 Font Flash::smallFont = Font(smallFont_CHARS, smallFont_SETUP, smallFont_DATA);
-Font Flash::smallFontRed = Font(smallFontRed_CHARS, smallFontRed_SETUP, smallFontRed_DATA);
+Font Flash::timeFont = Font(timeFont_CHARS, timeFont_SETUP, timeFont_DATA);
 Font Flash::bigFont = Font(bigFont_CHARS, bigFont_SETUP, bigFont_DATA);
 
 Sprite Flash::logo = Sprite(logo_SETUP, logo_DATA);
@@ -64,5 +67,8 @@ Sprite Flash::outputOnSymbol = Sprite(outputOnSymbol_SETUP, outputOnSymbol_DATA)
 Sprite Flash::outputOffSymbol = Sprite(outputOffSymbol_SETUP, outputOffSymbol_DATA);
 Sprite Flash::batterySymbol = Sprite(batterySymbol_SETUP, batterySymbol_DATA);
 Sprite Flash::batterySymbol_bar = Sprite(batterySymbol_bar_SETUP, batterySymbol_bar_DATA);
+Sprite Flash::batteryUpArrow = Sprite(batteryUpArrow_SETUP, batteryUpArrow_DATA);
+Sprite Flash::batteryDownArrow = Sprite(batteryDownArrow_SETUP, batteryDownArrow_DATA);
+Sprite Flash::batteryChargingSymbol = Sprite(batteryChargingSymbol_SETUP, batteryChargingSymbol_DATA);
 Sprite Flash::chargingSymbol = Sprite(chargingSymbol_SETUP, chargingSymbol_DATA);
 Sprite Flash::selectedMarker = Sprite(selectedMarker_SETUP, selectedMarker_DATA);
