@@ -127,13 +127,21 @@ void GUI::Update(){
                     Display::Draw_string(Display::width - 6 * Flash::smallFont.char_widht - 5, Display::height - Flash::bigFont.char_height - Flash::smallFont.char_height , Flash::smallFont , streamObj.str());
                 }
                 
-                if(currentScaler <= 1.0f)
+                if(currentScaler <= 1.0f){
                     Display::Draw_sprite(Display::width - Flash::smallFont.char_widht * 3 - 5, Display::height-Flash::bigFont.char_height - Flash::selectedMarker.height, Flash::selectedMarker);
-                else if(currentScaler <= 10.0f)
+                    Display::Clear_square(Display::width - Flash::smallFont.char_widht * 4 - 5, Display::height-Flash::bigFont.char_height - Flash::selectedMarker.height, Flash::selectedMarker.width,Flash::selectedMarker.height);
+                    Display::Clear_square(Display::width - Flash::smallFont.char_widht * 5 - 5, Display::height-Flash::bigFont.char_height - Flash::selectedMarker.height, Flash::selectedMarker.width,Flash::selectedMarker.height);
+                }
+                else if(currentScaler <= 10.0f){
                     Display::Draw_sprite(Display::width - Flash::smallFont.char_widht * 4 - 5, Display::height - Flash::bigFont.char_height - Flash::selectedMarker.height, Flash::selectedMarker);
-                else if(currentScaler <= 100.0f)
+                    Display::Clear_square(Display::width - Flash::smallFont.char_widht * 3 - 5, Display::height-Flash::bigFont.char_height - Flash::selectedMarker.height, Flash::selectedMarker.width,Flash::selectedMarker.height);
+                    Display::Clear_square(Display::width - Flash::smallFont.char_widht * 5 - 5, Display::height-Flash::bigFont.char_height - Flash::selectedMarker.height, Flash::selectedMarker.width,Flash::selectedMarker.height);
+                }
+                else if(currentScaler <= 100.0f){
                     Display::Draw_sprite(Display::width - Flash::smallFont.char_widht * 5 - 5, Display::height - Flash::bigFont.char_height - Flash::selectedMarker.height, Flash::selectedMarker);
-
+                    Display::Clear_square(Display::width - Flash::smallFont.char_widht * 4 - 5, Display::height-Flash::bigFont.char_height - Flash::selectedMarker.height, Flash::selectedMarker.width,Flash::selectedMarker.height);
+                    Display::Clear_square(Display::width - Flash::smallFont.char_widht * 3 - 5, Display::height-Flash::bigFont.char_height - Flash::selectedMarker.height, Flash::selectedMarker.width,Flash::selectedMarker.height);
+                }
                 streamObj.str("");
                 streamObj.clear();
                 streamObj << std::setw(4) << PSU::getCurrent() << "";
@@ -185,11 +193,11 @@ void GUI::Update(){
                 }
 
 
-                for (int i =0; i < 4; i++){
-                    if(Battery::GetBatteryProcentage() / 25 > i)
+                for (int i =0; i < 5; i++){
+                    if(Battery::GetBatteryProcentage() / 20 > i)
                         Display::Draw_sprite(8+i*5,13,Flash::batterySymbol_bar);
                     else
-                        Display::Clear_square(8 + i * 6, 13, Flash::batterySymbol_bar.width, Flash::batterySymbol_bar.height);
+                        Display::Clear_square(8 + i * 5, 13, Flash::batterySymbol_bar.width, Flash::batterySymbol_bar.height);
                 }
 
                 if (Battery::GetBatteryProcentage() <= 0){
