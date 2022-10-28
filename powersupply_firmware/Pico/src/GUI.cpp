@@ -60,7 +60,7 @@ void GUI::Update(){
 
                     Display::Clear_all();
                     Display::Draw_pixel(100,100,0,0,0);
-                    Display::Draw_sprite(Display::width/2-Flash::logo.width/2,Display::height/2-Flash::logo.height/2,Flash::logo);   
+                    Display::Draw_sprite(0,0,Flash::logo);   
                 }
                 
                 if(time_us_32() - boot_start_time > boot_time_us){
@@ -152,10 +152,10 @@ void GUI::Update(){
                 }
                 // output on/off
                 if(PSU::IsEnabled())
-                    Display::Draw_sprite(2, Display::height - Flash::outputOnSymbol.height, Flash::outputOnSymbol);
+                    Display::Draw_sprite(2, Display::height - Flash::outputOnSymbol.height-2, Flash::outputOnSymbol);
                 else
                     if(!Overheat::IsOverheated())
-                        Display::Draw_sprite(2, Display::height - Flash::outputOnSymbol.height, Flash::outputOffSymbol);
+                        Display::Draw_sprite(2, Display::height - Flash::outputOnSymbol.height-2, Flash::outputOffSymbol);
                     else{
                         Display::Draw_sprite(2, Display::height - Flash::overheatSymbol.height, Flash::overheatSymbol);
                     }
