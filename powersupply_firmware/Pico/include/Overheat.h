@@ -15,8 +15,6 @@ class Overheat{
         static void Init();
         static void Update();
         static bool IsOverheated();
-
 };
-
 
 #endif

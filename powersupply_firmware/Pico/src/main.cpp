@@ -39,6 +39,7 @@ int main() {
         Knobs::Update();
         Battery::Update();
         Overheat::Update();
+        Onoff::Update();
         
     }
 }

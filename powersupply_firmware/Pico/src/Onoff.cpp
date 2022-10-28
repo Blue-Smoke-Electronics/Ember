@@ -11,25 +11,38 @@ bool Onoff::IsOn = false;
 
 bool Onoff::skip_next_disable = false;
 
+uint32_t Onoff::update_timer;
+
+
 void Onoff::Init(){
     // keep device power on when powerswitch releases
     gpio_init(Pcb::on_off_latch_pin);
     gpio_set_dir(Pcb::on_off_latch_pin, GPIO_OUT);
-    gpio_put(Pcb::on_off_latch_pin, false); // if not expicitly turned on, remain off when disconnected
+    gpio_put(Pcb::on_off_latch_pin, true); 
 
     if (gpio_get(Pcb::usb_connected_pin)) // pluging in usb turns on device
         IsOn = false;
     else // pressing power on button turns on device
        Turn_on_device();
+
+    update_timer =0; 
+}
+
+void Onoff::Update(){
+    if(time_us_32() - update_timer > update_freq_us) {
+        update_timer = time_us_32(); 
+
+        if(!IsOn && !Battery::IsChargerConnected())
+        {
+            Flash::Save(Battery::GetCapasityLeft(), PSU::getTargetVoltage(), PSU::getTargetCurrent());
+            printf("saving and shutting down\r\n");
+            gpio_put(Pcb::on_off_latch_pin, false); // turn device off
+        }
+    }
 }
 
 void Onoff::Turn_off_device(){
-    //printf("starting shutdown\r\n");
     IsOn = false;
-    Flash::Save(Battery::GetCapasityLeft(), PSU::getTargetVoltage(), PSU::getTargetCurrent());
-
-    //printf("shutdown compleated \r\n\n");
-    gpio_put(Pcb::on_off_latch_pin, false); // turn device off, if usb is not connected
     PSU::Disable();
 }
 
