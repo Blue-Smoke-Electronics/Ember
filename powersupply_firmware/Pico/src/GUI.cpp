@@ -9,6 +9,7 @@
 #include "PSU.h"
 #include "Battery.h"
 #include "Onoff.h"
+#include "Overheat.h"
 
 Font GUI::big_font;
 Font GUI::Smal_font;
@@ -153,7 +154,11 @@ void GUI::Update(){
                 if(PSU::IsEnabled())
                     Display::Draw_sprite(2, Display::height - Flash::outputOnSymbol.height, Flash::outputOnSymbol);
                 else
-                    Display::Draw_sprite(2, Display::height - Flash::outputOnSymbol.height, Flash::outputOffSymbol);
+                    if(!Overheat::IsOverheated())
+                        Display::Draw_sprite(2, Display::height - Flash::outputOnSymbol.height, Flash::outputOffSymbol);
+                    else{
+                        Display::Draw_sprite(2, Display::height - Flash::overheatSymbol.height, Flash::overheatSymbol);
+                    }
 
                 // battery
                 streamObj.str("");

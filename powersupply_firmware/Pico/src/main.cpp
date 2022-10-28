@@ -13,6 +13,7 @@
 #include "Analog.h"
 #include "Knobs.h"
 #include "Battery.h"
+#include "Overheat.h"
 
 int main() {
     stdio_init_all(); // allowing printf debug in onoff init
@@ -27,6 +28,7 @@ int main() {
     GUI::Init();
     Battery::Init();
     Knobs::Init();
+    Overheat::Init();
 
     int i = 0;
     while (true) {
@@ -36,5 +38,7 @@ int main() {
         GUI::Update();
         Knobs::Update();
         Battery::Update();
+        Overheat::Update();
+        
     }
 }

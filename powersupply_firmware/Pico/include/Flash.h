@@ -23,6 +23,7 @@ class Flash{
         static Sprite batteryChargingSymbol;
         static Sprite chargingSymbol; 
         static Sprite selectedMarker;
+        static Sprite overheatSymbol;
         
         static Font smallFont; 
         static Font timeFont; 

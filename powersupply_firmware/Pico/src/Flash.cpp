@@ -20,6 +20,7 @@
 #include "batteryChargingSymbol.h"
 #include "chargingSymbol.h"
 #include "selectedMarker.h"
+#include "overheatSymbol.h"
  
 uint8_t Flash::write_buffer[FLASH_PAGE_SIZE / sizeof(float)];
 
@@ -72,3 +73,4 @@ Sprite Flash::batteryDownArrow = Sprite(batteryDownArrow_SETUP, batteryDownArrow
 Sprite Flash::batteryChargingSymbol = Sprite(batteryChargingSymbol_SETUP, batteryChargingSymbol_DATA);
 Sprite Flash::chargingSymbol = Sprite(chargingSymbol_SETUP, chargingSymbol_DATA);
 Sprite Flash::selectedMarker = Sprite(selectedMarker_SETUP, selectedMarker_DATA);
+Sprite Flash::overheatSymbol = Sprite(overheatSymbol_SETUP, overheatSymbol_DATA);
