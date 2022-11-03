@@ -3,6 +3,7 @@
 #include "Pcb.h"
 #include "hardware/pwm.h"
 #include "stdio.h"
+#include <algorithm>
 
 uint LinReg::voltage_limit_pwm_slice_num;
 uint LinReg::current_limit_pwm_slice_num;
@@ -43,7 +44,7 @@ void LinReg::Update(){
         if(voltageCorrection < -0.5f)
             voltageCorrection = -0.5f;
 
-        currentCorrection += (targetCurrent - GetCurrent()) * 0.1f;
+        currentCorrection += (targetCurrent - GetCurrent()) * 0.002f;
         if(currentCorrection > 20.0f)
             currentCorrection = 20.0f;
 
@@ -56,6 +57,16 @@ void LinReg::Update(){
 }
 
 float LinReg::GetVoltage(){
+    /*// median filtering 
+    float m[10];
+    float s =0; 
+    for (int i =0; i < 10; i++){
+        m[i] = Analog::GetOutputVoltage();
+        s += m[i];
+    }
+    std::sort(m,m+10);
+    
+    return s/10.0f;//m[5];*/
     return Analog::GetOutputVoltage();
 }
 
@@ -65,8 +76,14 @@ float LinReg::GetCurrent(){
 
 void LinReg::SetVoltage(float voltage_V){
     targetVoltage = voltage_V;
+    targetVoltage =(targetVoltage *100.0f + 0.5f);
+    int tv = (int)targetVoltage;
+    targetVoltage = (tv + 0.5f)/100;
 }
 
 void LinReg::SetCurrent(float current_mA){
-   targetCurrent = current_mA;
+    targetCurrent = current_mA;
+    targetCurrent =(targetCurrent *100.0f + 0.5f);
+    int tc = (int)targetCurrent;
+    targetCurrent = (tc + 0.5f)/100;
 }

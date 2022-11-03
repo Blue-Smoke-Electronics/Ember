@@ -3,6 +3,7 @@
 #include "Booster.h"
 #include "Pcb.h"
 #include "Flash.h"
+#include <algorithm>
 
 uint32_t PSU::update_timer = 0;
 float PSU::targetVoltage = 0;
@@ -35,7 +36,7 @@ void PSU::Update(){
         if(enabled){
             LinReg::SetVoltage(targetVoltage);
             LinReg::SetCurrent(targetCurrent);
-            Booster::SetVoltage(LinReg::GetVoltage() + 3.0f);
+            Booster::SetVoltage(std::min(LinReg::GetVoltage() + 3.0f, targetVoltage+2.0f));
             gpio_put(Pcb::ouput_on_off_led_pin, true);
         }else{
             LinReg::SetVoltage(0);
