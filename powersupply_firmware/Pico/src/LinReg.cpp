@@ -3,7 +3,6 @@
 #include "Pcb.h"
 #include "hardware/pwm.h"
 #include "stdio.h"
-#include <algorithm>
 
 uint LinReg::voltage_limit_pwm_slice_num;
 uint LinReg::current_limit_pwm_slice_num;
@@ -57,16 +56,6 @@ void LinReg::Update(){
 }
 
 float LinReg::GetVoltage(){
-    /*// median filtering 
-    float m[10];
-    float s =0; 
-    for (int i =0; i < 10; i++){
-        m[i] = Analog::GetOutputVoltage();
-        s += m[i];
-    }
-    std::sort(m,m+10);
-    
-    return s/10.0f;//m[5];*/
     return Analog::GetOutputVoltage();
 }
 
