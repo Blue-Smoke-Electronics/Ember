@@ -40,19 +40,20 @@ void Battery::Update(){
             capasityLeft =0; 
 
         if (GetVoltage() > 4.095f) // adc caped at 4096
-            capasityLeft = maxCapacity;
+            capasityLeft = maxCapacity*0.8f > capasityLeft ? maxCapacity*0.8f :  capasityLeft;
+            //capasityLeft = maxCapacity;
 
         if(GetVoltage() > 3.92f)
-            capasityLeft = maxCapacity*0.8f > capasityLeft ? maxCapacity*0.8f :  capasityLeft;
+            //capasityLeft = maxCapacity*0.8f > capasityLeft ? maxCapacity*0.8f :  capasityLeft;
 
         if(GetVoltage() > 3.77f)
-            capasityLeft = maxCapacity*0.6f > capasityLeft ? maxCapacity*0.6f :  capasityLeft;
+            //capasityLeft = maxCapacity*0.6f > capasityLeft ? maxCapacity*0.6f :  capasityLeft;
 
         if(GetVoltage() > 3.7f)
-            capasityLeft = maxCapacity*0.4f > capasityLeft ? maxCapacity*0.4f :  capasityLeft;
+            //capasityLeft = maxCapacity*0.4f > capasityLeft ? maxCapacity*0.4f :  capasityLeft;
 
         if(GetVoltage() > 3.63f)
-            capasityLeft = maxCapacity*0.2f > capasityLeft ? maxCapacity*0.2f :  capasityLeft;
+            //capasityLeft = maxCapacity*0.2f > capasityLeft ? maxCapacity*0.2f :  capasityLeft;
 
         if (GetVoltage() < 3.0f){
             capasityLeft = 0;
