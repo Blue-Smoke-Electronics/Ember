@@ -7,7 +7,7 @@
 #include "LinReg.h"
 #include "Onoff.h"
 
-const float Battery::maxCapacity = 3.65 * 1600 * 3600; //V*mA*s/h == mJ // 3.65 is avrage voltage lever during messurements
+const float Battery::maxCapacity = 3.65 * 1500 * 3600; //V*mA*s/h == mJ // 3.65 is avrage voltage lever during messurements
 
 const uint32_t Battery::update_freq_us = 2 * 1000 * 1000;
 uint32_t Battery::update_timer;
@@ -68,17 +68,17 @@ void Battery::Update(){
 
 float Battery::GetQuiescentPower(){
     //unit is mW
-    return 75 * GetVoltage(); // guestimated values. Todo: mesure values
+    return 300; // measured values, avrage over different battery voltages
 }
 
 float Battery::GetPsuQuiescentPower(){
     //unit is mW
-    return 10 * PSU::getVoltage();
+    return 10 * PSU::getVoltage(); // mostly do to minimum current draw circuit
 }
 
 float Battery::GetChargingPower(){
     //unit is mW
-    return 5 * 340;
+    return 5 * 450;
 }
 
 bool Battery::IsChargerConnected(){
@@ -99,7 +99,7 @@ float Battery::GetTotalPowerDraw(){
     totalpower += GetQuiescentPower();
     if(PSU::IsEnabled()){
         float linRegLosses = (Booster::GetVoltage() - LinReg::GetVoltage()) * LinReg::GetCurrent();
-        float boosterLosses = PSU::getPower() * 0.2; 
+        float boosterLosses = PSU::getPower()* 1000 * 0.4; 
         totalpower += GetPsuQuiescentPower() + PSU::getPower() * 1000 + linRegLosses + boosterLosses;
     }
 
@@ -119,7 +119,7 @@ float Battery::GetBatteryLife_s(){
     if(powerdraw < 0)
        lifetime= (maxCapacity - capasityLeft) / (-powerdraw);
     else
-        lifetime = capasityLeft/powerdraw;
+        lifetime = capasityLeft/powerdraw; 
 
     if (lifetime > 172800) // cap at 48 houers
         lifetime = 172800;
