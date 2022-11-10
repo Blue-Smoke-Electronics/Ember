@@ -59,8 +59,9 @@ void GUI::Update(){
                     boot_start_time = time_us_32();
 
                     Display::Clear_all();
-                    Display::Draw_pixel(100,100,0,0,0);
-                    Display::Draw_sprite(0,0,Flash::logo);   
+                    
+                    Display::Draw_sprite(67,22,Flash::logo_symbol); 
+                    Display::Draw_sprite(17,71,Flash::logo_text);   
                 }
                 
                 if(time_us_32() - boot_start_time > boot_time_us){

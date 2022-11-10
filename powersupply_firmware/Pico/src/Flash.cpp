@@ -10,7 +10,8 @@
 #include "timeFont.h"
 #include "bigFont.h"
 
-#include "logo.h"
+#include "logo_text.h"
+#include "logo_symbol.h"
 #include "outputOnSymbol.h"      
 #include "outputOffSymbol.h"
 #include "batterySymbol.h"
@@ -63,7 +64,8 @@ Font Flash::smallFont = Font(smallFont_CHARS, smallFont_SETUP, smallFont_DATA);
 Font Flash::timeFont = Font(timeFont_CHARS, timeFont_SETUP, timeFont_DATA);
 Font Flash::bigFont = Font(bigFont_CHARS, bigFont_SETUP, bigFont_DATA);
 
-Sprite Flash::logo = Sprite(logo_SETUP, logo_DATA);
+Sprite Flash::logo_text = Sprite(logo_text_SETUP, logo_text_DATA);
+Sprite Flash::logo_symbol = Sprite(logo_symbol_SETUP, logo_symbol_DATA);
 Sprite Flash::outputOnSymbol = Sprite(outputOnSymbol_SETUP, outputOnSymbol_DATA);
 Sprite Flash::outputOffSymbol = Sprite(outputOffSymbol_SETUP, outputOffSymbol_DATA);
 Sprite Flash::batterySymbol = Sprite(batterySymbol_SETUP, batterySymbol_DATA);

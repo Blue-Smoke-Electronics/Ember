@@ -13,7 +13,8 @@ class Flash{
 
     public:
         static Sprite bootscreen; 
-        static Sprite logo; 
+        static Sprite logo_text; 
+        static Sprite logo_symbol; 
         static Sprite outputOnSymbol; 
         static Sprite outputOffSymbol; 
         static Sprite batterySymbol;
