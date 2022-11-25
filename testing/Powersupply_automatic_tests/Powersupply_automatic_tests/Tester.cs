@@ -130,14 +130,14 @@ namespace Powersupply_automatic_tests
                 acutalResistance.Add(resistance);
 
 
-                if (Math.Abs(teoreticalVoltage.Last() - acutalVoltage.Last()) > maxVoltageError)
+                if (Math.Abs(teoreticalVoltage.Last() - acutalVoltage.Last()) > maxVoltageError && Math.Abs(acutalCurrent.Last() - current) > maxCurrentError)
                 {
                     Console.WriteLine("failed!! --target  Voltage: "+ teoreticalVoltage.Last().ToString() + "  Current: " + teoreticalCurrent.Last().ToString() + " Power: " + (teoreticalVoltage.Last() * teoreticalCurrent.Last() / 1000).ToString());
                     Console.WriteLine("failed!! --actual Voltage: " + acutalVoltage.Last().ToString() + "  Current: " + acutalCurrent.Last().ToString() + " Power: " + (acutalVoltage.Last() * acutalCurrent.Last() / 1000).ToString());
                     failed = true;
                     
                 }
-                if (Math.Abs(teoreticalCurrent.Last() - acutalCurrent.Last()) > maxCurrentError)
+                if (Math.Abs(teoreticalCurrent.Last() - acutalCurrent.Last()) > maxCurrentError && Math.Abs(acutalVoltage.Last() - voltage) > maxVoltageError)
                 {
                     Console.WriteLine("failed!! --actual Voltage: " + acutalVoltage.Last().ToString() + "  Current: " + acutalCurrent.Last().ToString() + " Power: " + (acutalVoltage.Last() * acutalCurrent.Last() / 1000).ToString());
                     Console.WriteLine("failed!! --target  Voltage: " + teoreticalVoltage.Last().ToString() + "  Current: " + teoreticalCurrent.Last().ToString() + " Power: " + (teoreticalVoltage.Last() * teoreticalCurrent.Last() / 1000).ToString());
