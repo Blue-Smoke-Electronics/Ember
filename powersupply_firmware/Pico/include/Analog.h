@@ -3,6 +3,8 @@
 
 class Analog{
     private:
+        static float zeroCurrentReading; 
+        static float zeroVoltageReading;
     public:
         static void Init();
         static float GetTemp();

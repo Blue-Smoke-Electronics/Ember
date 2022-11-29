@@ -4,6 +4,9 @@
 #include "pico/stdlib.h"
 #include "hardware/adc.h"
 
+float Analog::zeroCurrentReading = 0.0f; 
+float Analog::zeroVoltageReading = 0.0f; 
+
 void Analog::Init(){
     adc_init();
     adc_set_temp_sensor_enabled(true);
@@ -11,6 +14,9 @@ void Analog::Init(){
     adc_gpio_init(Pcb::battery_voltage_sens_pin);
     adc_gpio_init(Pcb::output_voltage_sens_pin);
     adc_gpio_init(Pcb::output_current_sens_pin);
+
+    zeroCurrentReading = (GetOutputCurrent())/1000.0f;
+    zeroVoltageReading = GetOutputVoltage(); 
 }
 
 float Analog::GetTemp(){
@@ -27,7 +33,7 @@ float Analog::GetOutputCurrent(){ // output in mA
     int16_t raw_output_current = adc_read()-12;
 
     float output_current = (raw_output_current) * 3.3f / (1 << 12) / 2.5f;
-    output_current -= 0.0043f; // current trought constat current circuit 
+    output_current -= zeroCurrentReading + 0.0043f; // current trought constat current circuit 
     if (output_current < 0.0f)
         output_current = 0;
 
@@ -38,6 +44,7 @@ float Analog::GetOutputVoltage(){
     adc_select_input(Pcb::output_voltage_sens_adc_channal);
     int16_t raw_output_voltage = adc_read()-12;
     float output_voltage = raw_output_voltage * 3.3f / (1 << 12) * 11.0f;
+    output_voltage -= zeroVoltageReading;
     if (output_voltage < 0.0f)
         output_voltage = 0.0f;
 
