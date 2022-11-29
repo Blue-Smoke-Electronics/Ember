@@ -115,6 +115,11 @@ namespace Powersupply_automatic_tests
                 double current = random.NextDouble() * (maxCurrent-5)+5;
                 double resistance = Math.Pow(random.NextDouble(), 4) * (konradLoad.maxResistance);
 
+                if (resistance < current / 1000)
+                {
+                    resistance = current / 1000;
+                }
+
                 teoreticalVoltage.Add( Math.Min(voltage, (current/1000.0f) * resistance));
                 teoreticalCurrent.Add(Math.Min(current, (voltage / resistance)*1000));
 
