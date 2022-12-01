@@ -193,6 +193,89 @@ namespace Powersupply_automatic_tests
             return (System.DateTime.Now - this.startTime).TotalMilliseconds; 
         }
 
+        public void discharge_and_charge_test()
+        {      
+            // setup plot
+            double[] v = new double[900_000];
+            double[] t = new double[900_000];
+            int sampleCnt = 0;            
+            
+            ScottPlot.Plot plot = new ScottPlot.Plot();
+            plot.AddScatter(t, v);
+            plot.SetAxisLimits(0, 100, 0, 5);
+            ScottPlot.FormsPlotViewer viewer = new ScottPlot.FormsPlotViewer(plot);
+            viewer.Show();
+
+            double startTime = timeNow();
+
+            // wait for battery to charge up
+            while (pbp.BattGetV() < 4.1)
+            {
+                t[sampleCnt] = (timeNow() - startTime) / 1000.0f;
+                v[sampleCnt] = pbp.BattGetV();
+                viewer.formsPlot1.Plot.AxisAutoX();
+                viewer.formsPlot1.Render();
+                sampleCnt++;
+                System.Threading.Thread.Sleep(1000);
+            }
+
+            // set load to 15 ohm
+            konradLoad.SetCR(1500.0f);
+            konradLoad.EnableOutput();
+
+            // turn on powersupply 
+            pbp.Vset(15);
+            pbp.Iset(999);
+            pbp.EnableOutput();
+            System.Threading.Thread.Sleep(7000);
+            
+            // messure and plot batteryvoltage untill empty
+
+            
+            while (konradLoad.Vget() > 14.5)
+            {
+
+                t[sampleCnt] = (timeNow() - startTime) / 1000.0f;
+                v[sampleCnt] = pbp.BattGetV();
+                viewer.formsPlot1.Plot.AxisAutoX();
+                viewer.formsPlot1.Render();
+                sampleCnt++;
+
+                System.Threading.Thread.Sleep(1000);
+
+            }
+
+            pbp.DisableOutput();
+            konradLoad.DisableOutput();
+
+            // error if ontime is less than 10 min
+            if ((timeNow() - startTime) / (1000.0f * 60.0f) < 10)  // 10 min
+            {
+                MessageBox.Show("discharge test failed, used only " + ((timeNow() - startTime) / (1000.0f * 60.0f)).ToString() + " min to drain battery");
+            }
+
+
+
+            // mesure and plot battery voltage while charging
+            while (pbp.BattGetV() < 4.1f)
+            {
+                t[sampleCnt] = (timeNow() - startTime) / 1000.0f;
+                v[sampleCnt] = pbp.BattGetV();
+                viewer.formsPlot1.Plot.AxisAutoX();
+                viewer.formsPlot1.Render();
+                sampleCnt++;
+                System.Threading.Thread.Sleep(1000);
+            }
+
+
+            // error if charging time is grater than 4 hours 
+            if ((timeNow() - startTime) / (1000.0f * 60.0f*60) > 5)  // 5 houers
+            {
+                MessageBox.Show("charging test failed, used " + ((timeNow() - startTime) / (1000.0f * 60.0f)).ToString() + " min to charge battery");
+            }
+
+        }
+
     }
 
 

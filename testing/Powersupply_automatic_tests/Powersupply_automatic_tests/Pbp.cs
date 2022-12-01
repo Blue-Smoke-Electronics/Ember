@@ -111,6 +111,44 @@ namespace Powersupply_automatic_tests
                 return 0.0f;
             }
         }
+
+        public float BattGetV()
+        {
+            if (port.IsOpen)
+            {
+                System.Threading.Thread.Sleep(100);
+                port.DiscardInBuffer();
+                port.WriteLine("BATGETV");
+                string echo = port.ReadLine();
+                //string chargereturn1 = port.ReadLine();
+                string response = port.ReadLine();
+
+                return float.Parse(response);
+            }
+            else
+            {
+                return 0.0f;
+            }
+        }
+
+        public float BattGetP()
+        {
+            if (port.IsOpen)
+            {
+                System.Threading.Thread.Sleep(100);
+                port.DiscardInBuffer();
+                port.WriteLine("BATGETP");
+                string echo = port.ReadLine();
+                //string chargereturn1 = port.ReadLine();
+                string response = port.ReadLine();
+
+                return float.Parse(response);
+            }
+            else
+            {
+                return 0.0f;
+            }
+        }
         public void EnableOutput()
         {
             if (port.IsOpen)

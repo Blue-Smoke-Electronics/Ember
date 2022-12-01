@@ -245,5 +245,17 @@ namespace Powersupply_automatic_tests
             MessageBox.Show("Battery test finished: " + (testcurrent_A * time / 3600).ToString()+ " Ah");
 
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (pbp.IsConnected && konradLoad.IsConnected)
+            {
+                tester.discharge_and_charge_test();
+            }
+            else
+            {
+                MessageBox.Show("connect to pbp and load first");
+            }
+        }
     }
 }

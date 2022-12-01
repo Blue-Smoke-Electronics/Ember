@@ -56,6 +56,7 @@ namespace Powersupply_automatic_tests
             this.randomButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.buttonBatteryTest = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonSerial
@@ -297,11 +298,22 @@ namespace Powersupply_automatic_tests
             this.buttonBatteryTest.UseVisualStyleBackColor = true;
             this.buttonBatteryTest.Click += new System.EventHandler(this.buttonBatteryTest_Click);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(300, 128);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(140, 23);
+            this.button2.TabIndex = 25;
+            this.button2.Text = "discharge_test";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(706, 461);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.buttonBatteryTest);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.randomButton);
@@ -364,6 +376,7 @@ namespace Powersupply_automatic_tests
         private System.Windows.Forms.Button randomButton;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button buttonBatteryTest;
+        private System.Windows.Forms.Button button2;
     }
 }
 
