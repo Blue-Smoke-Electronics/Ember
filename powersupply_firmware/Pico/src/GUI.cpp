@@ -206,7 +206,7 @@ void GUI::Update(){
                         Display::Clear_square(8 + i * 5, 13, Flash::batterySymbol_bar.width, Flash::batterySymbol_bar.height);
                 }
 
-                if (Battery::GetBatteryProcentage() <= 0){
+                if (Battery::GetVoltage() < 3.0f ){
                     state = State::batteryEmpty;
                     newState = true;
                 }
