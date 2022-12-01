@@ -5,6 +5,7 @@
 #include "Flash.h"
 #include "PSU.h"
 #include "Battery.h"
+#include "Onoff.h"
 
 int CommandLineInterface::update_timer;
 std::string CommandLineInterface::rx_data;
@@ -32,6 +33,7 @@ void CommandLineInterface::Update(){
             printf("\r\n");
             desifre_command(rx_data);
             rx_data.clear();
+            Onoff::Turn_on_device();
         }
 
         if (new_char == 127){ // BACKSPACE
