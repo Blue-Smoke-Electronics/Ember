@@ -196,13 +196,13 @@ namespace Powersupply_automatic_tests
         public void discharge_and_charge_test()
         {      
             // setup plot
-            double[] v = new double[900_000];
-            double[] t = new double[900_000];
+            double[] v = new double[50_000];
+            double[] t = new double[50_000];
             int sampleCnt = 0;            
             
             ScottPlot.Plot plot = new ScottPlot.Plot();
             plot.AddScatter(t, v);
-            plot.SetAxisLimits(0, 100, 0, 5);
+            plot.SetAxisLimits(0, 100, 2.8, 4.2);
             ScottPlot.FormsPlotViewer viewer = new ScottPlot.FormsPlotViewer(plot);
             viewer.Show();
 
@@ -220,7 +220,7 @@ namespace Powersupply_automatic_tests
             }
 
             // set load to 15 ohm
-            konradLoad.SetCR(1500.0f);
+            konradLoad.SetCR(15.0f);
             konradLoad.EnableOutput();
 
             // turn on powersupply 
