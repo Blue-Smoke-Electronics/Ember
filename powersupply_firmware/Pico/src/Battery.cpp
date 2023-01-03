@@ -39,7 +39,7 @@ void Battery::Update(){
         if(capasityLeft < 0)
             capasityLeft =0; 
 
-        if (GetVoltage() > 4.095f) // adc caped at 4096
+       /* if (GetVoltage() > 4.095f) // adc caped at 4096
             capasityLeft = maxCapacity*0.8f > capasityLeft ? maxCapacity*0.8f :  capasityLeft;
             //capasityLeft = maxCapacity;
 
@@ -63,7 +63,7 @@ void Battery::Update(){
         if (GetVoltage() < 2.8f){
             capasityLeft = 0;
             Onoff::Turn_off_device();
-        }
+        }*/
     }
 }  
 

@@ -12,7 +12,6 @@ class Pcb{
         static const int uart_rx_pin = 1;
         static const int display_SCL_pin = 2; 
         static const int display_MISO_pin = 3; 
-        static const int display_BACKLIGHT_pin = 4; 
         static const int display_NCS_pin = 5; 
         static const int display_DC_pin = 6; 
         static const int dispaly_RST_pin = 7; 
@@ -29,6 +28,7 @@ class Pcb{
         static const int ouput_on_off_switch_pin  =18; 
         static const int ouput_on_off_led_pin = 19; 
         static const int booster_pwm_pin = 20; 
+        static const int display_BACKLIGHT_pin = 22; 
         static const int battery_charger_status_pin = 23; 
         static const int usb_connected_pin = 24; 
         static const int debbug_led_pin = 25; 
