@@ -30,7 +30,6 @@ int main() {
     Knobs::Init();
     Overheat::Init();
 
-    int i = 0;
     while (true) {
         heartbeat.Update();
         PSU::Update(); 
@@ -40,6 +39,5 @@ int main() {
         Battery::Update();
         Overheat::Update();
         Onoff::Update();
-        
     }
 }

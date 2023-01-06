@@ -56,16 +56,12 @@ void Display::Init () {
     gpio_put(Pcb::display_NCS_pin, 1);
 
     // setup backlint pwm
-    gpio_init(Pcb::display_BACKLIGHT_pin);
-    gpio_set_dir(Pcb::display_BACKLIGHT_pin, GPIO_OUT);
-    gpio_put(Pcb::display_BACKLIGHT_pin, 1);
-    // do not actiwait this before backlight pinn is reconnected to somthing other than gipo4
-    // gpio_set_function(Pcb::display_BACKLIGHT_pin,GPIO_FUNC_PWM);
-    // backlight_pwm_slice_num = pwm_gpio_to_slice_num(Pcb::display_BACKLIGHT_pin);
-    // pwm_set_clkdiv(backlight_pwm_slice_num,200.0f);
-    // pwm_set_wrap(backlight_pwm_slice_num,100); // 133kHz
-    // pwm_set_enabled(backlight_pwm_slice_num,true);
-    // Set_backlight(100);
+     gpio_set_function(Pcb::display_BACKLIGHT_pin,GPIO_FUNC_PWM);
+     backlight_pwm_slice_num = pwm_gpio_to_slice_num(Pcb::display_BACKLIGHT_pin);
+     pwm_set_clkdiv(backlight_pwm_slice_num,200.0f);
+     pwm_set_wrap(backlight_pwm_slice_num,100); // 133kHz
+     pwm_set_enabled(backlight_pwm_slice_num,true);
+     Set_backlight(100);
 
     // setup dma 
     dma_channal = dma_claim_unused_channel(true);
@@ -342,11 +338,7 @@ void Display::Set_backlight(int percent){
     if (percent<0)
         percent = 0;
 
-    //pwm_set_chan_level(backlight_pwm_slice_num,pwm_gpio_to_channel(Pcb::display_BACKLIGHT_pin),percent);
-    if (percent == 0)
-        gpio_put(Pcb::display_BACKLIGHT_pin, 0);
-    else
-        gpio_put(Pcb::display_BACKLIGHT_pin, 1);
+    pwm_set_chan_level(backlight_pwm_slice_num,pwm_gpio_to_channel(Pcb::display_BACKLIGHT_pin),percent);
 }
 
 SpiData::SpiData() {}
