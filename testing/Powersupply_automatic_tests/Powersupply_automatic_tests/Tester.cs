@@ -255,10 +255,10 @@ namespace Powersupply_automatic_tests
             pbp.Iset(999);
             pbp.EnableOutput();
             System.Threading.Thread.Sleep(7000);
-            
+
             // messure and plot batteryvoltage untill empty
 
-            
+            double drainStarteTimer = timeNow(); 
             while (konradLoad.Vget() > 14.5)
             {
 
@@ -270,18 +270,20 @@ namespace Powersupply_automatic_tests
 
                 System.Threading.Thread.Sleep(1000);
 
+
             }
 
             pbp.DisableOutput();
             konradLoad.DisableOutput();
 
+            
             // error if ontime is less than 10 min
-            if ((timeNow() - startTime) / (1000.0f * 60.0f) < 10)  // 10 min
+            if ((timeNow() - drainStarteTimer) / (1000.0f * 60.0f) < 10)  // 10 min
             {
-                MessageBox.Show("discharge test failed, used only " + ((timeNow() - startTime) / (1000.0f * 60.0f)).ToString() + " min to drain battery");
+                MessageBox.Show("discharge test failed, used only " + ((timeNow() - drainStarteTimer) / (1000.0f * 60.0f)).ToString() + " min to drain battery");
             }
 
-
+            double chargeStartTimer = timeNow();
 
             // mesure and plot battery voltage while charging
             while (pbp.BattGetV() < 4.1f)
@@ -296,9 +298,9 @@ namespace Powersupply_automatic_tests
 
 
             // error if charging time is grater than 4 hours 
-            if ((timeNow() - startTime) / (1000.0f * 60.0f*60) > 5)  // 5 houers
+            if ((timeNow() - chargeStartTimer) / (1000.0f * 60.0f*60) > 5)  // 5 houers
             {
-                MessageBox.Show("charging test failed, used " + ((timeNow() - startTime) / (1000.0f * 60.0f)).ToString() + " min to charge battery");
+                MessageBox.Show("charging test failed, used " + ((timeNow() - chargeStartTimer) / (1000.0f * 60.0f)).ToString() + " min to charge battery");
             }
 
         }
