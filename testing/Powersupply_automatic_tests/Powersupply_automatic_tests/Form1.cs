@@ -60,6 +60,7 @@ namespace Powersupply_automatic_tests
             konradLoad.SetCR(1000);
             konradLoad.EnableOutput();
             pbp.Iset(100);
+            pbp.EnableOutput();
             System.Threading.Thread.Sleep(1000);
 
             for (float v =0.0f; v < 12.01f; v+= 0.5f)
@@ -80,6 +81,7 @@ namespace Powersupply_automatic_tests
 
 
             pbp.Vset(0);
+            pbp.DisableOutput();
             konradLoad.DisableOutput();
         }
 

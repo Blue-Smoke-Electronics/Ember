@@ -12,7 +12,7 @@ int32_t Overheat::hysteresisTimer;
 
 void Overheat::Init(){
     update_timer =0;
-    maxTemp = 70; 
+    maxTemp = 80; 
     hysteresisTimer =0; 
 }
 

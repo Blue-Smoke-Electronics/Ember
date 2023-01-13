@@ -14,7 +14,7 @@ namespace Powersupply_automatic_tests
         SerialPort port;
         public Pbp()
         {
-            port = new SerialPort("COM28", 115200, Parity.None, 8, StopBits.One);
+            port = new SerialPort("COM30", 115200, Parity.None, 8, StopBits.One);
             port.RtsEnable = true;
             port.DtrEnable = true;
             //port.WriteTimeout = 1000; 
@@ -122,8 +122,9 @@ namespace Powersupply_automatic_tests
                 string echo = port.ReadLine();
                 //string chargereturn1 = port.ReadLine();
                 string response = port.ReadLine();
-
+                
                 return float.Parse(response);
+                
             }
             else
             {

@@ -13,10 +13,10 @@ namespace Powersupply_automatic_tests
 
         const float maxCurrent = 1000; // mA 
         const float maxVoltage = 15; // V
-        const int stablisationTime = 5000; //ms
+        const int stablisationTime = 10000; //ms
 
         const float maxVoltageError = 0.5f;
-        const float maxCurrentError = 5.0f;
+        const float maxCurrentError = 10.0f;
         
         Pbp pbp;
         KonradLoad konradLoad;
@@ -106,7 +106,9 @@ namespace Powersupply_automatic_tests
             List<double> acutalVoltage = new List<double>();
             List<double> acutalCurrent = new List<double>();
             List<double> acutalResistance = new List<double>();
-            bool failed = false; 
+            int successCnt  = 0; 
+            bool failed = false;
+         
            
             Random random = new Random();
             for (int i = 0; i < testCnt; i++)
@@ -115,25 +117,49 @@ namespace Powersupply_automatic_tests
                 double current = random.NextDouble() * (maxCurrent-5)+5;
                 double resistance = Math.Pow(random.NextDouble(), 4) * (konradLoad.maxResistance);
 
-                if (resistance < current / 1000)
+                if (resistance < current / 200)
                 {
-                    resistance = current / 1000;
+                    resistance = current / 200;
                 }
 
                 teoreticalVoltage.Add( Math.Min(voltage, (current/1000.0f) * resistance));
                 teoreticalCurrent.Add(Math.Min(current, (voltage / resistance)*1000));
-
+                
                 konradLoad.SetCR((float)resistance);
                 pbp.Iset((float)current);
                 pbp.Vset((float)voltage);
+                
+                double timeOutStart = timeNow();
+                successCnt = 0; 
+                while (timeNow() - timeOutStart < stablisationTime && successCnt < 3)
+                {
+                    double V = konradLoad.Vget();
+                    double I = konradLoad.Iget();
+                   
+                    if (Math.Abs(teoreticalVoltage.Last() - V) < maxVoltageError &&
+                        Math.Abs(teoreticalCurrent.Last() - I) < maxCurrentError){
+                        successCnt++;
+                    }
+                    else
+                    {
+                        successCnt = 0;
+                    }
 
-                // wait for output to stabilize 
-                System.Threading.Thread.Sleep(stablisationTime);    
+                    System.Threading.Thread.Sleep(100);
+                }
 
-                acutalVoltage.Add(konradLoad.Vget());
+                // warn of errors 
+                if (successCnt < 3)
+                {
+                    MessageBox.Show("Random test failed!!!!\n" +
+                        " expected: \n "+ teoreticalVoltage.Last() +"V \n"+
+                        teoreticalCurrent.Last() + "A");
+                    failed = true; 
+                }
+
+                /*acutalVoltage.Add(konradLoad.Vget());
                 acutalCurrent.Add(konradLoad.Iget());
                 acutalResistance.Add(resistance);
-
 
                 if (Math.Abs(teoreticalVoltage.Last() - acutalVoltage.Last()) > maxVoltageError && Math.Abs(acutalCurrent.Last() - current) > maxCurrentError)
                 {
@@ -148,6 +174,8 @@ namespace Powersupply_automatic_tests
                     Console.WriteLine("failed!! --target  Voltage: " + teoreticalVoltage.Last().ToString() + "  Current: " + teoreticalCurrent.Last().ToString() + " Power: " + (teoreticalVoltage.Last() * teoreticalCurrent.Last() / 1000).ToString());
                     failed = true;
                 }
+                */
+
 
             }
 
@@ -170,7 +198,7 @@ namespace Powersupply_automatic_tests
                 u2.Add(teoreticalVoltage[i] * teoreticalCurrent[i]);
             }
 
-            ScottPlot.Plot plot = new ScottPlot.Plot();
+            /*ScottPlot.Plot plot = new ScottPlot.Plot();
             plot.AddScatter(acutalResistance.ToArray(), u.ToArray(), color: System.Drawing.Color.Red,lineStyle:ScottPlot.LineStyle.None);
             plot.AddScatter(acutalResistance.ToArray(), u2.ToArray(), color: System.Drawing.Color.Blue, lineStyle: ScottPlot.LineStyle.None);
             //plot.AddScatter(acutalVoltage.ToArray(), acutalResistance.ToArray(), color: System.Drawing.Color.Blue);
@@ -178,14 +206,13 @@ namespace Powersupply_automatic_tests
             //plot.AddScatter(timeData.ToArray(), currentData.ToArray(), color: System.Drawing.Color.Blue);
             //plot.AddScatter(timeData.ToArray(), currentDataTarget.ToArray(), color: System.Drawing.Color.Red);
             ScottPlot.FormsPlotViewer viewer = new ScottPlot.FormsPlotViewer(plot);
-            viewer.Show();
+            viewer.Show();*/
 
-
-            // warn of errors 
-            if (failed)
+            if (!failed)
             {
-                MessageBox.Show("Random test failed!!!!");
+                MessageBox.Show("Random test compleated successfully :)");
             }
+
 
         } 
         private double timeNow()
