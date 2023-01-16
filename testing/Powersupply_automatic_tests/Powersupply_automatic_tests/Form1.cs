@@ -62,8 +62,9 @@ namespace Powersupply_automatic_tests
             pbp.Iset(100);
             pbp.EnableOutput();
             System.Threading.Thread.Sleep(1000);
+            bool failed = false;
 
-            for (float v =0.0f; v < 12.01f; v+= 0.5f)
+            for (float v =0.0f; v < 15.01f; v+= 0.5f)
             {
              
                 pbp.Vset(v);
@@ -72,9 +73,10 @@ namespace Powersupply_automatic_tests
                 float voltMeas = konradLoad.Vget();
 
                 Console.WriteLine("diff: " + (Math.Abs(v - voltMeas)).ToString());
-                if (Math.Abs(v - voltMeas) > 0.1)
+                if (Math.Abs(v - voltMeas) > 0.03)
                 {
                     MessageBox.Show("ERROR to hight at " + v.ToString()+"V");
+                    failed = true;
                 }
 
             }
@@ -83,6 +85,10 @@ namespace Powersupply_automatic_tests
             pbp.Vset(0);
             pbp.DisableOutput();
             konradLoad.DisableOutput();
+            if (!failed)
+            {
+                MessageBox.Show("Voltage test compleated successfully"); 
+            }
         }
 
         private void buttonCurrentTest_Click(object sender, EventArgs e)

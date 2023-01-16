@@ -42,8 +42,28 @@ float Analog::GetOutputCurrent(){ // output in mA
 
 float Analog::GetOutputVoltage(){
     adc_select_input(Pcb::output_voltage_sens_adc_channal);
-    int16_t raw_output_voltage = adc_read()-12;
-    float output_voltage = raw_output_voltage * 3.3f / (1 << 12) * 11.0f;
+    int16_t raw_output_voltage = adc_read();
+    int16_t adjusted_raw_output_voltage; 
+    // compansate for bad DNL  on spesific values 
+    if (raw_output_voltage < 512){
+        adjusted_raw_output_voltage = raw_output_voltage-13;
+    }
+    else if ( raw_output_voltage < 1536){
+        adjusted_raw_output_voltage = raw_output_voltage-5;
+    }
+    else if ( raw_output_voltage < 2560){
+        adjusted_raw_output_voltage = raw_output_voltage+1;
+    }
+    else if ( raw_output_voltage < 3584){
+        adjusted_raw_output_voltage = raw_output_voltage+8;
+    }
+    else {
+        adjusted_raw_output_voltage = raw_output_voltage+15;
+    }
+    
+    printf("vout: %d\r\n", raw_output_voltage);
+    
+    float output_voltage = adjusted_raw_output_voltage * 3.3f / (1 << 12) * 11.0f;
     output_voltage -= zeroVoltageReading;
     if (output_voltage < 0.0f)
         output_voltage = 0.0f;
