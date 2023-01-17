@@ -61,8 +61,6 @@ float Analog::GetOutputVoltage(){
         adjusted_raw_output_voltage = raw_output_voltage+15;
     }
     
-    printf("vout: %d\r\n", raw_output_voltage);
-    
     float output_voltage = adjusted_raw_output_voltage * 3.3f / (1 << 12) * 11.0f;
     output_voltage -= zeroVoltageReading;
     if (output_voltage < 0.0f)

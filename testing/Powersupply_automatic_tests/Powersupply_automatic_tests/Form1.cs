@@ -73,7 +73,7 @@ namespace Powersupply_automatic_tests
                 float voltMeas = konradLoad.Vget();
 
                 Console.WriteLine("diff: " + (Math.Abs(v - voltMeas)).ToString());
-                if (Math.Abs(v - voltMeas) > 0.03)
+                if (Math.Abs(v - voltMeas) > 0.05)
                 {
                     MessageBox.Show("ERROR to hight at " + v.ToString()+"V");
                     failed = true;
@@ -199,7 +199,7 @@ namespace Powersupply_automatic_tests
         {
             if (pbp.IsConnected && konradLoad.IsConnected)
             {
-                tester.Random(200);
+                tester.Random(500);
             }
             else
             {

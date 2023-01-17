@@ -14,7 +14,7 @@ namespace Powersupply_automatic_tests
         const float maxCurrent = 1000; // mA 
         const float maxVoltage = 15; // V
         const int stablisationTime = 10000; //ms
-
+        const int stablisationTime_current = 1000; //ms
         const float maxVoltageError = 0.5f;
         const float maxCurrentError = 10.0f;
         
@@ -49,22 +49,22 @@ namespace Powersupply_automatic_tests
             pbp.Vset(Voltage);
             pbp.Iset(0.0f);
             pbp.EnableOutput();
-            System.Threading.Thread.Sleep(stablisationTime);
+            System.Threading.Thread.Sleep(stablisationTime_current);
 
             bool failed = false;
 
-            for (float i = 0.0f; i < maxCurrent; i += stepsize)
+            for (float i = 0.0f; i < maxCurrent+1; i += stepsize)
             {
                 Console.WriteLine("ISET " + i.ToString() + "\n");
                 pbp.Iset(i);
-                System.Threading.Thread.Sleep(stablisationTime);
+                System.Threading.Thread.Sleep(stablisationTime_current);
                 float ampMeas = konradLoad.Iget();
 
                 Console.WriteLine("diff: " + (Math.Abs(i - ampMeas)).ToString());
-                if (Math.Abs(i - ampMeas) > 25)
+                if (Math.Abs(i - ampMeas) > 10)
                 {
                     failed = true;
-                    Console.WriteLine("ERROR to hight at " + i.ToString() + "mA");
+                    MessageBox.Show("ERROR to hight at " + i.ToString() + "mA");
                 }
                 timeData.Add(timeNow());
                 currentData.Add(konradLoad.Iget());
@@ -74,6 +74,7 @@ namespace Powersupply_automatic_tests
             }
 
             pbp.Vset(0);
+            pbp.DisableOutput();
             konradLoad.DisableOutput();
             ScottPlot.FormsPlot formsPlot = new ScottPlot.FormsPlot();
             formsPlot.Plot.AddScatter(timeData.ToArray(), voltageData.ToArray(),color: System.Drawing.Color.Blue);
@@ -83,9 +84,9 @@ namespace Powersupply_automatic_tests
             ScottPlot.FormsPlotViewer viewer = new ScottPlot.FormsPlotViewer(formsPlot.Plot);
             viewer.Show();
 
-            if (failed)
+            if (!failed)
             {
-                MessageBox.Show("ERROR ConstantVoltageShortedLoadVarCurrentTest FAILED!!!");
+                MessageBox.Show("ConstantVoltageShortedLoadVarCurrentTest Success!!!");
             }
         }
 
@@ -234,6 +235,7 @@ namespace Powersupply_automatic_tests
             viewer.Show();
 
             double startTime = timeNow();
+            bool failed = false;
 
             // wait for battery to charge up
             while (pbp.BattGetV() < 4.1)
@@ -281,6 +283,7 @@ namespace Powersupply_automatic_tests
             if ((timeNow() - drainStarteTimer) / (1000.0f * 60.0f) < 10)  // 10 min
             {
                 MessageBox.Show("discharge test failed, used only " + ((timeNow() - drainStarteTimer) / (1000.0f * 60.0f)).ToString() + " min to drain battery");
+                failed = true;
             }
 
             double chargeStartTimer = timeNow();
@@ -301,8 +304,13 @@ namespace Powersupply_automatic_tests
             if ((timeNow() - chargeStartTimer) / (1000.0f * 60.0f*60) > 5)  // 5 houers
             {
                 MessageBox.Show("charging test failed, used " + ((timeNow() - chargeStartTimer) / (1000.0f * 60.0f)).ToString() + " min to charge battery");
+                failed = true;
             }
 
+            if (!failed)
+            {
+                MessageBox.Show("Charring and discharge test Success :)");
+            }
         }
 
     }
