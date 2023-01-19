@@ -122,29 +122,46 @@ namespace Powersupply_automatic_tests
                 {
                     resistance = current / 200;
                 }
+                bool isVoltagelimited = false; // always voltage or current limited
+                if (voltage < (current / 1000.0f) * resistance){
+                    isVoltagelimited = true; 
+                }
 
                 teoreticalVoltage.Add( Math.Min(voltage, (current/1000.0f) * resistance));
                 teoreticalCurrent.Add(Math.Min(current, (voltage / resistance)*1000));
+
+                
                 
                 konradLoad.SetCR((float)resistance);
                 pbp.Iset((float)current);
                 pbp.Vset((float)voltage);
                 
                 double timeOutStart = timeNow();
-                successCnt = 0; 
+                successCnt = 0;
                 while (timeNow() - timeOutStart < stablisationTime && successCnt < 3)
                 {
                     double V = konradLoad.Vget();
                     double I = konradLoad.Iget();
-                   
-                    if (Math.Abs(teoreticalVoltage.Last() - V) < maxVoltageError &&
-                        Math.Abs(teoreticalCurrent.Last() - I) < maxCurrentError){
-                        successCnt++;
-                    }
-                    else
+                    if (isVoltagelimited)
                     {
-                        successCnt = 0;
+                        if (Math.Abs(teoreticalVoltage.Last() - V) < maxVoltageError ){
+                            successCnt++;
+                        }
+                        else
+                        {
+                            successCnt = 0;
+                        }
                     }
+                    else  { // current limited 
+                        if (Math.Abs(teoreticalCurrent.Last() - I) < maxCurrentError) {
+                            successCnt++;
+                        }
+                        else
+                        {
+                            successCnt = 0;
+                        }
+                    }
+                    
 
                     System.Threading.Thread.Sleep(100);
                 }
@@ -224,8 +241,8 @@ namespace Powersupply_automatic_tests
         public void discharge_and_charge_test()
         {      
             // setup plot
-            double[] v = new double[50_000];
-            double[] t = new double[50_000];
+            double[] v = new double[100_000];
+            double[] t = new double[100_000];
             int sampleCnt = 0;            
             
             ScottPlot.Plot plot = new ScottPlot.Plot();
