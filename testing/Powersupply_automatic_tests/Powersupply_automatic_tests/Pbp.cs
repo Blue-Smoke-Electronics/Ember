@@ -14,7 +14,7 @@ namespace Powersupply_automatic_tests
         SerialPort port;
         public Pbp()
         {
-            port = new SerialPort("COM31", 115200, Parity.None, 8, StopBits.One);
+            port = new SerialPort("COM34", 115200, Parity.None, 8, StopBits.One);
             port.RtsEnable = true;
             port.DtrEnable = true;
             //port.WriteTimeout = 1000; 
