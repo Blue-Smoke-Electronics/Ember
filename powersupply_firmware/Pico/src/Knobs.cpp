@@ -29,11 +29,9 @@ void Knobs::Init(){
 
     gpio_set_irq_enabled_with_callback(Pcb::on_off_switch_pin,          GPIO_IRQ_EDGE_FALL, true, &IRS);
     gpio_set_irq_enabled_with_callback(Pcb::ouput_on_off_switch_pin,    GPIO_IRQ_EDGE_FALL, true, &IRS);
-    gpio_set_irq_enabled_with_callback(Pcb::encoder_current_A_pin,      GPIO_IRQ_EDGE_FALL, true, &IRS);
-    gpio_set_irq_enabled_with_callback(Pcb::encoder_current_B_pin,      GPIO_IRQ_EDGE_FALL, true, &IRS);
+    gpio_set_irq_enabled_with_callback(Pcb::encoder_current_A_pin,      GPIO_IRQ_EDGE_FALL | GPIO_IRQ_EDGE_RISE, true, &IRS);
     gpio_set_irq_enabled_with_callback(Pcb::encoder_current_switch_pin, GPIO_IRQ_EDGE_FALL, true, &IRS);
-    gpio_set_irq_enabled_with_callback(Pcb::encoder_voltage_A_pin,      GPIO_IRQ_EDGE_FALL, true, &IRS);
-    gpio_set_irq_enabled_with_callback(Pcb::encoder_voltage_B_pin,      GPIO_IRQ_EDGE_FALL, true, &IRS);
+    gpio_set_irq_enabled_with_callback(Pcb::encoder_voltage_A_pin,      GPIO_IRQ_EDGE_FALL | GPIO_IRQ_EDGE_RISE, true, &IRS);
     gpio_set_irq_enabled_with_callback(Pcb::encoder_voltage_switch_pin, GPIO_IRQ_EDGE_FALL, true, &IRS);
 
     Knobs::on_off_switch_skipp_first = 5;
@@ -95,19 +93,15 @@ void Knobs::IRS(uint gpio, uint32_t events){
             GUI::ChangeCurrentScaler();
             break;
         case Pcb::encoder_voltage_A_pin:
-            if (!gpio_get(Pcb::encoder_voltage_B_pin))
+            if (gpio_get(Pcb::encoder_voltage_A_pin)==gpio_get(Pcb::encoder_voltage_B_pin))
                 voltage_encoder_cnt--;
-            break;
-        case Pcb::encoder_voltage_B_pin:
-            if (!gpio_get(Pcb::encoder_voltage_A_pin))
+            else
                 voltage_encoder_cnt++;
             break;
         case Pcb::encoder_current_A_pin:
-            if (!gpio_get(Pcb::encoder_current_B_pin))
+            if (gpio_get(Pcb::encoder_current_A_pin)==gpio_get(Pcb::encoder_current_B_pin))
                 current_encoder_cnt--;
-            break;
-        case Pcb::encoder_current_B_pin:
-            if (!gpio_get(Pcb::encoder_current_A_pin))
+            else
                 current_encoder_cnt++;
             break;
     }
