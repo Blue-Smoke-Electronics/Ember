@@ -37,13 +37,9 @@ void Booster::Update(){
     if(time_us_32() - update_timer > update_freq_us ){
         update_timer = time_us_32();
 
-        /*if (j == 0 ) {
-            printf (" %f \r\n", pwm_value); 
-             
-        }
-        j++;*/
 
-        if (GetVoltage() < targetVoltage && pwm_value < 860 )
+
+        if (GetVoltage() < targetVoltage && pwm_value < 880 )
             pwm_value += .1;
 
         if (GetVoltage() > targetVoltage && pwm_value > 0)
@@ -52,6 +48,9 @@ void Booster::Update(){
         if (GetVoltage() > targetVoltage + 5) // somtihg is wrong, turn of booster
             pwm_value = 0;
 
+        
+
+       //pwm_value = targetVoltage; // debug 
         pwm_set_chan_level(pwm_slice_num,pwm_gpio_to_channel(Pcb::booster_pwm_pin), pwm_value);
     }
 }

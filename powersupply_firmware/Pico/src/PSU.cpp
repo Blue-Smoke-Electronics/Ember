@@ -34,6 +34,9 @@ void PSU::Update(){
         update_timer = time_us_32();
 
         if(enabled){
+            /*LinReg::SetVoltage(15);
+            LinReg::SetCurrent(1000);
+            Booster::SetVoltage(targetCurrent);*/
             LinReg::SetVoltage(targetVoltage);
             LinReg::SetCurrent(targetCurrent);
             Booster::SetVoltage(std::min(LinReg::GetVoltage() + 3.0f, targetVoltage+2.2f));
