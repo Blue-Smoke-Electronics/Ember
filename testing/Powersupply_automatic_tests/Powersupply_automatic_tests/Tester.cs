@@ -243,6 +243,7 @@ namespace Powersupply_automatic_tests
             // setup plot
             double[] v = new double[100_000];
             double[] t = new double[100_000];
+            double[] charge = new double[100_000];
             int sampleCnt = 0;            
             
             ScottPlot.Plot plot = new ScottPlot.Plot();
@@ -250,6 +251,12 @@ namespace Powersupply_automatic_tests
             plot.SetAxisLimits(0, 100, 2.8, 4.2);
             ScottPlot.FormsPlotViewer viewer = new ScottPlot.FormsPlotViewer(plot);
             viewer.Show();
+
+            ScottPlot.Plot plot1 = new ScottPlot.Plot();
+            plot1.AddScatter(t, charge);
+            plot1.SetAxisLimits(0, 100, -1, 101);
+            ScottPlot.FormsPlotViewer viewer1 = new ScottPlot.FormsPlotViewer(plot1);
+            viewer1.Show();
 
             double startTime = timeNow();
             bool failed = false;
@@ -259,8 +266,11 @@ namespace Powersupply_automatic_tests
             {
                 t[sampleCnt] = (timeNow() - startTime) / 1000.0f;
                 v[sampleCnt] = pbp.BattGetV();
+                charge[sampleCnt] = pbp.BattGetP();
                 viewer.formsPlot1.Plot.AxisAutoX();
                 viewer.formsPlot1.Render();
+                viewer1.formsPlot1.Plot.AxisAutoX();
+                viewer1.formsPlot1.Render();
                 sampleCnt++;
                 System.Threading.Thread.Sleep(1000);
             }
@@ -283,8 +293,13 @@ namespace Powersupply_automatic_tests
 
                 t[sampleCnt] = (timeNow() - startTime) / 1000.0f;
                 v[sampleCnt] = pbp.BattGetV();
+                charge[sampleCnt] = pbp.BattGetP();
                 viewer.formsPlot1.Plot.AxisAutoX();
                 viewer.formsPlot1.Render();
+
+                viewer1.formsPlot1.Plot.AxisAutoX();
+                viewer1.formsPlot1.Render();
+
                 sampleCnt++;
 
                 System.Threading.Thread.Sleep(1000);
@@ -310,6 +325,7 @@ namespace Powersupply_automatic_tests
             {
                 t[sampleCnt] = (timeNow() - startTime) / 1000.0f;
                 v[sampleCnt] = pbp.BattGetV();
+                charge[sampleCnt] = pbp.BattGetP();
                 viewer.formsPlot1.Plot.AxisAutoX();
                 viewer.formsPlot1.Render();
                 sampleCnt++;

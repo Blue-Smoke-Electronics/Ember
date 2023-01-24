@@ -7,7 +7,7 @@
 #include "LinReg.h"
 #include "Onoff.h"
 
-const float Battery::maxCapacity = 3.65 * 1500 * 3600; //V*mA*s/h == mJ // 3.65 is avrage voltage lever during messurements
+const float Battery::maxCapacity = 12950 * 3600; //mWh*s/h == mJ // 3.65 is avrage voltage lever during messurements
 
 const uint32_t Battery::update_freq_us = 2 * 1000 * 1000;
 uint32_t Battery::update_timer;
@@ -55,12 +55,12 @@ void Battery::Update(){
         if(GetVoltage() > 3.63f)
             //capasityLeft = maxCapacity*0.2f > capasityLeft ? maxCapacity*0.2f :  capasityLeft;
 */
-        if (GetVoltage() < 3.0f){
+        if (GetVoltage() < 2.6f){
             capasityLeft = 0;
             PSU::Disable();
         }
 
-        if (GetVoltage() < 2.8f){
+        if (GetVoltage() < 2.5f){
             capasityLeft = 0;
             Onoff::Turn_off_device();
         }
@@ -118,9 +118,9 @@ float Battery::GetBatteryLife_s(){
     int lifetime=0;
     float powerdraw = GetTotalPowerDraw();
     if(powerdraw < 0)
-       lifetime= (maxCapacity - capasityLeft) / (-powerdraw);
+       lifetime= (maxCapacity - GetCapasityLeft()) / (-powerdraw);
     else
-        lifetime = capasityLeft/powerdraw; 
+        lifetime = GetCapasityLeft()/powerdraw; 
 
     if (lifetime > 172800) // cap at 48 houers
         lifetime = 172800;
@@ -132,9 +132,24 @@ float Battery::GetBatteryLife_s(){
 }
 
 float Battery::GetBatteryProcentage(){
-    return (capasityLeft / maxCapacity) * 100.0f;
+    return (GetCapasityLeft() / maxCapacity) * 100.0f;
 }
 
 float Battery::GetCapasityLeft(){
-    return capasityLeft;
+    
+    float currentdraw = GetTotalPowerDraw()/GetVoltage();
+    if(currentdraw < 0){
+        currentdraw =0; 
+    }
+    float voltagedrop = currentdraw/1000 * 0.050; //internal resistance of 50mohm
+    float noloadvoltage = GetVoltage() + voltagedrop; 
+    float capleft = 15000*noloadvoltage*3600 - 51000*3600; // linear regression of discharge curv
+    if (capleft< 0){
+        capleft =0; 
+    }
+    if(capleft > maxCapacity){
+        capleft = maxCapacity;
+    }
+    return capleft;
+    //return capasityLeft;
 }
