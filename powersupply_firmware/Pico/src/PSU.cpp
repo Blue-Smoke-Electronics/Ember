@@ -21,7 +21,6 @@ void PSU::Init(){
     gpio_set_dir(Pcb::ouput_on_off_led_pin, GPIO_OUT);
 
     enabled = false;
-    //todo: load from flash
     SetVoltage(Flash::GetOutputVoltage());
     SetCurrent(Flash::GetOutputCurrent());
 }
@@ -34,9 +33,6 @@ void PSU::Update(){
         update_timer = time_us_32();
 
         if(enabled){
-            /*LinReg::SetVoltage(15);
-            LinReg::SetCurrent(1000);
-            Booster::SetVoltage(targetCurrent);*/
             LinReg::SetVoltage(targetVoltage);
             LinReg::SetCurrent(targetCurrent);
             Booster::SetVoltage(std::min(LinReg::GetVoltage() + 3.0f, targetVoltage+2.2f));

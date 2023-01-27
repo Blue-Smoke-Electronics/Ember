@@ -38,28 +38,18 @@ void Booster::Update(){
         update_timer = time_us_32();
 
 
-        pwm_value += (targetVoltage - GetVoltage())*20.0f;  
+        pwm_value += (targetVoltage - GetVoltage())*10.0f;  
         if (pwm_value > 900){
             pwm_value = 900;
         }
         if (pwm_value < 0){
             pwm_value = 0; 
         }
-        /*if (GetVoltage() < targetVoltage && pwm_value < 880 )
-            pwm_value += 10.0;
 
-        if (GetVoltage() > targetVoltage && pwm_value > 0)
-            pwm_value -= 10.0;
-*/
         if (GetVoltage() > targetVoltage + 5) // somtihg is wrong, turn of booster
             pwm_value = 0;
 
         
-        
-       //pwm_value = targetVoltage; // debug 
-       //if(targetVoltage > 0 ){
-       // pwm_value = 860; 
-       //}
         pwm_set_chan_level(pwm_slice_num,pwm_gpio_to_channel(Pcb::booster_pwm_pin), pwm_value);
     }
 }

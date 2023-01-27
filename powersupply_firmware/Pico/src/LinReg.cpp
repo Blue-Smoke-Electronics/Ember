@@ -52,9 +52,6 @@ void LinReg::Update(){
 
         pwm_set_chan_level(voltage_limit_pwm_slice_num, pwm_gpio_to_channel(Pcb::voltage_limit_pwm_pin), ((targetVoltage + voltageCorrection) / 4.7037) * (10000 / 3.3f));
         pwm_set_chan_level(current_limit_pwm_slice_num, pwm_gpio_to_channel(Pcb::current_limit_pwm_pin), ((targetCurrent + currentCorrection) * 2.5f) * (10 / 3.3f));
-    
-        //pwm_set_chan_level(voltage_limit_pwm_slice_num, pwm_gpio_to_channel(Pcb::voltage_limit_pwm_pin), 10000);
-        //pwm_set_chan_level(current_limit_pwm_slice_num, pwm_gpio_to_channel(Pcb::current_limit_pwm_pin), 10000);
         }
 }
 
