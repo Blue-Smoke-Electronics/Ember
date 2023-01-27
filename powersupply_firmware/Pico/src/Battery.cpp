@@ -7,7 +7,7 @@
 #include "LinReg.h"
 #include "Onoff.h"
 
-const float Battery::maxCapacity = 12950 * 3600; //mWh*s/h == mJ // 3.65 is avrage voltage lever during messurements
+const float Battery::maxCapacity = 9000 * 3600; 
 
 const uint32_t Battery::update_freq_us = 2 * 1000 * 1000;
 uint32_t Battery::update_timer;
@@ -32,6 +32,9 @@ void Battery::Update(){
         update_timer = time_us_32();
 
         capasityLeft -= delta_t/1000000.0f *  GetTotalPowerDraw();
+
+        // correct from messurment 
+        capasityLeft += (EstimateCapacityByVoltage()-capasityLeft )*0.01;
         
         if(capasityLeft > maxCapacity)
             capasityLeft = maxCapacity;
@@ -39,22 +42,6 @@ void Battery::Update(){
         if(capasityLeft < 0)
             capasityLeft =0; 
 
-       /* if (GetVoltage() > 4.095f) // adc caped at 4096
-            capasityLeft = maxCapacity*0.8f > capasityLeft ? maxCapacity*0.8f :  capasityLeft;
-            //capasityLeft = maxCapacity;
-
-        if(GetVoltage() > 3.92f)
-            //capasityLeft = maxCapacity*0.8f > capasityLeft ? maxCapacity*0.8f :  capasityLeft;
-
-        if(GetVoltage() > 3.77f)
-            //capasityLeft = maxCapacity*0.6f > capasityLeft ? maxCapacity*0.6f :  capasityLeft;
-
-        if(GetVoltage() > 3.7f)
-            //capasityLeft = maxCapacity*0.4f > capasityLeft ? maxCapacity*0.4f :  capasityLeft;
-
-        if(GetVoltage() > 3.63f)
-            //capasityLeft = maxCapacity*0.2f > capasityLeft ? maxCapacity*0.2f :  capasityLeft;
-*/
         if (GetVoltage() < 2.6f){
             capasityLeft = 0;
             PSU::Disable();
@@ -136,14 +123,18 @@ float Battery::GetBatteryProcentage(){
 }
 
 float Battery::GetCapasityLeft(){
+    return capasityLeft;
+}
+
+float Battery::EstimateCapacityByVoltage(){
     
     float currentdraw = GetTotalPowerDraw()/GetVoltage();
     if(currentdraw < 0){
         currentdraw =0; 
     }
-    float voltagedrop = currentdraw/1000 * 0.050; //internal resistance of 50mohm
+    float voltagedrop = currentdraw/1000 * 0.130; //internal resistance of 50mohm
     float noloadvoltage = GetVoltage() + voltagedrop; 
-    float capleft = 15000*noloadvoltage*3600 - 51000*3600; // linear regression of discharge curv
+    float capleft = 12857*noloadvoltage*3600 - 43714*3600; // linear regression of discharge curv
     if (capleft< 0){
         capleft =0; 
     }
@@ -151,5 +142,4 @@ float Battery::GetCapasityLeft(){
         capleft = maxCapacity;
     }
     return capleft;
-    //return capasityLeft;
 }

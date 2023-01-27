@@ -18,6 +18,7 @@ class Battery{
         
         static bool GetChargerStatus();
         static float GetTotalPowerDraw();
+        static float EstimateCapacityByVoltage();
 
     public:
         static void Init();
