@@ -122,8 +122,17 @@ namespace Powersupply_automatic_tests
                 string echo = port.ReadLine();
                 //string chargereturn1 = port.ReadLine();
                 string response = port.ReadLine();
-                
-                return float.Parse(response);
+                float volt;
+                try
+                {
+                    volt = float.Parse(response);
+                }
+                catch
+                {
+                    volt = 0.0f;
+                }
+
+                return volt;
                 
             }
             else
@@ -143,7 +152,17 @@ namespace Powersupply_automatic_tests
                 //string chargereturn1 = port.ReadLine();
                 string response = port.ReadLine();
 
-                return float.Parse(response);
+                float volt;
+                try
+                {
+                    volt = float.Parse(response);
+                }
+                catch
+                {
+                    volt = 0.0f;
+                }
+
+                return volt;
             }
             else
             {

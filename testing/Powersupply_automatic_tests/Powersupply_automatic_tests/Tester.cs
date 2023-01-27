@@ -248,7 +248,7 @@ namespace Powersupply_automatic_tests
             
             ScottPlot.Plot plot = new ScottPlot.Plot();
             plot.AddScatter(t, v);
-            plot.SetAxisLimits(0, 100, 2.8, 4.2);
+            plot.SetAxisLimits(0, 100, 2.5, 4.4);
             ScottPlot.FormsPlotViewer viewer = new ScottPlot.FormsPlotViewer(plot);
             viewer.Show();
 
@@ -283,7 +283,7 @@ namespace Powersupply_automatic_tests
             pbp.Vset(15);
             pbp.Iset(999);
             pbp.EnableOutput();
-            System.Threading.Thread.Sleep(7000);
+            System.Threading.Thread.Sleep(10000);
 
             // messure and plot batteryvoltage untill empty
 
