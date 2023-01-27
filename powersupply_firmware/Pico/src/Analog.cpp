@@ -61,7 +61,7 @@ float Analog::GetOutputVoltage(){
         adjusted_raw_output_voltage = raw_output_voltage+15;
     }
     
-    float output_voltage = adjusted_raw_output_voltage * 3.3f / (1 << 12) * 11.0f;
+    float output_voltage = adjusted_raw_output_voltage * 3.3f / (1 << 12) * 6.0f;
     output_voltage -= zeroVoltageReading;
     if (output_voltage < 0.0f)
         output_voltage = 0.0f;
