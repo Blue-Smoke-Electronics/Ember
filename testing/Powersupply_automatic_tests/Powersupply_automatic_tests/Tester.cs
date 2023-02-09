@@ -14,7 +14,7 @@ namespace Powersupply_automatic_tests
         const float maxCurrent = 1000; // mA 
         const float maxVoltage = 15; // V
         const int stablisationTime = 10000; //ms
-        const int stablisationTime_current = 1000; //ms
+        const int stablisationTime_current = 500; //ms
         const float maxVoltageError = 0.5f;
         const float maxCurrentError = 10.0f;
         
@@ -36,11 +36,11 @@ namespace Powersupply_automatic_tests
        
         public void ConstantVoltageShortedLoadVarCurrentTest(float Voltage, float stepsize= 50)
         {
-            List<double> timeData = new List<double>();
-            List<double> currentData = new List<double>();
-            List<double> currentDataTarget = new List<double>();
-            List<double> voltageData = new List<double>();
-            List<double> voltageDataTarget = new List<double>();
+            
+            List<double> currentTarget = new List<double>();
+            List<double> currentPbp = new List<double>();
+            List<double> currentKonrad = new List<double>();
+            List<double> currentDiff = new List<double>();
             // set load to short
             konradLoad.SetCR(0);
             konradLoad.EnableOutput();
@@ -66,21 +66,19 @@ namespace Powersupply_automatic_tests
                     failed = true;
                     MessageBox.Show("ERROR to hight at " + i.ToString() + "mA");
                 }
-                timeData.Add(timeNow());
-                currentData.Add(konradLoad.Iget());
-                currentDataTarget.Add(i);
-                voltageData.Add(konradLoad.Vget());
-                voltageDataTarget.Add(0);
+                
+                currentTarget.Add(i);
+                currentPbp.Add(pbp.Iget());
+                currentKonrad.Add(konradLoad.Iget());
+                currentDiff.Add(konradLoad.Iget()-i);
             }
 
             pbp.Vset(0);
             pbp.DisableOutput();
             konradLoad.DisableOutput();
             ScottPlot.FormsPlot formsPlot = new ScottPlot.FormsPlot();
-            formsPlot.Plot.AddScatter(timeData.ToArray(), voltageData.ToArray(),color: System.Drawing.Color.Blue);
-            formsPlot.Plot.AddScatter(timeData.ToArray(), voltageDataTarget.ToArray(), color: System.Drawing.Color.Red);
-            formsPlot.Plot.AddScatter(timeData.ToArray(),currentData.ToArray(), color: System.Drawing.Color.Blue);
-            formsPlot.Plot.AddScatter(timeData.ToArray(), currentDataTarget.ToArray(), color: System.Drawing.Color.Red);
+            formsPlot.Plot.AddScatter(currentTarget.ToArray(), currentDiff.ToArray(),color: System.Drawing.Color.Blue);
+            
             ScottPlot.FormsPlotViewer viewer = new ScottPlot.FormsPlotViewer(formsPlot.Plot);
             viewer.Show();
 
@@ -283,7 +281,7 @@ namespace Powersupply_automatic_tests
             pbp.Vset(15);
             pbp.Iset(999);
             pbp.EnableOutput();
-            System.Threading.Thread.Sleep(10000);
+            System.Threading.Thread.Sleep(1000);
 
             // messure and plot batteryvoltage untill empty
 

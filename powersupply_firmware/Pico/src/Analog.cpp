@@ -14,9 +14,6 @@ void Analog::Init(){
     adc_gpio_init(Pcb::battery_voltage_sens_pin);
     adc_gpio_init(Pcb::output_voltage_sens_pin);
     adc_gpio_init(Pcb::output_current_sens_pin);
-
-    zeroCurrentReading = (GetOutputCurrent())/1000.0f;
-    zeroVoltageReading = GetOutputVoltage(); 
 }
 
 float Analog::GetTemp(){
@@ -30,10 +27,28 @@ float Analog::GetTemp(){
 float Analog::GetOutputCurrent(){ // output in mA
     adc_select_input(Pcb::output_current_sens_adc_channal);
     
-    int16_t raw_output_current = adc_read()-12;
+    int16_t raw_output_current = adc_read()-6;
+    int16_t adjusted_raw_output_current; 
+    // compansate for bad DNL  on spesific values 
+    if (raw_output_current < 512){
+        adjusted_raw_output_current = raw_output_current-5;
+    }
+    else if ( raw_output_current< 1536){
+        adjusted_raw_output_current = raw_output_current+6;
+    }
+    else if ( raw_output_current < 2560){
+        adjusted_raw_output_current = raw_output_current+14;
+    }
+    else if ( raw_output_current < 3584){
+        adjusted_raw_output_current = raw_output_current+22;
+    }
+    else {
+        adjusted_raw_output_current = raw_output_current+30;
+    }
 
-    float output_current = (raw_output_current) * 3.3f / (1 << 12) / 2.5f;
-    output_current -= zeroCurrentReading + 0.0043f; // current trought constat current circuit 
+
+    float output_current = adjusted_raw_output_current * 3.3f / (1 << 12) / 2.5f;
+    output_current -=  0.0043f; // current trought constat current circuit 
     if (output_current < 0.0f)
         output_current = 0;
 
@@ -46,26 +61,27 @@ float Analog::GetOutputVoltage(){
     int16_t adjusted_raw_output_voltage; 
     // compansate for bad DNL  on spesific values 
     if (raw_output_voltage < 512){
-        adjusted_raw_output_voltage = raw_output_voltage-13;
-    }
-    else if ( raw_output_voltage < 1536){
         adjusted_raw_output_voltage = raw_output_voltage-5;
     }
+    else if ( raw_output_voltage < 1536){
+        adjusted_raw_output_voltage = raw_output_voltage+6;
+    }
     else if ( raw_output_voltage < 2560){
-        adjusted_raw_output_voltage = raw_output_voltage+1;
+        adjusted_raw_output_voltage = raw_output_voltage+14;
     }
     else if ( raw_output_voltage < 3584){
-        adjusted_raw_output_voltage = raw_output_voltage+8;
+        adjusted_raw_output_voltage = raw_output_voltage+22;
     }
     else {
-        adjusted_raw_output_voltage = raw_output_voltage+15;
+        adjusted_raw_output_voltage = raw_output_voltage+30;
     }
-    
+ 
+
+
     float output_voltage = adjusted_raw_output_voltage * 3.3f / (1 << 12) * 6.0f;
-    output_voltage -= zeroVoltageReading;
     if (output_voltage < 0.0f)
         output_voltage = 0.0f;
-
+      
     return output_voltage;
 }
 

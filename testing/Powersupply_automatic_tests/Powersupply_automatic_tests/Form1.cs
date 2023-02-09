@@ -96,38 +96,13 @@ namespace Powersupply_automatic_tests
 
             if(pbp.IsConnected && konradLoad.IsConnected)
             {
-                tester.ConstantVoltageShortedLoadVarCurrentTest(3.3f);
+                tester.ConstantVoltageShortedLoadVarCurrentTest(3.3f,5);
             }
             else
             {
                 MessageBox.Show("connect to pbp and load first");
             }
-            /*
-            pbp.Vset(3.3f); 
-            pbp.Iset(0.0f);
-            konradLoad.SetCR(0);
-            konradLoad.EnableOutput();
-            pbp.EnableOutput();
-            System.Threading.Thread.Sleep(1000);
-
-
-            for (float i = 0.0f; i < 500f; i += 50f)
-            {
-                Console.WriteLine("ISET " + i.ToString() + "\n");
-                pbp.Iset(i);
-                System.Threading.Thread.Sleep(2000);
-                float ampMeas = konradLoad.Iget();
-
-                Console.WriteLine("diff: " + (Math.Abs(i - ampMeas)).ToString());
-                if (Math.Abs(i - ampMeas) > 25)
-                {
-                    MessageBox.Show("ERROR to hight at " + i.ToString() + "mA");
-                }
-
-            }
-
-            pbp.Vset(0);
-            konradLoad.DisableOutput();*/
+            
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -264,6 +239,40 @@ namespace Powersupply_automatic_tests
             {
                 MessageBox.Show("connect to pbp and load first");
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            konradLoad.SetCR(1000);
+            konradLoad.EnableOutput();
+            pbp.Iset(100);
+            pbp.Vset(0);
+            pbp.EnableOutput();
+
+            List<double> targetVolts = new List<double>();
+            List<double> pbpVolts = new List<double>();
+            List<double> konradVolts = new List<double>();
+            List<double> diffVolts = new List<double>();
+
+            for (float v = 0; v < 15; v += 0.1f)
+            {
+                pbp.Vset(v);
+                System.Threading.Thread.Sleep(100);
+                targetVolts.Add(v);
+                pbpVolts.Add(pbp.Vget());
+                konradVolts.Add(konradLoad.Vget());
+                diffVolts.Add( pbp.Vget() - konradLoad.Vget());
+            }
+
+            ScottPlot.FormsPlot formsPlot = new ScottPlot.FormsPlot();
+            formsPlot.Plot.AddScatter(targetVolts.ToArray(), diffVolts.ToArray(), color: System.Drawing.Color.Blue);
+            //formsPlot.Plot.AddScatter(targetVolts.ToArray(), konradVolts.ToArray(), color: System.Drawing.Color.Red);
+            ScottPlot.FormsPlotViewer viewer = new ScottPlot.FormsPlotViewer(formsPlot.Plot);
+            viewer.Show();
+
+
+            konradLoad.DisableOutput();
+            pbp.DisableOutput();
         }
     }
 }

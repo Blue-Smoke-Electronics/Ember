@@ -10,6 +10,7 @@ class PSU{
         static float targetVoltage;
         static float targetCurrent;
         static bool enabled;
+        static float linregDrop;
 
     public:
         static const float maxVoltage;

@@ -65,14 +65,20 @@ float LinReg::GetCurrent(){
 
 void LinReg::SetVoltage(float voltage_V){
     targetVoltage = voltage_V;
-    targetVoltage =(targetVoltage *100.0f + 0.5f);
+    /*targetVoltage =(targetVoltage *100.0f + 0.5f); 
     int tv = (int)targetVoltage;
     targetVoltage = (tv + 0.5f)/100;
+    if(voltage_V < 0.01f){
+        targetVoltage =0; 
+    }*/
 }
 
 void LinReg::SetCurrent(float current_mA){
     targetCurrent = current_mA;
-    targetCurrent =(targetCurrent *100.0f + 0.5f);
+    /*targetCurrent =(targetCurrent *100.0f + 0.5f);
     int tc = (int)targetCurrent;
     targetCurrent = (tc + 0.5f)/100;
+    if (current_mA < 1){
+        targetCurrent =0; 
+    }*/
 }

@@ -84,7 +84,7 @@ namespace Powersupply_automatic_tests
                 System.Threading.Thread.Sleep(200);
                 port.Write("VGET\n");
                 string echo = port.ReadLine();
-                string chargereturn1 = port.ReadLine();
+                //string chargereturn1 = port.ReadLine();
                 string data = port.ReadLine();
                 return float.Parse(data);
             }
@@ -101,7 +101,7 @@ namespace Powersupply_automatic_tests
                 port.DiscardInBuffer();
                 port.WriteLine("Iget");
                 string echo = port.ReadLine();
-                string chargereturn1 = port.ReadLine();
+                //string chargereturn1 = port.ReadLine();
                 string response = port.ReadLine();
                 
                 return float.Parse(response);

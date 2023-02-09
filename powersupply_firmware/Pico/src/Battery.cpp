@@ -39,15 +39,15 @@ void Battery::Update(){
         if(capasityLeft > maxCapacity)
             capasityLeft = maxCapacity;
 
-        if(capasityLeft < 0)
-            capasityLeft =0; 
 
-        if (GetVoltage() < 2.6f){
+
+        if (GetVoltage() < 2.7f || capasityLeft < 0){
             capasityLeft = 0;
             PSU::Disable();
         }
 
-        if (GetVoltage() < 2.5f){
+
+        if (GetVoltage() < 2.6f){
             capasityLeft = 0;
             Onoff::Turn_off_device();
         }

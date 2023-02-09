@@ -9,6 +9,7 @@ uint32_t PSU::update_timer = 0;
 float PSU::targetVoltage = 0;
 float PSU::targetCurrent = 0;
 bool PSU::enabled = false;
+float PSU::linregDrop = 2; 
 
 const float PSU::maxVoltage = 15.0f;
 const float PSU::maxCurrent = 999.0f;
@@ -35,7 +36,24 @@ void PSU::Update(){
         if(enabled){
             LinReg::SetVoltage(targetVoltage);
             LinReg::SetCurrent(targetCurrent);
-            Booster::SetVoltage(std::min(LinReg::GetVoltage() + 3.0f, targetVoltage+2.2f));
+            
+            if(LinReg::GetVoltage() >targetVoltage){
+                linregDrop-= 0.0001;
+            }else{
+                linregDrop+= 0.0001;
+            }
+
+
+            if(linregDrop>2.5f){
+                linregDrop = 2.5;
+            }
+            if (linregDrop < 0.5){
+                linregDrop = 0.5;
+            }
+
+            //linregDrop = 2.5; // debug
+            
+            Booster::SetVoltage(std::min(LinReg::GetVoltage() + 3.0f, targetVoltage+linregDrop));
             gpio_put(Pcb::ouput_on_off_led_pin, true);
         }else{
             LinReg::SetVoltage(0);
