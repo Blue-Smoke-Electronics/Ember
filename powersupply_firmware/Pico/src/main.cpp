@@ -18,6 +18,9 @@
 int main() {
     stdio_init_all(); // allowing printf debug in onoff init
 
+
+
+    
     // keep device powered on, need to be the first thing that happens
     Onoff::Init();
 
