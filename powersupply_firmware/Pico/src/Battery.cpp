@@ -19,8 +19,6 @@ void Battery::Init(){
     gpio_init(Pcb::usb_connected_pin);
     gpio_set_dir(Pcb::usb_connected_pin,GPIO_IN);
 
-    gpio_init(Pcb::battery_charger_status_pin);
-    gpio_set_dir(Pcb::battery_charger_status_pin,GPIO_IN);
 
     capasityLeft = Flash::GetBatteryCapacity();
 }

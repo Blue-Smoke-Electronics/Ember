@@ -29,7 +29,6 @@ class Pcb{
         static const int ouput_on_off_led_pin = 19; 
         static const int booster_pwm_pin = 20; 
         static const int display_BACKLIGHT_pin = 22; 
-        static const int battery_charger_status_pin = 23; 
         static const int usb_connected_pin = 24; 
         static const int debbug_led_pin = 25; 
         static const int output_voltage_sens_pin = 26; 
