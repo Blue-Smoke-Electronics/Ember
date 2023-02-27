@@ -6,6 +6,7 @@
 #include "PSU.h"
 #include "Battery.h"
 #include "Onoff.h"
+#include "Analog.h"
 
 int CommandLineInterface::update_timer;
 std::string CommandLineInterface::rx_data;
@@ -152,6 +153,16 @@ void CommandLineInterface::desifre_command(std::string command){
         printf(s);
         return;
     }
+    
+    compare = "TEMPGET";
+    if (command.rfind(compare.c_str(), 0) == 0)
+    {
+        float temp = Analog::GetTemp();
+        char s[20];
+        sprintf(s, "%f\r\n",temp);
+        printf(s);
+        return;
+    }
 
     compare = "H";
     if (command.rfind(compare.c_str(), 0) == 0)
@@ -164,6 +175,7 @@ void CommandLineInterface::desifre_command(std::string command){
         printf("OFF      # turns off the powersupply output\n\r");
         printf("BATGETP  # return battery capasity left in %\n\r");
         printf("BATGETV  # returns voltage across battery in V\n\r");
+        printf("TEMPGET  # returns temperature in C\n\r");
         printf("H        # shows this text\n\r");
         printf("HELP     # shows this text\n\r");
         return;

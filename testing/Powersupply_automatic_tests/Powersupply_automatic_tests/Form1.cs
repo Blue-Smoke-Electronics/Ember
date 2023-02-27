@@ -38,12 +38,20 @@ namespace Powersupply_automatic_tests
             xData = new List<double>();
             yData = new List<double>();
 
+            string[] comPorts = SerialPort.GetPortNames();
+            string[] non_pbp_strings = { "COM17", "COM26", "COM6", "COM11", "COM12", "COM10", "COM7", "COM13", "COM20" };
+            comPorts = comPorts.Where(item => !non_pbp_strings.Contains(item)).ToArray();
+            ComPortBox.Items.AddRange(comPorts);
+            ComPortBox.SelectedIndex = 0;
+            
+
+
         }
 
 
         private void button1_Click(object sender, EventArgs e)
         {
-            isConnectedBlueSmoek.Checked = pbp.ConnectToSerial();
+            isConnectedBlueSmoek.Checked = pbp.ConnectToSerial(ComPortBox.Text);
             isConnectedKoradLoad.Checked = konradLoad.ConnectToSerial();
             isConnectedKonradPSU.Checked = konradPsu.ConnectToSerial();
             //timer1.Start();

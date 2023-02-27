@@ -58,6 +58,7 @@ namespace Powersupply_automatic_tests
             this.buttonBatteryTest = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.ComPortBox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // buttonSerial
@@ -319,11 +320,20 @@ namespace Powersupply_automatic_tests
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // ComPortBox
+            // 
+            this.ComPortBox.FormattingEnabled = true;
+            this.ComPortBox.Location = new System.Drawing.Point(115, 74);
+            this.ComPortBox.Name = "ComPortBox";
+            this.ComPortBox.Size = new System.Drawing.Size(90, 21);
+            this.ComPortBox.TabIndex = 28;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(706, 461);
+            this.Controls.Add(this.ComPortBox);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.buttonBatteryTest);
@@ -390,6 +400,7 @@ namespace Powersupply_automatic_tests
         private System.Windows.Forms.Button buttonBatteryTest;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.ComboBox ComPortBox;
     }
 }
 

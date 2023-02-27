@@ -242,6 +242,7 @@ namespace Powersupply_automatic_tests
             double[] v = new double[100_000];
             double[] t = new double[100_000];
             double[] charge = new double[100_000];
+            double[] temp = new double[100_000];
             int sampleCnt = 0;            
             
             ScottPlot.Plot plot = new ScottPlot.Plot();
@@ -256,6 +257,12 @@ namespace Powersupply_automatic_tests
             ScottPlot.FormsPlotViewer viewer1 = new ScottPlot.FormsPlotViewer(plot1);
             viewer1.Show();
 
+            ScottPlot.Plot plot2 = new ScottPlot.Plot();
+            plot2.AddScatter(t, temp);
+            plot2.SetAxisLimits(0, 100, 0, 101);
+            ScottPlot.FormsPlotViewer viewer2 = new ScottPlot.FormsPlotViewer(plot2);
+            viewer2.Show();
+
             double startTime = timeNow();
             bool failed = false;
 
@@ -265,10 +272,13 @@ namespace Powersupply_automatic_tests
                 t[sampleCnt] = (timeNow() - startTime) / 1000.0f;
                 v[sampleCnt] = pbp.BattGetV();
                 charge[sampleCnt] = pbp.BattGetP();
+                temp[sampleCnt] = pbp.TempGet();
                 viewer.formsPlot1.Plot.AxisAutoX();
                 viewer.formsPlot1.Render();
                 viewer1.formsPlot1.Plot.AxisAutoX();
                 viewer1.formsPlot1.Render();
+                viewer2.formsPlot1.Plot.AxisAutoX();
+                viewer2.formsPlot1.Render();
                 sampleCnt++;
                 System.Threading.Thread.Sleep(1000);
             }
@@ -292,11 +302,14 @@ namespace Powersupply_automatic_tests
                 t[sampleCnt] = (timeNow() - startTime) / 1000.0f;
                 v[sampleCnt] = pbp.BattGetV();
                 charge[sampleCnt] = pbp.BattGetP();
+                temp[sampleCnt] = pbp.TempGet();
+                
                 viewer.formsPlot1.Plot.AxisAutoX();
                 viewer.formsPlot1.Render();
-
                 viewer1.formsPlot1.Plot.AxisAutoX();
                 viewer1.formsPlot1.Render();
+                viewer2.formsPlot1.Plot.AxisAutoX();
+                viewer2.formsPlot1.Render();
 
                 sampleCnt++;
 
@@ -324,8 +337,13 @@ namespace Powersupply_automatic_tests
                 t[sampleCnt] = (timeNow() - startTime) / 1000.0f;
                 v[sampleCnt] = pbp.BattGetV();
                 charge[sampleCnt] = pbp.BattGetP();
+                temp[sampleCnt] = pbp.TempGet();
                 viewer.formsPlot1.Plot.AxisAutoX();
                 viewer.formsPlot1.Render();
+                viewer1.formsPlot1.Plot.AxisAutoX();
+                viewer1.formsPlot1.Render();
+                viewer2.formsPlot1.Plot.AxisAutoX();
+                viewer2.formsPlot1.Render();
                 sampleCnt++;
                 System.Threading.Thread.Sleep(1000);
             }

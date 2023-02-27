@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
 
 #include "PSU.h"
 #include "Battery.h"
@@ -113,7 +114,7 @@ void GUI::Update(){
 
                 streamObj.str("");
                 streamObj.clear();
-                streamObj << std::setw(5) << PSU::getVoltage() << "";
+                streamObj << std::setw(5) << std::max(PSU::getVoltage(),0.0f) << "";
                 if(streamObj.str() != lastVString){
                     lastVString = streamObj.str();
                     Display::Draw_string(Display::width - 5 * Flash::bigFont.char_widht - 5, Flash::smallFont.char_height + 10, Flash::bigFont, streamObj.str());
@@ -123,7 +124,7 @@ void GUI::Update(){
                 streamObj.str("");
                 streamObj.clear();
                 streamObj << std::setprecision(0);
-                streamObj << "" << std::setw(4) << PSU::getTargetCurrent() << "mA";
+                streamObj << "" << std::setw(4) << std::max(PSU::getTargetCurrent(),0.0f) << "mA";
                 if ( streamObj.str() != lastIsetString){
                     lastIsetString = streamObj.str();
                     Display::Draw_string(Display::width - 6 * Flash::smallFont.char_widht - 5, Display::height - Flash::bigFont.char_height - Flash::smallFont.char_height , Flash::smallFont , streamObj.str());

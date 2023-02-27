@@ -27,11 +27,14 @@ namespace Powersupply_automatic_tests
         {
             get { return port.IsOpen; }
         }
-        public Boolean ConnectToSerial()
+        public Boolean ConnectToSerial(string COMport)
         {
             try
             {
                 port.Close();
+                port = new SerialPort(COMport, 115200, Parity.None, 8, StopBits.One);
+                port.RtsEnable = true;
+                port.DtrEnable = true;
                 port.Open();
                 return true;
 
@@ -163,6 +166,35 @@ namespace Powersupply_automatic_tests
                 }
 
                 return volt;
+            }
+            else
+            {
+                return 0.0f;
+            }
+        }
+
+        public float TempGet()
+        {
+            if (port.IsOpen)
+            {
+                System.Threading.Thread.Sleep(100);
+                port.DiscardInBuffer();
+                port.WriteLine("TEMPGET");
+                string echo = port.ReadLine();
+                //string chargereturn1 = port.ReadLine();
+                string response = port.ReadLine();
+
+                float temp;
+                try
+                {
+                    temp = float.Parse(response);
+                }
+                catch
+                {
+                    temp = 0.0f;
+                }
+
+                return temp;
             }
             else
             {
