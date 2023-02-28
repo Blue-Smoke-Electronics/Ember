@@ -14,7 +14,12 @@ void Analog::Init(){
     adc_gpio_init(Pcb::battery_voltage_sens_pin);
     adc_gpio_init(Pcb::output_voltage_sens_pin);
     adc_gpio_init(Pcb::output_current_sens_pin);
+
+    zeroCurrentReading = GetOutputCurrent();
+    zeroVoltageReading = GetOutputVoltage();
+
 }
+
 
 float Analog::GetTemp(){
     adc_select_input(Pcb::temprature_adc_channal);
@@ -52,7 +57,8 @@ float Analog::GetOutputCurrent(){ // output in mA
     if (output_current < 0.0f)
         output_current = 0;
 
-    return output_current * 1000;
+    output_current = output_current*(1-0.01); // ajust for messured slope in ouput current graph. might be doue to resistance in solder joints
+    return output_current * 1000 - zeroCurrentReading;
 }
 
 float Analog::GetOutputVoltage(){
@@ -82,7 +88,7 @@ float Analog::GetOutputVoltage(){
     if (output_voltage < 0.0f)
         output_voltage = 0.0f;
       
-    return output_voltage;
+    return output_voltage - zeroVoltageReading;
 }
 
 float Analog::GetBoosterVoltage(){
