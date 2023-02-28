@@ -71,11 +71,20 @@ namespace Powersupply_automatic_tests
 
         public float Vget()
         {
+            
             if (port.IsOpen)
             {
-                port.WriteLine(":MEAS:VOLT?\n");
-                string voltMeasStr = port.ReadLine();
-                return float.Parse(voltMeasStr.Split('V')[0]); 
+                try
+                    {port.WriteLine(":MEAS:VOLT?\n");
+                    string voltMeasStr = port.ReadLine();
+                    return float.Parse(voltMeasStr.Split('V')[0]); 
+
+                }
+                catch
+                {
+                    return 0.0f; 
+                }
+                
             }
             return 0;
         }
@@ -83,9 +92,17 @@ namespace Powersupply_automatic_tests
         {
             if (port.IsOpen)
             {
-                port.WriteLine(":MEAS:CURR?\n");
-                string currentMeasStr = port.ReadLine();
-                return float.Parse(currentMeasStr.Split('A')[0])*1000;
+                try
+                {
+                    port.WriteLine(":MEAS:CURR?\n");
+                    string currentMeasStr = port.ReadLine();
+                    return float.Parse(currentMeasStr.Split('A')[0])*1000;
+
+                }
+                catch 
+                {
+                    return 0.0f; 
+                }
             }   
             return 0;
         }
