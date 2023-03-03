@@ -7,7 +7,7 @@
 #include "LinReg.h"
 #include "Onoff.h"
 
-const float Battery::maxCapacity = 1950 * 3.6 * 3600; //mWs
+const float Battery::maxCapacity = 0.8*1950 * 3.6 * 3600; //mWs
 
 
 const uint32_t Battery::update_freq_us = 2 * 1000 * 1000;
@@ -33,7 +33,7 @@ void Battery::Update(){
         capasityLeft -= delta_t/1000000.0f *  GetTotalPowerDraw();
 
         // correct from messurment 
-        capasityLeft += (EstimateCapacityByVoltage()-capasityLeft )*0.01;
+        capasityLeft += (EstimateCapacityByVoltage()-capasityLeft )*0.0005;
         
         if(capasityLeft > maxCapacity)
             capasityLeft = maxCapacity;
@@ -87,7 +87,7 @@ float Battery::GetTotalPowerDraw(){
     if(PSU::IsEnabled()){
         float linRegLosses = (Booster::GetVoltage() - LinReg::GetVoltage()) * LinReg::GetCurrent();
         float boosterLosses = PSU::getPower()* 1000 * 0.4; 
-        totalpower += GetPsuQuiescentPower() + PSU::getPower() * 1000 + linRegLosses + boosterLosses;
+        totalpower += PSU::getPower() * 1000 + linRegLosses + boosterLosses;
     }
 
     if(IsChargerConnected())
@@ -133,7 +133,14 @@ float Battery::EstimateCapacityByVoltage(){
     }
     float voltagedrop = currentdraw/1000 * 0.130; //internal resistance of 50mohm
     float noloadvoltage = GetVoltage() + voltagedrop; 
-    float capleft = 12857*noloadvoltage*3600 - 43714*3600; // linear regression of discharge curv
+
+    float V_full = 4.1; 
+    float V_empty = 3.4; 
+
+    float a = maxCapacity/(V_full-V_empty);
+    float b = maxCapacity-a*V_full; 
+
+    float capleft = a*noloadvoltage + b; //12857*noloadvoltage*3600 - 43714*3600; // linear regression of discharge curv
     if (capleft< 0){
         capleft =0; 
     }

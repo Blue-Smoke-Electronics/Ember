@@ -22,9 +22,9 @@ void Onoff::Init(){
     gpio_init(Pcb::usb_connected_pin);
     gpio_set_dir(Pcb::usb_connected_pin,GPIO_IN);
 
-   /* if (gpio_get(Pcb::usb_connected_pin)) // pluging in usb turns on device
+    if (gpio_get(Pcb::usb_connected_pin)) // pluging in usb turns on device
         IsOn = false;
-    else // pressing power on button turns on device*/
+    else // pressing power on button turns on device
        Turn_on_device();
 
     update_timer =0; 
