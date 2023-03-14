@@ -205,9 +205,21 @@ namespace Powersupply_automatic_tests
         {
             if (port.IsOpen)
             {
-                port.WriteLine("ON");
-                System.Threading.Thread.Sleep(100);
-                port.DiscardInBuffer(); // remove reply form inputbuffer
+                bool success = false;
+                while (!success)
+                {
+                    try
+                    {
+                        port.WriteLine("ON");
+                        System.Threading.Thread.Sleep(100);
+                        port.DiscardInBuffer(); // remove reply form inputbuffer
+                        success = true;
+                    }
+                    catch
+                    {
+                    success = false;
+                    }
+                }
             }
             else
             {
@@ -218,9 +230,24 @@ namespace Powersupply_automatic_tests
         {
             if (port.IsOpen)
             {
-                port.WriteLine("OFF");
-                System.Threading.Thread.Sleep(100);
-                port.DiscardInBuffer(); // remove reply form inputbuffer
+                bool success = false;
+                while (!success)
+                {
+                    try
+                    {
+                        port.WriteLine("OFF");
+                        System.Threading.Thread.Sleep(100);
+                        port.DiscardInBuffer(); // remove reply form inputbuffer
+                        success = true;
+                    }
+                    catch {
+                        success = false;
+                    }
+
+                }
+                
+
+                
             }
             else
             {
