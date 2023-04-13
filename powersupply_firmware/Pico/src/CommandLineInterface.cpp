@@ -7,6 +7,7 @@
 #include "Battery.h"
 #include "Onoff.h"
 #include "Analog.h"
+#include "Powersaver.h"
 
 int CommandLineInterface::update_timer;
 std::string CommandLineInterface::rx_data;
@@ -48,6 +49,7 @@ void CommandLineInterface::Update(){
             rx_data.push_back(new_char);
             printf("%c",new_char);
         }
+        Powersaver::Reset_idle_timer();
     }
 }
 

@@ -7,6 +7,7 @@
 #include "PSU.h"
 #include "GUI.h"
 #include "Onoff.h"
+#include "Powersaver.h"
 
 uint32_t Knobs::update_timer;
 
@@ -50,6 +51,7 @@ void Knobs::Update(){
                 if (Onoff::IsOn)
                     PSU::Enable();
             }
+            
         }
 
         if (power_switch_is_pushed){
@@ -60,6 +62,7 @@ void Knobs::Update(){
                 else
                     Onoff::Turn_on_device();
             }
+            Powersaver::Reset_idle_timer();
         }        
 
         if (!gpio_get(Pcb::on_off_switch_pin)){ // not holding down power button
@@ -71,6 +74,10 @@ void Knobs::Update(){
         if(Onoff::IsOn){
             PSU::ChangeVoltage(voltage_encoder_cnt*GUI::GetVoltageScaler());
             PSU::ChangeCurrent(current_encoder_cnt*GUI::GetCurrentScaler());
+        }
+
+        if(voltage_encoder_cnt != 0 || current_encoder_cnt !=0){
+            Powersaver::Reset_idle_timer();
         }
 
         voltage_encoder_cnt = 0;
@@ -88,9 +95,11 @@ void Knobs::IRS(uint gpio, uint32_t events){
             break;
         case Pcb::encoder_voltage_switch_pin:
             GUI::ChangeVoltageScaler();
+            Powersaver::Reset_idle_timer();
             break; 
         case Pcb::encoder_current_switch_pin:
             GUI::ChangeCurrentScaler();
+            Powersaver::Reset_idle_timer();
             break;
         case Pcb::encoder_voltage_A_pin:
             if (gpio_get(Pcb::encoder_voltage_A_pin)==gpio_get(Pcb::encoder_voltage_B_pin))

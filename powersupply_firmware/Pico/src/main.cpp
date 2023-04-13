@@ -14,6 +14,7 @@
 #include "Knobs.h"
 #include "Battery.h"
 #include "Overheat.h"
+#include "Powersaver.h"
 
 int main() {
     stdio_init_all(); // allowing printf debug in onoff init
@@ -32,6 +33,7 @@ int main() {
     Battery::Init();
     Knobs::Init();
     Overheat::Init();
+    Powersaver::Init();
 
     while (true) {
         heartbeat.Update();
@@ -42,5 +44,6 @@ int main() {
         Battery::Update();
         Overheat::Update();
         Onoff::Update();
+        Powersaver::Update();
     }
 }

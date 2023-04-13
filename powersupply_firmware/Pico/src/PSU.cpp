@@ -4,6 +4,7 @@
 #include "Pcb.h"
 #include "Flash.h"
 #include <algorithm>
+#include "Powersaver.h"
 
 uint32_t PSU::update_timer = 0;
 float PSU::targetVoltage = 0;
@@ -55,6 +56,8 @@ void PSU::Update(){
             
             Booster::SetVoltage(std::min(LinReg::GetVoltage() + 3.0f, targetVoltage+linregDrop));
             gpio_put(Pcb::ouput_on_off_led_pin, true);
+            Powersaver::Reset_idle_timer();
+
         }else{
             LinReg::SetVoltage(0);
             LinReg::SetCurrent(0);
