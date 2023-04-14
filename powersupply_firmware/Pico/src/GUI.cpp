@@ -201,7 +201,7 @@ void GUI::Update(){
 
 
                 for (int i =0; i < 5; i++){
-                    if(Battery::GetBatteryProcentage() / 20 > i)
+                    if(Battery::GetBatteryProcentage() / 25 > i || Battery::GetBatteryProcentage() == 100.0f)
                         Display::Draw_sprite(8+i*5,13,Flash::batterySymbol_bar);
                     else
                         Display::Clear_square(8 + i * 5, 13, Flash::batterySymbol_bar.width, Flash::batterySymbol_bar.height);
