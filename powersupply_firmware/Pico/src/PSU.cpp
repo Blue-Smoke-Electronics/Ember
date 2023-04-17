@@ -37,7 +37,7 @@ void PSU::Update(){
         if(enabled){
             LinReg::SetVoltage(targetVoltage);
             LinReg::SetCurrent(targetCurrent);
-            
+            /*
             if(LinReg::GetVoltage() >targetVoltage){
                 linregDrop-= 0.0001;
             }else{
@@ -51,10 +51,10 @@ void PSU::Update(){
             if (linregDrop < 0.5){
                 linregDrop = 0.5;
             }
-
-            //linregDrop = 2.5; // debug
+            */
+            linregDrop = 0.3; // debug
             
-            Booster::SetVoltage(std::min(LinReg::GetVoltage() + 3.0f, targetVoltage+linregDrop));
+            Booster::SetVoltage(targetVoltage+linregDrop/*std::min(LinReg::GetVoltage() + 3.0f, targetVoltage+linregDrop)*/);
             gpio_put(Pcb::ouput_on_off_led_pin, true);
             Powersaver::Reset_idle_timer();
 
