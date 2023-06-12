@@ -93,12 +93,32 @@ float Analog::GetOutputVoltage(){
 
 float Analog::GetBoosterVoltage(){
     adc_select_input(Pcb::booster_voltage_sens_adc_channal);
-    uint16_t booster_voltage_raw = adc_read(); 
-    float booster_voltage =   (float)booster_voltage_raw * 3.3f/(1<<12) *11; // reading to high values ??? 
-    if(booster_voltage < 0.0f){
-        booster_voltage = 0.0f;
+    int16_t booster_voltage_raw = adc_read();
+    int16_t adjusted_raw_output_voltage; 
+    // compansate for bad DNL  on spesific values 
+    if (booster_voltage_raw < 512){
+        adjusted_raw_output_voltage = booster_voltage_raw-5;
     }
-    return booster_voltage; 
+    else if ( booster_voltage_raw < 1536){
+        adjusted_raw_output_voltage = booster_voltage_raw+6;
+    }
+    else if ( booster_voltage_raw < 2560){
+        adjusted_raw_output_voltage = booster_voltage_raw+14;
+    }
+    else if ( booster_voltage_raw < 3584){
+        adjusted_raw_output_voltage = booster_voltage_raw+22;
+    }
+    else {
+        adjusted_raw_output_voltage = booster_voltage_raw+30;
+    }
+ 
+
+
+    float output_voltage = adjusted_raw_output_voltage * 3.3f / (1 << 12) * 11.0f;
+    if (output_voltage < 0.0f)
+        output_voltage = 0.0f;
+      
+    return output_voltage;
 }
 
 float Analog::GetBatteryVoltage(){

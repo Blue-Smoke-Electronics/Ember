@@ -5,12 +5,13 @@
 #include "Flash.h"
 #include <algorithm>
 #include "Powersaver.h"
+#include "Battery.h"
 
 uint32_t PSU::update_timer = 0;
 float PSU::targetVoltage = 0;
 float PSU::targetCurrent = 0;
 bool PSU::enabled = false;
-float PSU::linregDrop = 2; 
+float PSU::linregDrop = 1; 
 
 const float PSU::maxVoltage = 15.0f;
 const float PSU::maxCurrent = 999.0f;
@@ -45,16 +46,23 @@ void PSU::Update(){
             }
 
 
-            if(linregDrop>2.5f){
-                linregDrop = 2.5;
+            if(linregDrop>1.0f){
+                linregDrop = 1.0;
             }
             if (linregDrop < 0.5){
-                linregDrop = 0.5;
-            }
-            */
-            linregDrop = 0.3; // debug
+                linregDrop = 0.2;
+            }*/
             
-            Booster::SetVoltage(targetVoltage+linregDrop/*std::min(LinReg::GetVoltage() + 3.0f, targetVoltage+linregDrop)*/);
+            linregDrop = 0.9f; // debug
+            float booster_voltage =targetVoltage+linregDrop;
+            float output_voltage = LinReg::GetVoltage(); 
+            booster_voltage = std::min(output_voltage+ linregDrop, booster_voltage); // drop voltage in current limiting mode 
+            float battery_voltage = Battery::GetVoltage();
+            if (booster_voltage < battery_voltage){  // boster does never start regulating if boos
+                booster_voltage = battery_voltage;
+            }
+
+            Booster::SetVoltage(booster_voltage);
             gpio_put(Pcb::ouput_on_off_led_pin, true);
             Powersaver::Reset_idle_timer();
 

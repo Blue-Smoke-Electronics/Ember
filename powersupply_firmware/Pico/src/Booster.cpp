@@ -26,20 +26,28 @@ void Booster::Init(){
 
 void Booster::SetVoltage(float Voltage_V){
     targetVoltage = Voltage_V;
-    //targetVoltage = 18.0f;
 }
 
 float Booster::GetVoltage(){
     return Analog::GetBoosterVoltage();
 }
 
-uint8_t j = 0;
 void Booster::Update(){
     if(time_us_32() - update_timer > update_freq_us ){
+        uint32_t us = time_us_32() - update_timer ;
         update_timer = time_us_32();
 
-
-        pwm_value += (targetVoltage - GetVoltage())*10.0f;  
+        float v = GetVoltage();
+        float diff = targetVoltage - v;
+        float change = (diff)*100.f;
+        if (change > 0){
+            change =1; 
+        }
+        if (change < -0){
+            change = -1; 
+        }
+        pwm_value += change;
+          
         if (pwm_value > 900){
             pwm_value = 900;
         }
@@ -47,7 +55,7 @@ void Booster::Update(){
             pwm_value = 0; 
         }
 
-        if (GetVoltage() > targetVoltage + 5) // somtihg is wrong, turn of booster
+        if (GetVoltage() > targetVoltage + 2) // somtihg is wrong, turn of booster
             pwm_value = 0;
 
         

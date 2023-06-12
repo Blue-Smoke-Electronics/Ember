@@ -265,7 +265,7 @@ namespace Powersupply_automatic_tests
             for (float v = 0; v < 15; v += 0.1f)
             {
                 pbp.Vset(v);
-                System.Threading.Thread.Sleep(100);
+                System.Threading.Thread.Sleep(500);
                 targetVolts.Add(v);
                 pbpVolts.Add(pbp.Vget());
                 konradVolts.Add(konradLoad.Vget());
