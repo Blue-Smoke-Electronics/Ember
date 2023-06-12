@@ -43,7 +43,7 @@ class Pcb{
         static const int booster_voltage_sens_adc_channal = 3; 
         static const int temprature_adc_channal = 4;
 
-        static const int  flash_size_bytes = (16*1024*1024);  
+        static const int  flash_size_bytes = PICO_FLASH_SIZE_BYTES;//(16*1024*1024);  // need to find a way to update SDK before this can be increesed
 };
 
 #endif

@@ -42,8 +42,10 @@ void Flash::Save(float batteryCapacity, float outputVoltage, float outputCurrent
 
     // writing to end of flash memmory
     uint32_t ints = save_and_disable_interrupts(); // todo disable dual core
+
     flash_range_erase(Pcb::flash_size_bytes-FLASH_SECTOR_SIZE, FLASH_SECTOR_SIZE);
     flash_range_program(Pcb::flash_size_bytes-FLASH_SECTOR_SIZE, write_buffer, FLASH_PAGE_SIZE);
+
     restore_interrupts (ints);
 }
 

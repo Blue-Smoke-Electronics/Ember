@@ -8,7 +8,7 @@
 
 class Flash{
     private: 
-        static const int  flash_size = 16*1024*1024;
+        
         static uint8_t write_buffer [] ;         
 
     public:
