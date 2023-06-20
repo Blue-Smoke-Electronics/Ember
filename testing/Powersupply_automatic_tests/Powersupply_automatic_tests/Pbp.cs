@@ -255,5 +255,51 @@ namespace Powersupply_automatic_tests
             }
         }
 
+        public void CalibrateVolt(int Volt, float diff)
+        {
+            if (port.IsOpen)
+            {
+                bool success = false;
+                while (!success)
+                {
+                    try
+                    {
+                        port.WriteLine("CALIBRATEVOLT "+Volt.ToString() + " " + diff.ToString());
+                        System.Threading.Thread.Sleep(100);
+                        port.DiscardInBuffer(); // remove reply form inputbuffer
+                        success = true;
+                    }
+                    catch
+                    {
+                        success = false;
+                    }
+
+                }
+            }
+        }
+
+        public void CalibrateCurrent(int current, float diff)
+        {
+            if (port.IsOpen)
+            {
+                bool success = false;
+                while (!success)
+                {
+                    try
+                    {
+                        port.WriteLine("CALIBRATECURRENT " + current.ToString() + " " + diff.ToString());
+                        System.Threading.Thread.Sleep(100);
+                        port.DiscardInBuffer(); // remove reply form inputbuffer
+                        success = true;
+                    }
+                    catch
+                    {
+                        success = false;
+                    }
+
+                }
+            }
+        }
+
     }
 }

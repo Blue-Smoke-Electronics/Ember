@@ -12,7 +12,7 @@ namespace Powersupply_automatic_tests
         SerialPort port;
         public KonradLoad()
         {
-            port = new SerialPort("COM17", 9600, Parity.None, 8, StopBits.One);
+            port = new SerialPort("COM3", 9600, Parity.None, 8, StopBits.One);
             port.RtsEnable = true;
             port.DtrEnable = true;
         }

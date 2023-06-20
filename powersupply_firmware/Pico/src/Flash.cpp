@@ -61,6 +61,31 @@ float Flash::GetOutputCurrent(){
     return ((float *)(XIP_BASE+Pcb::flash_size_bytes - FLASH_SECTOR_SIZE))[2];
 }
 
+void Flash::SaveVoltageCalibrations(float* voltageCalibrations){
+    uint32_t ints = save_and_disable_interrupts(); // todo disable dual core
+
+    flash_range_erase(Pcb::flash_size_bytes-FLASH_SECTOR_SIZE*2, FLASH_SECTOR_SIZE);
+    flash_range_program(Pcb::flash_size_bytes-FLASH_SECTOR_SIZE*2, (uint8_t*)voltageCalibrations, FLASH_PAGE_SIZE);
+
+    restore_interrupts (ints);
+
+}
+void Flash::SaveCurrentCalibrations(float* currentCalibrations){
+    uint32_t ints = save_and_disable_interrupts(); // todo disable dual core
+
+    flash_range_erase(Pcb::flash_size_bytes-FLASH_SECTOR_SIZE*3, FLASH_SECTOR_SIZE);
+    flash_range_program(Pcb::flash_size_bytes-FLASH_SECTOR_SIZE*3, (uint8_t*)currentCalibrations, FLASH_PAGE_SIZE);
+
+    restore_interrupts (ints);
+}
+
+float * Flash::GetVoltageCalibrations(){
+    return (float*)(XIP_BASE+Pcb::flash_size_bytes-FLASH_SECTOR_SIZE*2);
+}
+float * Flash::GetCurrentCalibrations(){
+    return (float*)(XIP_BASE+Pcb::flash_size_bytes-FLASH_SECTOR_SIZE*3);
+}
+
 
 Font Flash::smallFont = Font(smallFont_CHARS, smallFont_SETUP, smallFont_DATA);
 Font Flash::timeFont = Font(timeFont_CHARS, timeFont_SETUP, timeFont_DATA);

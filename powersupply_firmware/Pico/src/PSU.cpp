@@ -14,7 +14,10 @@ bool PSU::enabled = false;
 float PSU::linregDrop = 1; 
 
 const float PSU::maxVoltage = 15.0f;
-const float PSU::maxCurrent = 999.0f;
+const float PSU::maxCurrent = 1000.0f;
+
+float PSU::lowpassFilterMemoryVoltage = 0.0f;
+float PSU::lowpassFilterMemoryCurrent =0.0f; 
 
 void PSU::Init(){
     LinReg::Init();
@@ -72,15 +75,31 @@ void PSU::Update(){
             Booster::SetVoltage(0);
             gpio_put(Pcb::ouput_on_off_led_pin, false);
         }
+        
+        // make sure lowpass filter is updated 
+        getVoltage();
+        getCurrent();
     }
 }
 
 float PSU::getVoltage(){
-    return LinReg::GetVoltage();
+    float v = LinReg::GetVoltage();
+    lowpassFilterMemoryVoltage += (v - lowpassFilterMemoryVoltage)*0.1;
+    return v;
 }
 
 float PSU::getCurrent(){
-    return LinReg::GetCurrent();
+    float i = LinReg::GetCurrent();
+    lowpassFilterMemoryCurrent += (i - lowpassFilterMemoryCurrent)*0.1;
+    return i; 
+}
+
+float PSU::getVoltageSmooth(){
+    return lowpassFilterMemoryVoltage;
+}
+
+float PSU::getCurrentSmooth(){
+    return lowpassFilterMemoryCurrent;
 }
 
 float PSU::getPower(){

@@ -11,6 +11,9 @@ class PSU{
         static float targetCurrent;
         static bool enabled;
         static float linregDrop;
+        static float lowpassFilterMemoryVoltage;
+        static float lowpassFilterMemoryCurrent; 
+
 
     public:
         static const float maxVoltage;
@@ -20,6 +23,8 @@ class PSU{
 
         static float getVoltage();
         static float getCurrent();
+        static float getVoltageSmooth();
+        static float getCurrentSmooth();
         static float getPower();
         static float getTargetVoltage();
         static float getTargetCurrent();

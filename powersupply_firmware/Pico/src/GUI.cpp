@@ -114,7 +114,7 @@ void GUI::Update(){
 
                 streamObj.str("");
                 streamObj.clear();
-                streamObj << std::setw(5) << std::max(PSU::getVoltage(),0.0f)+0.005f << "";
+                streamObj << std::setw(5) << std::max(PSU::getVoltageSmooth(),0.0f) << "";
                 if(streamObj.str() != lastVString){
                     lastVString = streamObj.str();
                     Display::Draw_string(Display::width - 5 * Flash::bigFont.char_widht - 5, Flash::smallFont.char_height + 10, Flash::bigFont, streamObj.str());
@@ -147,7 +147,7 @@ void GUI::Update(){
                 }
                 streamObj.str("");
                 streamObj.clear();
-                streamObj << std::setw(4) << PSU::getCurrent() +0.5f<< "";
+                streamObj << std::setw(4) << PSU::getCurrentSmooth()<< "";
                 if ( streamObj.str() != lastIString){
                     lastIString = streamObj.str() ;
                     Display::Draw_string(Display::width - 4 * Flash::bigFont.char_widht - 5, Display::height - Flash::bigFont.char_height, Flash::bigFont, streamObj.str());

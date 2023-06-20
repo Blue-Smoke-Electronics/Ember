@@ -2,6 +2,7 @@
 #include "pico/stdlib.h"
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 #include "Flash.h"
 #include "PSU.h"
 #include "Battery.h"
@@ -45,7 +46,7 @@ void CommandLineInterface::Update(){
             printf("%c",new_char);
         }
 
-        if(!((new_char < 65 || new_char > 90)/*A-Z*/ && (new_char < 97 || new_char > 122)/*a-z*/ && (new_char < 48 || new_char > 57)/*0-9*/ && (new_char != 46)/*.*/ && (new_char != 32))/* */){ // remove not statndard symbols
+        if(!((new_char < 65 || new_char > 90)/*A-Z*/ && (new_char < 97 || new_char > 122)/*a-z*/ && (new_char < 48 || new_char > 57)/*0-9*/ && (new_char != 46)/*.*/ && (new_char != 32) /* space*/&& (new_char != 45 )/* - */ )){ // remove not statndard symbols
             rx_data.push_back(new_char);
             printf("%c",new_char);
         }
@@ -119,7 +120,7 @@ void CommandLineInterface::desifre_command(std::string command){
     compare = "IGET";
     if (command.rfind(compare.c_str(), 0) == 0)
     {
-        float current = PSU::getCurrent();
+        float current = PSU::getCurrentSmooth();
         char s[20];
         sprintf(s, "%f\r\n",current);
         printf(s);
@@ -129,7 +130,7 @@ void CommandLineInterface::desifre_command(std::string command){
     compare = "VGET";
     if (command.rfind(compare.c_str(), 0) == 0)
     {
-        float current = PSU::getVoltage();
+        float current = PSU::getVoltageSmooth();
         char s[20];
         sprintf(s, "%f\r\n",current);
         printf(s);
@@ -166,6 +167,70 @@ void CommandLineInterface::desifre_command(std::string command){
         return;
     }
 
+    compare = "CALIBRATEVOLT";
+    if (command.rfind(compare.c_str(), 0) == 0)
+    {
+        std::string value_str = command.substr(compare.length());
+        float target_volt = 0;
+        float diff =0; 
+        try
+        {
+            std::string par1 = value_str.substr(0,value_str.find(' ',2));
+            std::string par2 = value_str.substr(value_str.find(' ',2),value_str.length());
+
+            target_volt = std::stof(par1); 
+            diff = std::stof(par2); 
+        }
+        catch(const std::exception& e)
+        {
+            printf("invalid input: got %s, expected a number\r\n", value_str.c_str() );
+            return; 
+        }
+
+        if (target_volt != std::round(target_volt) && target_volt > 0 && target_volt < 21){
+            printf("invalint target voltage");
+            return;
+        }
+        
+        
+        printf("setting %f to %f\n\r", target_volt, diff);
+        Analog::VoltageCalibration(int(target_volt),diff);
+
+        return;
+    }
+    compare = "CALIBRATECURRENT";
+    if (command.rfind(compare.c_str(), 0) == 0)
+    {
+        std::string value_str = command.substr(compare.length());
+        float target = 0;
+        float diff =0; 
+        try
+        {
+            std::string par1 = value_str.substr(0,value_str.find(' ',2));
+            std::string par2 = value_str.substr(value_str.find(' ',2),value_str.length());
+
+            target = std::stof(par1); 
+            diff = std::stof(par2); 
+        }
+        catch(const std::exception& e)
+        {
+            printf("invalid input: got %s, expected a number\r\n", value_str.c_str() );
+            return; 
+        }
+
+        if (target/100 != std::round(target/100) && target > 0 && target < 1600){
+            printf("invalint target voltage");
+            return;
+        }
+        
+        
+        printf("setting %f to %f\n\r", target, diff);
+        Analog::CurrentCalibration(int(target),diff);
+
+        return;
+    }
+
+
     compare = "H";
     if (command.rfind(compare.c_str(), 0) == 0)
     {
@@ -179,6 +244,8 @@ void CommandLineInterface::desifre_command(std::string command){
         printf("BATGETV  # returns voltage across battery in V\n\r");
         printf("TEMPGET  # returns temperature in C\n\r");
         printf("H        # shows this text\n\r");
+        printf("CALIBRATEVOLT 3 0.03   # used to recalibrate voltage sensor (warning:: errases calibration data)\n\r");
+        printf("CALIBRATECURRENT 300 -2.32   # used to recalibrate current sensor (warning:: errases calibration data)\n\r");
         printf("HELP     # shows this text\n\r");
         return;
     }

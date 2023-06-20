@@ -33,8 +33,12 @@ class Flash{
         static float GetBatteryCapacity(); 
         static float GetOutputVoltage(); 
         static float GetOutputCurrent(); 
+        static float * GetVoltageCalibrations();
+        static float * GetCurrentCalibrations();
 
         static void Save(float batteryCapacity ,float outputVoltage, float outputCurrent); 
+        static void SaveVoltageCalibrations(float* voltageCalibrations);
+        static void SaveCurrentCalibrations(float* currentCalibrations);
 };
 
 #endif

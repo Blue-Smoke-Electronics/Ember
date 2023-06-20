@@ -22,6 +22,7 @@ namespace Powersupply_automatic_tests
         KonradPsu konradPsu;
         KonradLoad konradLoad;
         Tester tester;
+        calibrater calibrater; 
 
         List <double> xData;
         List<double> yData;
@@ -35,11 +36,13 @@ namespace Powersupply_automatic_tests
             konradLoad = new KonradLoad();
 
             tester = new Tester(pbp,konradLoad,konradPsu);
+            calibrater = new calibrater(pbp,konradLoad);
+
             xData = new List<double>();
             yData = new List<double>();
 
             string[] comPorts = SerialPort.GetPortNames();
-            string[] non_pbp_strings = { "COM17", "COM26", "COM6", "COM11", "COM12", "COM10", "COM7", "COM13", "COM20" };
+            string[] non_pbp_strings = { "COM4","COM3" };
             comPorts = comPorts.Where(item => !non_pbp_strings.Contains(item)).ToArray();
             ComPortBox.Items.AddRange(comPorts);
             ComPortBox.SelectedIndex = 0;
@@ -281,6 +284,18 @@ namespace Powersupply_automatic_tests
 
             konradLoad.DisableOutput();
             pbp.DisableOutput();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+           
+            calibrater.calibrate_voltage();
+            calibrater.calibrate_current();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+          
         }
     }
 }

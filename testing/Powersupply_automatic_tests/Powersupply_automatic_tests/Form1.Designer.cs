@@ -59,6 +59,7 @@ namespace Powersupply_automatic_tests
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.ComPortBox = new System.Windows.Forms.ComboBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonSerial
@@ -282,7 +283,7 @@ namespace Powersupply_automatic_tests
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(301, 257);
+            this.button1.Location = new System.Drawing.Point(518, 208);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 23;
@@ -328,11 +329,22 @@ namespace Powersupply_automatic_tests
             this.ComPortBox.Size = new System.Drawing.Size(90, 21);
             this.ComPortBox.TabIndex = 28;
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(300, 208);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(140, 23);
+            this.button4.TabIndex = 29;
+            this.button4.Text = "calibrate";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(706, 461);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.ComPortBox);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -401,6 +413,7 @@ namespace Powersupply_automatic_tests
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ComboBox ComPortBox;
+        private System.Windows.Forms.Button button4;
     }
 }
 
