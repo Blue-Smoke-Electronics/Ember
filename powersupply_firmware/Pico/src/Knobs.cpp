@@ -28,7 +28,7 @@ void Knobs::Init(){
     gpio_set_pulls(Pcb::encoder_voltage_B_pin, false, false);
     gpio_set_pulls(Pcb::encoder_voltage_switch_pin, false, false);
 
-    gpio_set_irq_enabled_with_callback(Pcb::on_off_switch_pin,          GPIO_IRQ_EDGE_FALL, true, &IRS);
+    gpio_set_irq_enabled_with_callback(Pcb::on_off_switch_pin,          GPIO_IRQ_EDGE_RISE, true, &IRS);
     gpio_set_irq_enabled_with_callback(Pcb::ouput_on_off_switch_pin,    GPIO_IRQ_EDGE_FALL, true, &IRS);
     gpio_set_irq_enabled_with_callback(Pcb::encoder_current_A_pin,      GPIO_IRQ_EDGE_FALL | GPIO_IRQ_EDGE_RISE, true, &IRS);
     gpio_set_irq_enabled_with_callback(Pcb::encoder_current_switch_pin, GPIO_IRQ_EDGE_FALL, true, &IRS);
