@@ -13,6 +13,7 @@ class PSU{
         static float linregDrop;
         static float lowpassFilterMemoryVoltage;
         static float lowpassFilterMemoryCurrent; 
+        static bool isCC;
 
 
     public:
@@ -28,10 +29,12 @@ class PSU{
         static float getPower();
         static float getTargetVoltage();
         static float getTargetCurrent();
+        static bool IsCC();
         static void SetVoltage(float voltage_V);
         static void SetCurrent(float current_mA);
         static void ChangeVoltage(float voltage_v);
         static void ChangeCurrent(float current_mA);
+        
 
         static void Enable();
         static void Disable();

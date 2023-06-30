@@ -4,6 +4,7 @@
 #include "Pcb.h"
 #include "Flash.h"
 #include <algorithm>
+#include <math.h>
 #include "Powersaver.h"
 #include "Battery.h"
 
@@ -18,6 +19,8 @@ const float PSU::maxCurrent = 1000.0f;
 
 float PSU::lowpassFilterMemoryVoltage = 0.0f;
 float PSU::lowpassFilterMemoryCurrent =0.0f; 
+
+bool PSU::isCC = false; 
 
 void PSU::Init(){
     LinReg::Init();
@@ -79,6 +82,10 @@ void PSU::Update(){
         // make sure lowpass filter is updated 
         getVoltage();
         getCurrent();
+        
+        // check for constant current mode
+        isCC = (targetCurrent-getCurrentSmooth() <= 2) && (targetVoltage - getVoltageSmooth() >= 0 && enabled);
+
     }
 }
 
@@ -150,4 +157,8 @@ void PSU::ChangeCurrent(float current_mA){
 
     if(targetCurrent < 0)
         targetCurrent = 0;
+}
+
+bool PSU::IsCC(){
+    return isCC;
 }

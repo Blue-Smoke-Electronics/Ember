@@ -152,6 +152,15 @@ void GUI::Update(){
                     lastIString = streamObj.str() ;
                     Display::Draw_string(Display::width - 4 * Flash::bigFont.char_widht - 5, Display::height - Flash::bigFont.char_height, Flash::bigFont, streamObj.str());
                 }
+
+                if(PSU::IsCC()){
+                    Display::Draw_string(Display::width - 8 * Flash::smallFont.char_widht - 8, Display::height - Flash::bigFont.char_height - Flash::smallFont.char_height , Flash::smallFont, "cc");
+                }
+                else{
+                    Display::Clear_square(Display::width - 8 * Flash::smallFont.char_widht - 8, Display::height - Flash::bigFont.char_height - Flash::smallFont.char_height, Flash::smallFont.char_widht*2,Flash::smallFont.char_height);
+                }
+
+
                 // output on/off
                 if(PSU::IsEnabled())
                     Display::Draw_sprite(2, Display::height - Flash::outputOnSymbol.height-2, Flash::outputOnSymbol);
