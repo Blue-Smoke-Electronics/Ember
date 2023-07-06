@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
+#include "hardware/watchdog.h"
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
 #include "Display.h"
@@ -18,7 +19,12 @@
 
 int main() {
     stdio_init_all(); // allowing printf debug in onoff init
+    
+    watchdog_enable(1000,true);
+    // wait for device to power off if wachdog triggered restart. 
+    while ( watchdog_enable_caused_reboot());
 
+    
 
 
     
@@ -45,5 +51,8 @@ int main() {
         Overheat::Update();
         Onoff::Update();
         Powersaver::Update();
+
+        watchdog_update();
+        
     }
 }

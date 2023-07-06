@@ -64,6 +64,7 @@ target_link_libraries(${PROJECT_NAME}
     hardware_adc
     hardware_flash
     hardware_dma
+    hardware_watchdog
     #FreeRTOS
 )
 
