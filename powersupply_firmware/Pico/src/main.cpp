@@ -17,12 +17,17 @@
 #include "Overheat.h"
 #include "Powersaver.h"
 
-int main() {
+int main() {    
+    //watchdog_enable(1000,true);
+    
+    // wait for device to power off if wachdog triggered restart. 
+    while ( watchdog_enable_caused_reboot()){
+        sleep_ms(100);
+    }
+    
     stdio_init_all(); // allowing printf debug in onoff init
     
-    watchdog_enable(1000,true);
-    // wait for device to power off if wachdog triggered restart. 
-    while ( watchdog_enable_caused_reboot());
+
 
     
 

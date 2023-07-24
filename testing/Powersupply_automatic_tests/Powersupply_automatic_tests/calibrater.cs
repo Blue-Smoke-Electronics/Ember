@@ -44,7 +44,10 @@ namespace Powersupply_automatic_tests
                 pbp.Vset(v);
                 System.Threading.Thread.Sleep(3000);
 
-                pbp.CalibrateVolt(v, pbp.Vget()- konradLoad.Vget());
+                float Vpbp = pbp.Vget();
+                float Vload = konradLoad.Vget(); 
+                float diff = Vpbp - Vload;
+                pbp.CalibrateVolt(v, diff);
 
             }
 

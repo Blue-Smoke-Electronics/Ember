@@ -40,13 +40,13 @@ void Battery::Update(){
 
 
 
-        if (GetVoltage() < 2.7f || capasityLeft < 0){  // this is only uncomented for testing
+        if (GetVoltage() < 3.0f || capasityLeft < 0){  
             capasityLeft = 0;
             PSU::Disable();
         }
 
 
-        if (GetVoltage() < 2.6f){
+        if (GetVoltage() < 2.85f){
             capasityLeft = 0;
             Onoff::Turn_off_device();
         }
