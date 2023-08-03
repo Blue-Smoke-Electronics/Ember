@@ -16,9 +16,10 @@
 #include "Battery.h"
 #include "Overheat.h"
 #include "Powersaver.h"
+#include "SmallBoosters.h"
 
 int main() {    
-    //watchdog_enable(1000,true);
+    watchdog_enable(1000,true);
     
     // wait for device to power off if wachdog triggered restart. 
     while ( watchdog_enable_caused_reboot()){
@@ -35,8 +36,9 @@ int main() {
     
     // keep device powered on, need to be the first thing that happens
     Onoff::Init();
+    SmallBoosters::Init();
 
-    Heartbeat heartbeat = Heartbeat();
+    //Heartbeat heartbeat = Heartbeat();
     Analog::Init();
     PSU::Init();
     CommandLineInterface::Init();
@@ -46,8 +48,9 @@ int main() {
     Overheat::Init();
     Powersaver::Init();
 
+
     while (true) {
-        heartbeat.Update();
+        //heartbeat.Update();
         PSU::Update(); 
         CommandLineInterface::Update();
         GUI::Update();
@@ -58,6 +61,11 @@ int main() {
         Powersaver::Update();
 
         watchdog_update();
+
+
+    
+
+
         
     }
 }

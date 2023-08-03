@@ -75,6 +75,9 @@ float Analog::GetOutputVoltage(){
     float calibrated_voltage = calibrate_voltage(output_voltage);
     if (calibrated_voltage < 0.0f)
         calibrated_voltage = 0.0f;
+
+    if (calibrated_voltage > 20.0f)
+        calibrated_voltage = 20.0f;
       
     
 
@@ -89,6 +92,9 @@ float Analog::GetBoosterVoltage(){
     float output_voltage = fix_adc_unliniarity(booster_voltage_raw) * 3.3f / (1 << 12) * 11.0f;
     if (output_voltage < 0.0f)
         output_voltage = 0.0f;
+    
+    if (output_voltage > 25.0f)
+        output_voltage = 25.0f;
       
     return output_voltage;
 }
@@ -99,6 +105,9 @@ float Analog::GetBatteryVoltage(){
     float battery_voltage =   (float)battery_voltage_raw * 3.3f/(1<<12) *2; // reading to high values ??? 
     if(battery_voltage < 0.0f){
         return 0.0f; 
+    }
+    if(battery_voltage > 5.0f){
+        return 5.0f; 
     }
     return battery_voltage; 
 }

@@ -7,6 +7,7 @@
 #include "LinReg.h"
 #include "Onoff.h"
 
+
 const float Battery::maxCapacity = 0.8*1950 * 3.6 * 3600; //mWs
 
 
@@ -48,7 +49,9 @@ void Battery::Update(){
 
         if (GetVoltage() < 2.85f){
             capasityLeft = 0;
-            Onoff::Turn_off_device();
+            Onoff::Emergency_power_off();
+            
+            
         }
     }
 }  

@@ -36,6 +36,7 @@ add_executable(${PROJECT_NAME}
     src/Battery.cpp
     src/Overheat.cpp
     src/Powersaver.cpp
+    src/SmallBoosters.cpp
 )
 
 # Create C header file with the name <pio program>.pio.h

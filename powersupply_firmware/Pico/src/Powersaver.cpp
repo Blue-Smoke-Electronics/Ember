@@ -19,11 +19,13 @@ void Powersaver::Update(){
     update_timer = time_us_32(); 
 
     // dim display
-    if(idle_timer > Powersaver::display_off_time){
-        Display::Set_backlight(5);
-    }
-    else {
-        Display::Set_backlight(100);
+    if(Onoff::IsOn){
+        if(idle_timer > Powersaver::display_off_time){
+            Display::Set_backlight(5);
+        }
+        else {
+            Display::Set_backlight(100);
+        }
     }
 
     // automatic power off

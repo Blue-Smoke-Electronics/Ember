@@ -267,7 +267,7 @@ namespace Powersupply_automatic_tests
             bool failed = false;
 
             // wait for battery to charge up
-            while (pbp.BattGetV() < 4.1)
+            while (pbp.BattGetV() < 4.1 || pbp.BattGetP() < 100)
             {
                 t[sampleCnt] = (timeNow() - startTime) / 1000.0f;
                 v[sampleCnt] = pbp.BattGetV();

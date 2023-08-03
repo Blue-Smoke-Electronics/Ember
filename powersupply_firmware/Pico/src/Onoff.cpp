@@ -6,6 +6,8 @@
 #include "PSU.h"
 #include "hardware/watchdog.h"
 #include "GUI.h"
+#include "SmallBoosters.h"
+#include "Display.h"
 
 bool Onoff::IsOn = false;
 
@@ -52,3 +54,10 @@ void Onoff::Turn_on_device(){
     IsOn = true;
     gpio_put(Pcb::on_off_latch_pin, true);
 }   
+
+void Onoff::Emergency_power_off(){
+    
+    Turn_off_device();
+    SmallBoosters::Disable();
+    Display::Set_backlight(0);
+}

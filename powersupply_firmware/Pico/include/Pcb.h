@@ -35,6 +35,7 @@ class Pcb{
         static const int battery_voltage_sens_pin = 27; 
         static const int output_current_sens_pin = 28; 
         static const int booster_voltage_sens_pin = 29;
+        static const int smallboosters_enable_pin = 25;
 
 
         static const int output_voltage_sens_adc_channal = 0; 

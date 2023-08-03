@@ -18,6 +18,7 @@ class Onoff{
         static void Update();
         static void Turn_off_device();
         static void Turn_on_device();
+        static void Emergency_power_off();
         
 };
 
