@@ -13,6 +13,7 @@ class Onoff{
 
     public:
         static bool IsOn;
+        static bool IsInEmergencyPowerOff; 
         
         static void Init();
         static void Update();

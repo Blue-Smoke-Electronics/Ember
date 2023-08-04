@@ -19,7 +19,7 @@ void Powersaver::Update(){
     update_timer = time_us_32(); 
 
     // dim display
-    if(Onoff::IsOn){
+    if(!Onoff::IsInEmergencyPowerOff){
         if(idle_timer > Powersaver::display_off_time){
             Display::Set_backlight(5);
         }

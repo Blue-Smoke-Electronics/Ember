@@ -10,10 +10,12 @@
 #include "Display.h"
 
 bool Onoff::IsOn = false;
+bool Onoff::IsInEmergencyPowerOff = false; 
 
 bool Onoff::skip_next_disable = false;
 
 uint32_t Onoff::update_timer;
+
 
 
 void Onoff::Init(){
@@ -60,4 +62,5 @@ void Onoff::Emergency_power_off(){
     Turn_off_device();
     SmallBoosters::Disable();
     Display::Set_backlight(0);
+    IsInEmergencyPowerOff = true; 
 }
