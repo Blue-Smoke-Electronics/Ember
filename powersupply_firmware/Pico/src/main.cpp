@@ -38,7 +38,7 @@ int main() {
     Onoff::Init();
     SmallBoosters::Init();
 
-    //Heartbeat heartbeat = Heartbeat();
+    Heartbeat heartbeat = Heartbeat();
     Analog::Init();
     PSU::Init();
     CommandLineInterface::Init();
@@ -50,7 +50,7 @@ int main() {
 
 
     while (true) {
-        //heartbeat.Update();
+        heartbeat.Update();
         PSU::Update(); 
         CommandLineInterface::Update();
         GUI::Update();

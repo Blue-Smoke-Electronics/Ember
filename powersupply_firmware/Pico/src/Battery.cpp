@@ -29,6 +29,7 @@ void Battery::Update(){
     if(time_us_32() - update_timer > update_freq_us)
     {   
         uint32_t delta_t = time_us_32() - update_timer;
+
         update_timer = time_us_32();
 
         capasityLeft -= delta_t/1000000.0f *  GetTotalPowerDraw();
@@ -65,6 +66,30 @@ float Battery::GetPsuQuiescentPower(){
     //unit is mW
     return 10 * PSU::getVoltage(); // mostly do to minimum current draw circuit
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 float Battery::GetChargingPower(){
     //unit is mW
